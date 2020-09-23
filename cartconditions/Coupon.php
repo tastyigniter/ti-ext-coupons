@@ -6,6 +6,7 @@ use Admin\Models\Menus_model;
 use ApplicationException;
 use Auth;
 use Exception;
+use Igniter\Cart\Models\Coupons_model;
 use Igniter\Flame\Cart\CartCondition;
 use Location;
 
