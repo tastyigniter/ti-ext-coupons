@@ -16,7 +16,7 @@ class Coupons_history_model extends Model
     /**
      * @var string The database table name
      */
-    protected $table = 'coupons_history';
+    protected $table = 'igniter_coupons_history';
 
     /**
      * @var string The database table primary key

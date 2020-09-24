@@ -26,7 +26,7 @@ class Coupons_model extends Model
     /**
      * @var string The database table name
      */
-    protected $table = 'coupons';
+    protected $table = 'igniter_coupons';
 
     /**
      * @var string The database table primary key
@@ -55,8 +55,8 @@ class Coupons_model extends Model
 
     public $relation = [
         'belongsToMany' => [
-            'categories' => ['Admin\Models\Categories_model', 'table' => 'coupon_categories'],
-            'menus' => ['Admin\Models\Menus_model', 'table' => 'coupon_menus'],
+            'categories' => ['Admin\Models\Categories_model', 'table' => 'igniter_coupon_categories'],
+            'menus' => ['Admin\Models\Menus_model', 'table' => 'igniter_coupon_menus'],
         ],
         'hasMany' => [
             'history' => 'Igniter\Coupons\Models\Coupons_history_model',
