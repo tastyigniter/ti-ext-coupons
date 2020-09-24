@@ -2,10 +2,18 @@
 
 namespace Igniter\Coupons;
 
+use Admin\Models\Orders_model;
 use System\Classes\BaseExtension;
 
 class Extension extends BaseExtension
 {
+    public function boot()
+    {
+        Orders_model::extend(function($model) {
+            $model->hasMany('Igniter\Coupons\Models\Coupons_history_model');
+        });
+    }
+
     public function registerCartConditions()
     {
         return [
@@ -20,9 +28,9 @@ class Extension extends BaseExtension
     public function registerPermissions()
     {
         return [
-            'Module.CouponModule' => [
-                'description' => 'Manage coupon extension settings',
-                'group' => 'module',
+            'Admin.Coupons' => [
+                'label' => 'igniter.coupons::default.permissions', 
+                'group' => 'admin::lang.permissions.name',
             ],
         ];
     }
