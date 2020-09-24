@@ -10,7 +10,7 @@ class Coupon extends FormRequest
     {
         return [
             ['name', 'admin::lang.label_name', 'required|between:2,128'],
-            ['code', 'admin::lang.coupons.label_code', 'required|min:2|unique:coupons,code'],
+            ['code', 'admin::lang.coupons.label_code', 'required|min:2|unique:igniter_coupons,code'],
             ['type', 'admin::lang.label_type', 'required|string|size:1'],
             ['discount', 'admin::lang.coupons.label_discount', 'required|numeric|max:100'],
             ['min_total', 'admin::lang.coupons.label_min_total', 'numeric'],
