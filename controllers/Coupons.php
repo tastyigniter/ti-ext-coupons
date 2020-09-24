@@ -15,33 +15,33 @@ class Coupons extends \Admin\Classes\AdminController
     public $listConfig = [
         'list' => [
             'model' => 'Igniter\Coupons\Models\Coupons_model',
-            'title' => 'lang:admin::lang.coupons.text_title',
-            'emptyMessage' => 'lang:admin::lang.coupons.text_empty',
+            'title' => 'igniter.coupons::default.text_title',
+            'emptyMessage' => 'igniter.coupons::default.text_empty',
             'defaultSort' => ['coupon_id', 'DESC'],
             'configFile' => 'coupons_model',
         ],
     ];
 
     public $formConfig = [
-        'name' => 'lang:admin::lang.coupons.text_form_name',
+        'name' => 'igniter.coupons::default.text_form_name',
         'model' => 'Igniter\Coupons\Models\Coupons_model',
         'request' => 'Igniter\Coupons\Requests\Coupon',
         'create' => [
             'title' => 'lang:admin::lang.form.create_title',
-            'redirect' => 'coupons/edit/{coupon_id}',
-            'redirectClose' => 'coupons',
+            'redirect' => 'igniter/coupons/edit/{coupon_id}',
+            'redirectClose' => 'igniter/coupons',
         ],
         'edit' => [
             'title' => 'lang:admin::lang.form.edit_title',
-            'redirect' => 'coupons/edit/{coupon_id}',
-            'redirectClose' => 'coupons',
+            'redirect' => 'igniter/coupons/edit/{coupon_id}',
+            'redirectClose' => 'igniter/coupons',
         ],
         'preview' => [
             'title' => 'lang:admin::lang.form.preview_title',
-            'redirect' => 'coupons',
+            'redirect' => 'igniter/coupons',
         ],
         'delete' => [
-            'redirect' => 'coupons',
+            'redirect' => 'igniter/coupons',
         ],
         'configFile' => 'coupons_model',
     ];
