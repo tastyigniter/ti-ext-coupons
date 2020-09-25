@@ -25,8 +25,8 @@ class Extension extends BaseExtension
                 new Coupons_model->logCouponHistory($order, $couponCondition, $this->customer);
         });
 
-        Event::listen('admin.customer.guestOrderHistory', function ($order_id, $customer_id) {
-            Coupons_history_model::where('order_id', $order_id)->update(['customer_id' => $customer_id]);
+        Customers_model::created(function ($customer) {
+            Coupons_history_model::where('email', $customer->email)->update(['customer_id' => $customer->customer_id]);
         });
     }
 
