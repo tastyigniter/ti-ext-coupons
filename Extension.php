@@ -4,6 +4,7 @@ namespace Igniter\Coupons;
 
 use Admin\Models\Orders_model;
 use Igniter\Coupons\Models\Coupons_model;
+use Igniter\Coupons\Models\Coupons_history_model;
 use Igniter\Flame\Cart\CartCondition;
 use System\Classes\BaseExtension;
 
@@ -22,6 +23,10 @@ class Extension extends BaseExtension
         Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
             if ($couponCondition = Cart::conditions()->get('coupon'))
                 new Coupons_model->logCouponHistory($order, $couponCondition, $this->customer);
+        });
+
+        Event::listen('admin.customer.guestOrderHistory', function ($order_id, $customer_id) {
+            Coupons_history_model::where('order_id', $order_id)->update(['customer_id' => $customer_id]);
         });
     }
 

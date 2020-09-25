@@ -263,11 +263,11 @@ class Coupons_model extends Model
     /**
     * Redeem coupon by order_id
     */
-    public function redeemCoupon($order_id)
+    public function redeemCoupon($order)
     {
         $this->history()
         ->where(
-            ['order_id', $order_id],
+            ['order_id', $order->order_id],
             ['status', '!=', '1'],
         )
         ->get()
