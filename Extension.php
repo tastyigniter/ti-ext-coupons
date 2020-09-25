@@ -3,6 +3,8 @@
 namespace Igniter\Coupons;
 
 use Admin\Models\Orders_model;
+use Igniter\Coupons\Models\Coupons_model;
+use Igniter\Flame\Cart\CartCondition;
 use System\Classes\BaseExtension;
 
 class Extension extends BaseExtension
@@ -11,6 +13,15 @@ class Extension extends BaseExtension
     {
         Orders_model::extend(function($model) {
             $model->hasMany('Igniter\Coupons\Models\Coupons_history_model');
+        });
+
+        Event::listen('admin.order.beforePaymentProcessed', function ($order) {
+            new Coupons_model->redeemCoupon($order->order_id);
+        });
+
+        Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
+            if ($couponCondition = Cart::conditions()->get('coupon'))
+                new Coupons_model->logCouponHistory($order, $couponCondition, $this->customer);
         });
     }
 
@@ -29,7 +40,7 @@ class Extension extends BaseExtension
     {
         return [
             'Admin.Coupons' => [
-                'label' => 'igniter.coupons::default.permissions', 
+                'label' => 'igniter.coupons::default.permissions',
                 'group' => 'admin::lang.permissions.name',
             ],
         ];
@@ -50,5 +61,5 @@ class Extension extends BaseExtension
                 ],
             ],
         ];
-    } 
+    }
 }
