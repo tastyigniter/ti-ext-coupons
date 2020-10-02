@@ -9,8 +9,5 @@
     "color": "#FFF",
     "backgroundColor": "#ED561A"
   },
-  "homepage": "https://tastyigniter.com/marketplace/item/igniter-coupons",
-  "require": {
-    "igniter.cart": "*"
-  }
+  "homepage": "https://tastyigniter.com/marketplace/item/igniter-coupons"
 }
