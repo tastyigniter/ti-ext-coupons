@@ -2,27 +2,28 @@
 
 namespace Igniter\Coupons;
 
+use Admin\Models\Customers_model;
 use Admin\Models\Orders_model;
-use Igniter\Coupons\Models\Coupons_model;
 use Igniter\Coupons\Models\Coupons_history_model;
-use Igniter\Flame\Cart\CartCondition;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Event;
 use System\Classes\BaseExtension;
 
 class Extension extends BaseExtension
 {
     public function boot()
     {
-        Orders_model::extend(function($model) {
-            $model->hasMany('Igniter\Coupons\Models\Coupons_history_model');
+        Orders_model::extend(function ($model) {
+            $model->relation['hasMany']['coupon_history'] = ['Igniter\Coupons\Models\Coupons_history_model'];
         });
 
         Event::listen('admin.order.beforePaymentProcessed', function ($order) {
-            new Coupons_model->redeemCoupon($order->order_id);
+//            new Coupons_model->redeemCoupon($order->order_id);
         });
 
         Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
-            if ($couponCondition = Cart::conditions()->get('coupon'))
-                new Coupons_model->logCouponHistory($order, $couponCondition, $this->customer);
+//            if ($couponCondition = Cart::conditions()->get('coupon'))
+//                new Coupons_model->logCouponHistory($order, $couponCondition, $this->customer);
         });
 
         Customers_model::created(function ($customer) {
@@ -62,7 +63,7 @@ class Extension extends BaseExtension
                         'href' => admin_url('igniter/coupons/coupons'),
                         'title' => lang('igniter.coupons::default.side_menu'),
                         'permission' => 'Admin.Coupons',
-                    ]
+                    ],
                 ],
             ],
         ];

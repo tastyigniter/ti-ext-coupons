@@ -4,6 +4,7 @@ namespace Igniter\Coupons\Database\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateCouponsTableOrRename extends Migration
@@ -56,7 +57,7 @@ class CreateCouponsTableOrRename extends Migration
             $table->dateTime('date_used');
             $table->boolean('status');
         });
-        
+
         $this->seedCoupons();
     }
 
@@ -76,6 +77,6 @@ class CreateCouponsTableOrRename extends Migration
 
     protected function getSeedRecords($name)
     {
-        return json_decode(file_get_contents($this->recordsPath.'/'.$name.'.json'), TRUE);
+        return json_decode(file_get_contents(__DIR__.'/../records/'.$name.'.json'), TRUE);
     }
 }

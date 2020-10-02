@@ -8,6 +8,7 @@ use Igniter\Flame\Auth\Models\User;
 use Igniter\Flame\Cart\CartCondition;
 use Igniter\Flame\Database\Traits\Purgeable;
 use Igniter\Flame\Location\Models\AbstractLocation;
+use Illuminate\Support\Facades\Event;
 use Model;
 
 /**
@@ -257,27 +258,27 @@ class Coupons_model extends Model
     public function countCustomerRedemptions($id)
     {
         return $this->history()->isEnabled()
-                    ->where('customer_id', $id)->count();
+            ->where('customer_id', $id)->count();
     }
 
     /**
-    * Redeem coupon by order_id
-    */
+     * Redeem coupon by order_id
+     */
     public function redeemCoupon($order)
     {
         $this->history()
-        ->where(
-            ['order_id', $order->order_id],
-            ['status', '!=', '1'],
-        )
-        ->get()
-        ->each(function (Coupons_history_model $model) {
-            $model->status = 1;
-            $model->date_used = Carbon::now();
-            $model->save();
+            ->where(
+                ['order_id', $order->order_id],
+                ['status', '!=', '1']
+            )
+            ->get()
+            ->each(function (Coupons_history_model $model) {
+                $model->status = 1;
+                $model->date_used = Carbon::now();
+                $model->save();
 
-            Event::fire('admin.order.couponRedeemed', [$model]);
-        });
+                Event::fire('igniter.coupons.couponRedeemed', [$model]);
+            });
     }
 
     /**
