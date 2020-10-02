@@ -29,6 +29,11 @@ class Extension extends BaseExtension
         Customers_model::created(function ($customer) {
             Coupons_history_model::where('email', $customer->email)->update(['customer_id' => $customer->customer_id]);
         });
+
+        Relation::morphMap([
+            'coupon_history' => 'Igniter\Coupons\Models\Coupons_history_model',
+            'coupons' => 'Igniter\Coupons\Models\Coupons_model',
+        ]);
     }
 
     public function registerCartConditions()
