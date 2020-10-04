@@ -28,7 +28,7 @@ class Coupons extends \Admin\Classes\AdminController
         'request' => 'Igniter\Coupons\Requests\Coupon',
         'create' => [
             'title' => 'lang:admin::lang.form.create_title',
-            'redirect' => 'igniter/coupons/edit/{coupon_id}',
+            'redirect' => 'igniter/coupons/coupons/edit/{coupon_id}',
             'redirectClose' => 'igniter/coupons/coupons',
         ],
         'edit' => [

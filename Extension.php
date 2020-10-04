@@ -15,15 +15,16 @@ class Extension extends BaseExtension
     {
         Orders_model::extend(function ($model) {
             $model->relation['hasMany']['coupon_history'] = ['Igniter\Coupons\Models\Coupons_history_model'];
+            $model->implement[] = 'Igniter.Coupons.Classes.CouponOrders';
         });
 
         Event::listen('admin.order.beforePaymentProcessed', function ($order) {
-//            new Coupons_model->redeemCoupon($order->order_id);
+            $order->redeemCoupon();
         });
 
         Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
-//            if ($couponCondition = Cart::conditions()->get('coupon'))
-//                new Coupons_model->logCouponHistory($order, $couponCondition, $this->customer);
+           if ($couponCondition = Cart::conditions()->get('coupon'))
+               $order->logCouponHistory($couponCondition);
         });
 
         Customers_model::created(function ($customer) {
