@@ -28,7 +28,12 @@ class Extension extends BaseExtension
         });
 
         Customers_model::created(function ($customer) {
-            Coupons_history_model::where('email', $customer->email)->update(['customer_id' => $customer->customer_id]);
+            Orders_model::where('email', $customer->email)
+            ->get()
+            ->each(function($order) use($customer) {
+                Coupons_history_model::where('order_id', $order->order_id)
+                ->update(['customer_id' => $customer->customer_id]);
+            });
         });
 
         Relation::morphMap([
