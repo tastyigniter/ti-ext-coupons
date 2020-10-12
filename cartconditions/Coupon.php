@@ -112,11 +112,18 @@ class Coupon extends CartCondition
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
     }
     
-    public function getLimitations()
+    public function getApplicableItems()
     {
-        return [
-            'menu_id' => $this->couponModel->menus->pluck('menu_id'),
-            'categories' => $this->couponModel->categories->pluck('category_id'),
-        ];
+        echo 'here'; exit();        
+        
+        $items = $this->couponModel->menus->pluck('menu_id');
+        $this->couponModel->categories->pluck('category_id')
+        ->each(function($category) use ($items){
+            $items = $items->merge(Menus_model::whereHasCategory($category)->pluck('menu_id'));
+        });
+        
+        var_dump($items); exit();
+        
+        return $items;
     }
 }
