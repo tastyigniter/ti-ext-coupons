@@ -15,7 +15,7 @@ class Extension extends BaseExtension
     {
         Orders_model::extend(function ($model) {
             $model->relation['hasMany']['coupon_history'] = ['Igniter\Coupons\Models\Coupons_history_model'];
-            $model->implement[] = 'Igniter.Coupons.Classes.CouponOrders';
+            $model->implement[] = 'Igniter.Coupons.Actions.RedeemsCoupon';
         });
 
         Event::listen('admin.order.beforePaymentProcessed', function ($order) {
