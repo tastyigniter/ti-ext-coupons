@@ -125,8 +125,6 @@ class Coupon extends CartCondition
 
     public function getApplicableItems()
     {
-        echo 'here, you should look into using debugging tools like xdebug, would make your life better ;)';
-        exit();
         if (!$couponModel = $this->getModel())
             return [];
 
@@ -139,8 +137,6 @@ class Coupon extends CartCondition
         // using this so that the condition is not applied on the cart subtotal
         // feel free to change the approach or maybe a better name?
         self::$isItemable = $items->isNotEmpty();
-        var_dump($items);
-        exit();
 
         return $items->all();
     }
