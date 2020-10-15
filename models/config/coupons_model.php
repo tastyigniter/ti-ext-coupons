@@ -319,18 +319,20 @@ $config['form']['tabs'] = [
             'locationAware' => 'hide',
             'comment' => 'lang:igniter.coupons::default.help_locations',
         ],
-        'affects_whole_cart' => [
+        'is_limited' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:igniter.coupons::default.label_cart_restriction',
             'type' => 'switch',
-            'default' => 1,
+            'default' => 0,
         ],
         'categories' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:igniter.coupons::default.label_categories',
             'type' => 'relation',
             'comment' => 'lang:igniter.coupons::default.help_categories',
             'trigger' => [
                 'action' => 'show',
-                'field' => 'affects_whole_cart',
+                'field' => 'is_limited',
                 'condition' => 'unchecked',
             ],
         ],
@@ -342,15 +344,9 @@ $config['form']['tabs'] = [
             'nameFrom' => 'menu_name',
             'trigger' => [
                 'action' => 'show',
-                'field' => 'affects_whole_cart',
+                'field' => 'is_limited',
                 'condition' => 'unchecked',
             ],
-        ],
-        'categories' => [
-            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
-            'label' => 'lang:igniter.coupons::default.label_categories',
-            'type' => 'relation',
-            'comment' => 'lang:igniter.coupons::default.help_categories',
         ],
         'history' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_history',

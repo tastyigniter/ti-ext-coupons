@@ -24,8 +24,6 @@ class Coupon extends CartCondition
      */
     protected static $couponModel;
 
-    protected static $isItemable;
-
     public function getLabel()
     {
         return sprintf(lang($this->label), $this->getMetaData('code'));
@@ -70,7 +68,7 @@ class Coupon extends CartCondition
     public function beforeApply()
     {
         $couponModel = $this->getModel();
-        if (!$couponModel OR !$couponModel->affects_whole_cart)
+        if (!$couponModel OR !$couponModel->is_limited)
             return FALSE;
     }
 
@@ -131,7 +129,7 @@ class Coupon extends CartCondition
         if (!$couponModel = self::$couponModel)
             return [];
             
-        if ($couponModel->affects_whole_cart)
+        if ($couponModel->is_limited)
             return [];
 
         $items = $couponModel->menus->pluck('menu_id');
@@ -139,9 +137,6 @@ class Coupon extends CartCondition
             ->each(function ($category) use ($items) {
                 $items = $items->merge(Menus_model::whereHasCategory($category)->pluck('menu_id'));
             });
-
-        // make sure that the condition is not applied on the cart subtotal
-        self::$isItemable = $items->isNotEmpty();
 
         return $items->all();
     }

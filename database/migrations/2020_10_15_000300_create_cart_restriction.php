@@ -11,7 +11,7 @@ class CreateCartRestriction extends Migration
     public function up()
     {
         Schema::table('igniter_coupons', function (Blueprint $table) {
-            $table->boolean('affects_whole_cart')->default(true);
+            $table->boolean('is_limited')->default(false);
         });
     }
 }
