@@ -128,6 +128,9 @@ class Coupon extends CartCondition
     {
         if (!$couponModel = $this->getModel())
             return [];
+            
+        if ($couponModel->affects_whole_cart)
+            return [];
 
         $items = $couponModel->menus->pluck('menu_id');
         $couponModel->categories->pluck('category_id')

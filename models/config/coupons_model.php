@@ -304,16 +304,31 @@ $config['form']['tabs'] = [
             'locationAware' => 'hide',
             'comment' => 'lang:igniter.coupons::default.help_locations',
         ],
+        'affects_whole_cart' => [
+            'label' => 'lang:igniter.coupons::default.label_cart_restriction',
+            'type' => 'switch',
+            'default' => 1,
+        ],
         'categories' => [
             'label' => 'lang:igniter.coupons::default.label_categories',
             'type' => 'relation',
             'comment' => 'lang:igniter.coupons::default.help_categories',
+            'trigger' => [
+                'action' => 'show',
+                'field' => 'affects_whole_cart',
+                'condition' => 'unchecked',
+            ],
         ],
         'menus' => [
             'label' => 'lang:igniter.coupons::default.label_menus',
             'type' => 'relation',
             'comment' => 'lang:igniter.coupons::default.help_menus',
             'nameFrom' => 'menu_name',
+            'trigger' => [
+                'action' => 'show',
+                'field' => 'affects_whole_cart',
+                'condition' => 'unchecked',
+            ],
         ],
         'description' => [
             'label' => 'lang:admin::lang.label_description',
