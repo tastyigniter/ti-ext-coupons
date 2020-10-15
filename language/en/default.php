@@ -41,7 +41,7 @@ return [
     'label_customer_redemption' => 'Customer Redemptions',
     'label_validity' => 'Validity',
     'label_order_restriction' => 'Order Restriction',
-    'label_cart_restriction' => 'Apply coupon to the whole cart',
+    'label_cart_restriction' => 'Do not apply to the whole cart',
     'label_categories' => 'Apply to menu items from these categories',
     'label_menus' => 'Apply to these menu items',
     'label_date' => 'Date',
