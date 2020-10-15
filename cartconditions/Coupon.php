@@ -49,27 +49,28 @@ class Coupon extends CartCondition
         return $this->couponModel;
     }
 
-    public function beforeApply()
+    public function onLoad()
     {
         if (!strlen($couponCode = $this->getMetaData('code')))
-            return FALSE;
+            return;
 
         try {
             if (!$couponModel = $this->getModel())
                 throw new ApplicationException(lang('igniter.cart::default.alert_coupon_invalid'));
 
             $this->validateCoupon($couponModel);
-
-            if (self::$isItemable)
-                return FALSE;
-
         }
         catch (Exception $ex) {
             flash()->alert($ex->getMessage())->now();
             $this->removeMetaData('code');
-
-            return FALSE;
         }
+    }
+
+    public function beforeApply()
+    {
+        $couponModel = $this->getModel();
+        if (!$couponModel OR !$couponModel->affects_whole_cart)
+            return FALSE;
     }
 
     public function getActions()
