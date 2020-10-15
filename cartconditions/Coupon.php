@@ -134,8 +134,7 @@ class Coupon extends CartCondition
                 $items = $items->merge(Menus_model::whereHasCategory($category)->pluck('menu_id'));
             });
 
-        // using this so that the condition is not applied on the cart subtotal
-        // feel free to change the approach or maybe a better name?
+        // make sure that the condition is not applied on the cart subtotal
         self::$isItemable = $items->isNotEmpty();
 
         return $items->all();
