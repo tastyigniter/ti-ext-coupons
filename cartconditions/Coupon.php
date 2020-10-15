@@ -22,7 +22,7 @@ class Coupon extends CartCondition
     /**
      * @var Coupons_model
      */
-    protected $couponModel;
+    protected static $couponModel;
 
     protected static $isItemable;
 
@@ -38,15 +38,16 @@ class Coupon extends CartCondition
 
     public function getModel()
     {
-        $couponCode = $this->getMetaData('code');
+        if (!strlen($couponCode = $this->getMetaData('code')))
+            return self::$couponModel;
 
-        if (is_null($this->couponModel) AND strlen($couponCode))
-            $this->couponModel = Coupons_model::getByCode($couponCode);
+        if (is_null(self::$couponModel))
+            self::$couponModel = Coupons_model::getByCode($couponCode);
 
-        if (!$this->couponModel OR strtolower($this->couponModel->code) !== strtolower($couponCode))
-            $this->couponModel = null;
+        if (self::$couponModel AND strtolower(self::$couponModel->code) !== strtolower($couponCode))
+            self::$couponModel = Coupons_model::getByCode($couponCode);
 
-        return $this->couponModel;
+        return self::$couponModel;
     }
 
     public function onLoad()
@@ -125,9 +126,9 @@ class Coupon extends CartCondition
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
     }
 
-    public function getApplicableItems()
+    public static function isApplicableTo($cartItem)
     {
-        if (!$couponModel = $this->getModel())
+        if (!$couponModel = self::$couponModel)
             return [];
             
         if ($couponModel->affects_whole_cart)
