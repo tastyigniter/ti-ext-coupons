@@ -54,14 +54,15 @@ class Coupon extends CartCondition
         if (!strlen($couponCode = $this->getMetaData('code')))
             return FALSE;
 
-        if (self::$isItemable)
-            return FALSE;
-
         try {
             if (!$couponModel = $this->getModel())
                 throw new ApplicationException(lang('igniter.cart::default.alert_coupon_invalid'));
 
             $this->validateCoupon($couponModel);
+
+            if (self::$isItemable)
+                return FALSE;
+
         }
         catch (Exception $ex) {
             flash()->alert($ex->getMessage())->now();
