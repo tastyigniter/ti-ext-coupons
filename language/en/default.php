@@ -1,13 +1,14 @@
 <?php
 
 return [
-    'side_menu' => 'Coupons',  
-    
+    'side_menu' => 'Coupons',
+
     'permissions' => 'Create, edit and delete coupons',
-    
+
     'text_title' => 'Coupons',
     'text_form_name' => 'Coupon',
-    'text_tab_general' => 'Coupon',
+    'text_tab_general' => 'General',
+    'text_tab_restrictions' => 'Restrictions',
     'text_tab_history' => 'History',
     'text_filter_search' => 'Search by name, code or validity.',
     'text_filter_type' => 'View all types',
