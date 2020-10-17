@@ -38,16 +38,16 @@ class RedeemsCoupon
      */
     public function redeemCoupon()
     {
-      $this
-          ->coupon_history()
-          ->where('status', '!=', '1')
-          ->get()
-          ->each(function (Coupons_history_model $model) {
-              $model->status = 1;
-              $model->date_used = Carbon::now();
-              $model->save();
+        $this
+            ->coupon_history()
+            ->where('status', '!=', '1')
+            ->get()
+            ->each(function (Coupons_history_model $model) {
+                $model->status = 1;
+                $model->date_used = Carbon::now();
+                $model->save();
 
-              Event::fire('admin.order.couponRedeemed', [$model]);
-          });
+                Event::fire('admin.order.couponRedeemed', [$model]);
+            });
     }
 }

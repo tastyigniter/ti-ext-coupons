@@ -24,17 +24,17 @@ class Extension extends BaseExtension
         });
 
         Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
-           if ($couponCondition = Cart::conditions()->get('coupon'))
-               $order->logCouponHistory($couponCondition);
+            if ($couponCondition = Cart::conditions()->get('coupon'))
+                $order->logCouponHistory($couponCondition);
         });
 
         Customers_model::created(function ($customer) {
             Orders_model::where('email', $customer->email)
-            ->get()
-            ->each(function ($order) use ($customer) {
-                Coupons_history_model::where('order_id', $order->order_id)
-                ->update(['customer_id' => $customer->customer_id]);
-            });
+                ->get()
+                ->each(function ($order) use ($customer) {
+                    Coupons_history_model::where('order_id', $order->order_id)
+                        ->update(['customer_id' => $customer->customer_id]);
+                });
         });
 
         Relation::morphMap([

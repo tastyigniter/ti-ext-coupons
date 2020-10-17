@@ -258,9 +258,9 @@ class Coupons_model extends Model
         return $this->history()->isEnabled()
             ->where('customer_id', $id)->count();
     }
-    
+
     public static function getByCode($code)
     {
         return self::isEnabled()->whereCode($code)->first();
-    }    
+    }
 }
