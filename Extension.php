@@ -31,7 +31,7 @@ class Extension extends BaseExtension
         Customers_model::created(function ($customer) {
             Orders_model::where('email', $customer->email)
             ->get()
-            ->each(function($order) use($customer) {
+            ->each(function ($order) use ($customer) {
                 Coupons_history_model::where('order_id', $order->order_id)
                 ->update(['customer_id' => $customer->customer_id]);
             });

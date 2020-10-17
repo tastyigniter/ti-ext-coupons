@@ -2,7 +2,6 @@
 
 namespace Igniter\Coupons\CartConditions;
 
-use Admin\Models\Menus_model;
 use ApplicationException;
 use Auth;
 use Exception;
@@ -64,7 +63,7 @@ class Coupon extends CartCondition
     {
         return [
             [
-                'value' => $this->couponModel->discountWithOperand(), 
+                'value' => $this->couponModel->discountWithOperand(),
                 'calculateValue' => [$this, 'calculateValue'],
             ],
         ];
@@ -111,7 +110,7 @@ class Coupon extends CartCondition
         if ($user AND $this->couponModel->customerHasMaxRedemption($user))
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
     }
-    
+
     public function getLimitations()
     {
         return [
