@@ -333,7 +333,7 @@ $config['form']['tabs'] = [
             'trigger' => [
                 'action' => 'show',
                 'field' => 'is_limited',
-                'condition' => 'unchecked',
+                'condition' => 'checked',
             ],
         ],
         'menus' => [
@@ -345,7 +345,7 @@ $config['form']['tabs'] = [
             'trigger' => [
                 'action' => 'show',
                 'field' => 'is_limited',
-                'condition' => 'unchecked',
+                'condition' => 'checked',
             ],
         ],
         'history' => [
