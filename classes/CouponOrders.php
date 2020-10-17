@@ -5,10 +5,10 @@ namespace Igniter\Coupons\Classes;
 use Igniter\Coupons\Models\Coupons_history_model;
 use Igniter\Flame\Traits\ExtensionTrait;
 
-class CouponOrders 
+class CouponOrders
 {
     use ExtensionTrait;
-    
+
     /**
      * Add cart coupon to order by order_id
      *
@@ -26,10 +26,10 @@ class CouponOrders
                 CartCondition::class, get_class($couponCondition)
             ));
         }
-    
+
         if (!$this->exists)
             return FALSE;
-    
+
         return Coupons_history_model::createHistory($couponCondition, $this);
     }
 
@@ -46,7 +46,7 @@ class CouponOrders
               $model->status = 1;
               $model->date_used = Carbon::now();
               $model->save();
-    
+
               Event::fire('admin.order.couponRedeemed', [$model]);
           });
     }

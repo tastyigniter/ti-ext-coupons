@@ -5,10 +5,8 @@ namespace Igniter\Coupons\Models;
 use Admin\Traits\Locationable;
 use Carbon\Carbon;
 use Igniter\Flame\Auth\Models\User;
-use Igniter\Flame\Cart\CartCondition;
 use Igniter\Flame\Database\Traits\Purgeable;
 use Igniter\Flame\Location\Models\AbstractLocation;
-use Illuminate\Support\Facades\Event;
 use Model;
 
 /**

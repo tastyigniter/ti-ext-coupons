@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'side_menu' => 'Coupons',  
-    
+    'side_menu' => 'Coupons',
+
     'permissions' => 'Create, edit and delete coupons',
-    
+
     'text_title' => 'Coupons',
     'text_form_name' => 'Coupon',
     'text_tab_general' => 'Coupon',

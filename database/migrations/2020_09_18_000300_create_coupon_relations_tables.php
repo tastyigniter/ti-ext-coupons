@@ -11,8 +11,8 @@ class CreateCouponRelationsTables extends Migration
     public function up()
     {
         if (Schema::hasTable('igniter_coupon_categories'))
-            return;        
-        
+            return;
+
         Schema::create('igniter_coupon_categories', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->integer('coupon_id')->unsigned()->index();
