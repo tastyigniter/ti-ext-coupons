@@ -2,7 +2,6 @@
 
 namespace Igniter\Coupons\CartConditions;
 
-use Admin\Models\Menus_model;
 use ApplicationException;
 use Auth;
 use Exception;

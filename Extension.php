@@ -4,6 +4,7 @@ namespace Igniter\Coupons;
 
 use Admin\Models\Customers_model;
 use Admin\Models\Orders_model;
+use Igniter\Cart\Models\Cart;
 use Igniter\Coupons\Models\Coupons_history_model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
@@ -30,7 +31,7 @@ class Extension extends BaseExtension
         Customers_model::created(function ($customer) {
             Orders_model::where('email', $customer->email)
             ->get()
-            ->each(function($order) use($customer) {
+            ->each(function ($order) use ($customer) {
                 Coupons_history_model::where('order_id', $order->order_id)
                 ->update(['customer_id' => $customer->customer_id]);
             });
