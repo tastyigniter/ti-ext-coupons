@@ -24,6 +24,8 @@ class Coupon extends CartCondition
      */
     protected static $couponModel;
 
+    protected static $applicableItems;
+
     public function getLabel()
     {
         return sprintf(lang($this->label), $this->getMetaData('code'));
@@ -48,6 +50,17 @@ class Coupon extends CartCondition
         return self::$couponModel;
     }
 
+    public function getApplicableItems($couponModel)
+    {
+        $applicableItems = $couponModel->menus->pluck('menu_id');
+        $couponModel->categories->pluck('category_id')
+            ->each(function ($category) use (&$applicableItems){
+                $applicableItems = $applicableItems->merge(Menus_model::whereHasCategory($category)->pluck('menu_id'));
+            });
+        self::$applicableItems = $applicableItems;
+        return self::$applicableItems;
+    }
+
     public function onLoad()
     {
         if (!strlen($couponCode = $this->getMetaData('code')))
@@ -58,6 +71,9 @@ class Coupon extends CartCondition
                 throw new ApplicationException(lang('igniter.cart::default.alert_coupon_invalid'));
 
             $this->validateCoupon($couponModel);
+
+            $this->getApplicableItems($couponModel);
+
         }
         catch (Exception $ex) {
             flash()->alert($ex->getMessage())->now();
@@ -127,17 +143,14 @@ class Coupon extends CartCondition
     public static function isApplicableTo($cartItem)
     {
         if (!$couponModel = self::$couponModel)
-            return [];
-            
-        if ($couponModel->is_limited)
-            return [];
+            return false;
 
-        $items = $couponModel->menus->pluck('menu_id');
-        $couponModel->categories->pluck('category_id')
-            ->each(function ($category) use ($items) {
-                $items = $items->merge(Menus_model::whereHasCategory($category)->pluck('menu_id'));
-            });
+        if (!$couponModel->is_limited)
+            return false;
 
-        return $items->all();
+        if (!$applicableItems = self::$applicableItems)
+            return false;
+
+        return $applicableItems->contains($cartItem->id);
     }
 }
