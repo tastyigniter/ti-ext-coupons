@@ -319,7 +319,7 @@ $config['form']['tabs'] = [
             'locationAware' => 'hide',
             'comment' => 'lang:igniter.coupons::default.help_locations',
         ],
-        'is_limited' => [
+        'is_limited_to_cart_item' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:igniter.coupons::default.label_cart_restriction',
             'type' => 'switch',
@@ -332,7 +332,7 @@ $config['form']['tabs'] = [
             'comment' => 'lang:igniter.coupons::default.help_categories',
             'trigger' => [
                 'action' => 'show',
-                'field' => 'is_limited',
+                'field' => 'is_limited_to_cart_item',
                 'condition' => 'checked',
             ],
         ],
@@ -344,7 +344,7 @@ $config['form']['tabs'] = [
             'nameFrom' => 'menu_name',
             'trigger' => [
                 'action' => 'show',
-                'field' => 'is_limited',
+                'field' => 'is_limited_to_cart_item',
                 'condition' => 'checked',
             ],
         ],
