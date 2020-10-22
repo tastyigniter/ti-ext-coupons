@@ -86,7 +86,7 @@ class Coupon extends CartCondition
     public function beforeApply()
     {
         $couponModel = $this->getModel();
-        if (!$couponModel OR !$couponModel->is_limited_to_cart_item)
+        if (!$couponModel OR $couponModel->is_limited_to_cart_item)
             return FALSE;
     }
 
