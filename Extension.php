@@ -48,8 +48,8 @@ class Extension extends BaseExtension
         return [
             \Igniter\Coupons\CartConditions\Coupon::class => [
                 'name' => 'coupon',
-                'label' => 'lang:igniter.cart::default.text_coupon',
-                'description' => 'lang:igniter.cart::default.help_coupon_condition',
+                'label' => 'lang:igniter.coupons::default.text_coupon',
+                'description' => 'lang:igniter.coupons::default.help_coupon_condition',
             ],
         ];
     }
