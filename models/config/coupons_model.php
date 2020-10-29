@@ -143,6 +143,10 @@ $config['form']['tabs'] = [
             'type' => 'text',
             'span' => 'right',
         ],
+        'description' => [
+            'label' => 'lang:admin::lang.label_description',
+            'type' => 'textarea',
+        ],
         'type' => [
             'label' => 'lang:admin::lang.label_type',
             'type' => 'radiotoggle',
@@ -160,47 +164,21 @@ $config['form']['tabs'] = [
             'span' => 'left',
             'cssClass' => 'flex-width',
         ],
-        'min_total' => [
-            'label' => 'lang:igniter.coupons::default.label_min_total',
-            'type' => 'currency',
+        'status' => [
+            'label' => 'lang:admin::lang.label_status',
+            'type' => 'switch',
+            'default' => 1,
             'span' => 'right',
-            'default' => 0,
-        ],
-        'redemptions' => [
-            'label' => 'lang:igniter.coupons::default.label_redemption',
-            'type' => 'number',
-            'span' => 'left',
-            'default' => 0,
-            'comment' => 'lang:igniter.coupons::default.help_redemption',
-        ],
-        'customer_redemptions' => [
-            'label' => 'lang:igniter.coupons::default.label_customer_redemption',
-            'type' => 'number',
-            'span' => 'right',
-            'default' => 0,
-            'comment' => 'lang:igniter.coupons::default.help_customer_redemption',
         ],
         'validity' => [
             'label' => 'lang:igniter.coupons::default.label_validity',
             'type' => 'radiotoggle',
             'default' => 'forever',
-            'span' => 'left',
             'options' => [
                 'forever' => 'lang:igniter.coupons::default.text_forever',
                 'fixed' => 'lang:igniter.coupons::default.text_fixed',
                 'period' => 'lang:igniter.coupons::default.text_period',
                 'recurring' => 'lang:igniter.coupons::default.text_recurring',
-            ],
-        ],
-        'order_restriction' => [
-            'label' => 'lang:igniter.coupons::default.label_order_restriction',
-            'type' => 'radiotoggle',
-            'comment' => 'lang:igniter.coupons::default.help_order_restriction',
-            'span' => 'right',
-            'options' => [
-                'lang:admin::lang.text_none',
-                'lang:igniter.coupons::default.text_delivery_only',
-                'lang:igniter.coupons::default.text_collection_only',
             ],
         ],
         'fixed_date' => [
@@ -296,7 +274,44 @@ $config['form']['tabs'] = [
                 'condition' => 'value[recurring]',
             ],
         ],
+
+        'min_total' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
+            'label' => 'lang:igniter.coupons::default.label_min_total',
+            'type' => 'currency',
+            'span' => 'left',
+            'default' => 0,
+        ],
+        'order_restriction' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
+            'label' => 'lang:igniter.coupons::default.label_order_restriction',
+            'type' => 'radiotoggle',
+            'comment' => 'lang:igniter.coupons::default.help_order_restriction',
+            'span' => 'right',
+            'options' => [
+                'lang:admin::lang.text_none',
+                'lang:igniter.coupons::default.text_delivery_only',
+                'lang:igniter.coupons::default.text_collection_only',
+            ],
+        ],
+        'redemptions' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
+            'label' => 'lang:igniter.coupons::default.label_redemption',
+            'type' => 'number',
+            'span' => 'left',
+            'default' => 0,
+            'comment' => 'lang:igniter.coupons::default.help_redemption',
+        ],
+        'customer_redemptions' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
+            'label' => 'lang:igniter.coupons::default.label_customer_redemption',
+            'type' => 'number',
+            'span' => 'right',
+            'default' => 0,
+            'comment' => 'lang:igniter.coupons::default.help_customer_redemption',
+        ],
         'locations' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:admin::lang.label_location',
             'type' => 'relation',
             'valueFrom' => 'locations',
@@ -304,25 +319,34 @@ $config['form']['tabs'] = [
             'locationAware' => 'hide',
             'comment' => 'lang:igniter.coupons::default.help_locations',
         ],
+        'is_limited_to_cart_item' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
+            'label' => 'lang:igniter.coupons::default.label_cart_restriction',
+            'type' => 'switch',
+            'default' => 0,
+        ],
         'categories' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:igniter.coupons::default.label_categories',
             'type' => 'relation',
             'comment' => 'lang:igniter.coupons::default.help_categories',
+            'trigger' => [
+                'action' => 'show',
+                'field' => 'is_limited_to_cart_item',
+                'condition' => 'checked',
+            ],
         ],
         'menus' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:igniter.coupons::default.label_menus',
             'type' => 'relation',
             'comment' => 'lang:igniter.coupons::default.help_menus',
             'nameFrom' => 'menu_name',
-        ],
-        'description' => [
-            'label' => 'lang:admin::lang.label_description',
-            'type' => 'textarea',
-        ],
-        'status' => [
-            'label' => 'lang:admin::lang.label_status',
-            'type' => 'switch',
-            'default' => 1,
+            'trigger' => [
+                'action' => 'show',
+                'field' => 'is_limited_to_cart_item',
+                'condition' => 'checked',
+            ],
         ],
         'history' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_history',
