@@ -23,6 +23,7 @@ return [
     'text_collection_only' => 'Pick-up Only',
     'text_redeemed' => 'Redeemed',
     'text_not_redeemed' => 'Not Yet Redeemed',
+    'text_coupon' => 'Coupon [%s]',
 
     'column_code' => 'Code',
     'column_discount' => 'Discount',
@@ -61,5 +62,5 @@ return [
     'help_locations' => 'Apply this coupon ONLY on orders made at the selected location(s). Leave blank to make coupon available across all locations',
     'help_categories' => 'Apply this coupon ONLY on menu items in the order that appear in this/these categories. Leave blank to make coupon available across all items',
     'help_menus' => 'Apply this coupon ONLY on these menu items in the order. Leave blank to make coupon available across all items',
-
+    'help_coupon_condition' => 'Applies coupon to cart.',
 ];
