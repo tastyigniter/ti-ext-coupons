@@ -51,6 +51,7 @@ class Coupons_model extends Model
         'recurring_from_time' => 'time',
         'recurring_to_time' => 'time',
         'order_restriction' => 'integer',
+        'apply_automatically' => 'boolean',
     ];
 
     public $relation = [
@@ -105,6 +106,11 @@ class Coupons_model extends Model
     public function scopeIsEnabled($query)
     {
         return $query->where('status', '1');
+    }
+    
+    public function scopeIsAutomatic($query)
+    {
+        return $query->where('apply_automatically', '1');
     }
 
     public function scopeWhereHasCategory($query, $categoryId)

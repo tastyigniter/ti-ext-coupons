@@ -174,6 +174,7 @@ $config['form']['tabs'] = [
             'label' => 'lang:igniter.coupons::default.label_validity',
             'type' => 'radiotoggle',
             'default' => 'forever',
+            'span' => 'left',
             'options' => [
                 'forever' => 'lang:igniter.coupons::default.text_forever',
                 'fixed' => 'lang:igniter.coupons::default.text_fixed',
@@ -181,6 +182,13 @@ $config['form']['tabs'] = [
                 'recurring' => 'lang:igniter.coupons::default.text_recurring',
             ],
         ],
+        'apply_automatically' => [
+            'label' => 'lang:igniter.coupons::default.label_apply_automatically',
+            'type' => 'switch',
+            'default' => 1,
+            'span' => 'right',
+        ],
+        
         'fixed_date' => [
             'label' => 'lang:igniter.coupons::default.label_fixed_date',
             'type' => 'datepicker',
