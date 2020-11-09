@@ -4,8 +4,8 @@ namespace Igniter\Coupons;
 
 use Admin\Models\Customers_model;
 use Admin\Models\Orders_model;
-use Igniter\Cart\Models\Cart;
 use Igniter\Coupons\Models\Coupons_history_model;
+use Igniter\Flame\Cart\Facades\Cart;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 use System\Classes\BaseExtension;
@@ -15,17 +15,13 @@ class Extension extends BaseExtension
     public function boot()
     {
         Orders_model::extend(function ($model) {
-            $model->relation['hasMany']['coupon_history'] = ['Igniter\Coupons\Models\Coupons_history_model'];
+            $model->relation['hasMany']['coupon_history'] = ['Igniter\Coupons\Models\Coupons_history_model', 'delete' => TRUE];
             $model->implement[] = 'Igniter.Coupons.Actions.RedeemsCoupon';
         });
 
-        Event::listen('admin.order.beforePaymentProcessed', function ($order) {
-            $order->redeemCoupon();
-        });
-
-        Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
+        Event::listen('admin.order.paymentProcessed', function ($order) {
             if ($couponCondition = Cart::conditions()->get('coupon'))
-                $order->logCouponHistory($couponCondition);
+                $order->redeemCoupon($couponCondition);
         });
 
         Customers_model::created(function ($customer) {
