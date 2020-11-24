@@ -188,7 +188,7 @@ $config['form']['tabs'] = [
             'default' => 1,
             'span' => 'right',
         ],
-        
+
         'fixed_date' => [
             'label' => 'lang:igniter.coupons::default.label_fixed_date',
             'type' => 'datepicker',

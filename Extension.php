@@ -6,8 +6,8 @@ use Admin\Models\Customers_model;
 use Admin\Models\Orders_model;
 use Igniter\Cart\Classes\CartManager;
 use Igniter\Cart\Models\Cart;
-use Igniter\Coupons\Models\Coupons_model;
 use Igniter\Coupons\Models\Coupons_history_model;
+use Igniter\Coupons\Models\Coupons_model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 use System\Classes\BaseExtension;
@@ -20,12 +20,12 @@ class Extension extends BaseExtension
             $model->relation['hasMany']['coupon_history'] = ['Igniter\Coupons\Models\Coupons_history_model'];
             $model->implement[] = 'Igniter.Coupons.Actions.RedeemsCoupon';
         });
-        
+
         Event::listen('cart.added', function ($order) {
             Coupons_model::isEnabled()->isAutomatic()
-            ->each(function($coupon){
+            ->each(function ($coupon) {
                 $cartManager = CartManager::instance();
-                $cartManager->applyCouponCondition($coupon->code);   
+                $cartManager->applyCouponCondition($coupon->code);
             });
         });
 

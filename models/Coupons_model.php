@@ -107,7 +107,7 @@ class Coupons_model extends Model
     {
         return $query->where('status', '1');
     }
-    
+
     public function scopeIsAutomatic($query)
     {
         return $query->where('apply_automatically', '1');
