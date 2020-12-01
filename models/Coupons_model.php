@@ -49,7 +49,7 @@ class Coupons_model extends Model
         'recurring_from_time' => 'time',
         'recurring_to_time' => 'time',
         'order_restriction' => 'integer',
-        'apply_automatically' => 'boolean',
+        'auto_apply' => 'boolean',
     ];
 
     public $relation = [
