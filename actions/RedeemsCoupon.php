@@ -2,12 +2,40 @@
 
 namespace Igniter\Coupons\Actions;
 
+use Carbon\Carbon;
 use Igniter\Coupons\Models\Coupons_history_model;
+use Igniter\Flame\Cart\CartCondition;
 use Igniter\Flame\Traits\ExtensionTrait;
+use Illuminate\Support\Facades\Event;
+use System\Actions\ModelAction;
 
-class RedeemsCoupon
+class RedeemsCoupon extends ModelAction
 {
     use ExtensionTrait;
+
+    /**
+     * Redeem coupon by order
+     * @param $couponCondition
+     * @throws \Exception
+     */
+    public function redeemCoupon($couponCondition)
+    {
+        if (!$couponCondition instanceof CartCondition) {
+            throw new \InvalidArgumentException(sprintf(
+                'Invalid argument, expected %s, got %s',
+                CartCondition::class, get_class($couponCondition)
+            ));
+        }
+
+        if (!$couponLog = $this->logCouponHistory($couponCondition))
+            return FALSE;
+
+        $couponLog->status = 1;
+        $couponLog->date_used = Carbon::now();
+        $couponLog->save();
+
+        Event::fire('admin.order.couponRedeemed', [$couponLog]);
+    }
 
     /**
      * Add cart coupon to order by order_id
@@ -20,34 +48,10 @@ class RedeemsCoupon
      */
     public function logCouponHistory($couponCondition)
     {
-        if (!$couponCondition instanceof CartCondition) {
-            throw new \InvalidArgumentException(sprintf(
-                'Invalid argument, expected %s, got %s',
-                CartCondition::class, get_class($couponCondition)
-            ));
-        }
-
-        if (!$this->exists)
+        // Make sure order model exists
+        if (!$this->model->exists)
             return FALSE;
 
-        return Coupons_history_model::createHistory($couponCondition, $this);
-    }
-
-    /**
-     * Redeem coupon by order_id
-     */
-    public function redeemCoupon()
-    {
-        $this
-            ->coupon_history()
-            ->where('status', '!=', '1')
-            ->get()
-            ->each(function (Coupons_history_model $model) {
-                $model->status = 1;
-                $model->date_used = Carbon::now();
-                $model->save();
-
-                Event::fire('admin.order.couponRedeemed', [$model]);
-            });
+        return Coupons_history_model::createHistory($couponCondition, $this->model);
     }
 }

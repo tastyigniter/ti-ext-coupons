@@ -2,7 +2,7 @@
   "code": "igniter.coupons",
   "name": "Coupons",
   "description": "Extend the checkout experience with coupons and discount codes.",
-  "version": "v1.0.0",
+  "version": "v1.0.1",
   "author": "SamPoyigi",
   "icon": {
     "class": "fa fa-percent",

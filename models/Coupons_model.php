@@ -5,7 +5,6 @@ namespace Igniter\Coupons\Models;
 use Admin\Traits\Locationable;
 use Carbon\Carbon;
 use Igniter\Flame\Auth\Models\User;
-use Igniter\Flame\Database\Traits\Purgeable;
 use Igniter\Flame\Location\Models\AbstractLocation;
 use Model;
 
@@ -15,7 +14,6 @@ use Model;
 class Coupons_model extends Model
 {
     use Locationable;
-    use Purgeable;
 
     const UPDATED_AT = null;
 
@@ -66,8 +64,6 @@ class Coupons_model extends Model
             'locations' => ['Admin\Models\Locations_model', 'name' => 'locationable'],
         ],
     ];
-
-    protected $purgeable = ['categories', 'menus'];
 
     public function getRecurringEveryOptions()
     {
@@ -131,21 +127,10 @@ class Coupons_model extends Model
     // Events
     //
 
-    protected function afterSave()
-    {
-        $this->restorePurgedValues();
-
-        if (array_key_exists('categories', $this->attributes))
-            $this->addMenuCategories((array)$this->attributes['categories']);
-
-        if (array_key_exists('menus', $this->attributes))
-            $this->addMenus((array)$this->attributes['menus']);
-    }
-
     protected function beforeDelete()
     {
-        $this->addMenuCategories([]);
-        $this->addMenus([]);
+        $this->categories()->detach();
+        $this->menus()->detach();
     }
 
     /**

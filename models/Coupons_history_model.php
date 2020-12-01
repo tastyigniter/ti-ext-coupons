@@ -65,7 +65,6 @@ class Coupons_history_model extends Model
     }
 
     /**
-     * @param \Admin\Models\Orders_model $order
      * @param \Igniter\Flame\Cart\CartCondition $couponCondition
      * @param \Admin\Models\Orders_model $order
      * @return \Admin\Models\Coupons_history_model|bool
