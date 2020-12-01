@@ -182,8 +182,8 @@ $config['form']['tabs'] = [
                 'recurring' => 'lang:igniter.coupons::default.text_recurring',
             ],
         ],
-        'apply_automatically' => [
-            'label' => 'lang:igniter.coupons::default.label_apply_automatically',
+        'auto_apply' => [
+            'label' => 'lang:igniter.coupons::default.label_auto_apply',
             'type' => 'switch',
             'default' => 1,
             'span' => 'right',

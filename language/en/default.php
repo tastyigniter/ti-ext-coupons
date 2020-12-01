@@ -54,7 +54,7 @@ return [
     'label_recurring_every' => 'Recurring every',
     'label_recurring_from_time' => 'Recurring from time',
     'label_recurring_to_time' => 'Recurring to time',
-    'label_apply_automatically' => 'Apply automatically',
+    'label_auto_apply' => 'Apply automatically',
 
     'help_type' => 'Whether to subtract a fixed amount or percentage from order total.',
     'help_redemption' => 'The total number of times this coupon can be redeemed. Set to 0 to allow any number of redemptions.',
