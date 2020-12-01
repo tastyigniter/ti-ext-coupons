@@ -21,7 +21,7 @@ class Extension extends BaseExtension
         });
 
         Event::listen('cart.added', function ($order) {
-            Coupons_model::isEnabled()->isAutomatic()
+            Coupons_model::isEnabled()->isAutoApplicable()
             ->each(function ($coupon) {
                 $cartManager = CartManager::instance();
                 $cartManager->applyCouponCondition($coupon->code);

@@ -104,9 +104,9 @@ class Coupons_model extends Model
         return $query->where('status', '1');
     }
 
-    public function scopeIsAutomatic($query)
+    public function scopeIsAutoApplicable($query)
     {
-        return $query->where('apply_automatically', '1');
+        return $query->where('auto_apply', '1');
     }
 
     public function scopeWhereHasCategory($query, $categoryId)
