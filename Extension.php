@@ -4,8 +4,8 @@ namespace Igniter\Coupons;
 
 use Admin\Models\Customers_model;
 use Admin\Models\Orders_model;
+use Cart;
 use Igniter\Cart\Classes\CartManager;
-use Igniter\Cart\Models\Cart;
 use Igniter\Coupons\Models\Coupons_history_model;
 use Igniter\Coupons\Models\Coupons_model;
 use Illuminate\Database\Eloquent\Relations\Relation;
