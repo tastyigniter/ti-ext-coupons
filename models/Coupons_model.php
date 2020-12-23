@@ -236,7 +236,7 @@ class Coupons_model extends Model
 
     public function customerHasMaxRedemption(User $user)
     {
-        return $this->customer_redemptions AND $this->customer_redemptions <= $this->countCustomerRedemptions($user->getKey());
+        return $this->customer_redemptions AND $this->customer_redemptions < $this->countCustomerRedemptions($user->getKey());
     }
 
     public function countRedemptions()
