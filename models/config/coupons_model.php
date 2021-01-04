@@ -324,7 +324,6 @@ $config['form']['tabs'] = [
             'type' => 'relation',
             'valueFrom' => 'locations',
             'nameFrom' => 'location_name',
-            'locationAware' => 'hide',
             'comment' => 'lang:igniter.coupons::default.help_locations',
         ],
         'is_limited_to_cart_item' => [
