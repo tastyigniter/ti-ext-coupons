@@ -29,6 +29,7 @@ class Coupon extends FormRequest
             ['order_restriction', 'igniter.coupons::default.label_order_restriction', 'integer'],
             ['status', 'admin::lang.label_status', 'boolean'],
             ['locations.*', 'admin::lang.column_location', 'integer'],
+            ['locations', 'admin::lang.column_location', 'required'],
         ];
     }
 
