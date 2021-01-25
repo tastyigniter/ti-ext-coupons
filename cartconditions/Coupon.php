@@ -99,14 +99,14 @@ class Coupon extends CartCondition
         if (stripos($value, '%') === false AND optional($this->getModel())->is_limited_to_cart_item) {
 
             $applicableItems = self::$applicableItems;
-            $applicableItemsTotal = Cart::content()->sum(function($cartItem) use ($applicableItems) {
+            $applicableItemsTotal = Cart::content()->sum(function ($cartItem) use ($applicableItems) {
                 if (!$applicableItems->contains($cartItem->id))
                     return 0;
 
                 return $cartItem->subtotalWithoutConditions();
             });
 
-            $value = (($this->target->subtotalWithoutConditions()/$this->target->qty)/$applicableItemsTotal) * (float)$value;
+            $value = (($this->target->subtotalWithoutConditions() / $this->target->qty) / $applicableItemsTotal) * (float)$value;
         }
 
         $actions = [
