@@ -5,6 +5,7 @@ namespace Igniter\Coupons\CartConditions;
 use Admin\Models\Menus_model;
 use ApplicationException;
 use Auth;
+use Cart;
 use Exception;
 use Igniter\Coupons\Models\Coupons_model;
 use Igniter\Flame\Cart\CartCondition;
@@ -92,12 +93,18 @@ class Coupon extends CartCondition
 
     public function getActions()
     {
-        return [
-            [
-                'value' => optional($this->getModel())->discountWithOperand(),
-                'calculateValue' => [$this, 'calculateValue'],
-            ],
+        $value = optional($this->getModel())->discountWithOperand();
+
+        // if we are item limited and not a % we need to apportion
+        if (stripos($value, '%') === false AND optional($this->getModel())->is_limited_to_cart_item) {
+            $value = $this->calculateApportionment($value);
+        }
+
+        $actions = [
+            'value' => $value,
         ];
+
+        return [$actions];
     }
 
     public function getRules()
@@ -116,6 +123,23 @@ class Coupon extends CartCondition
         ))->now();
 
         $this->removeMetaData('code');
+    }
+
+    protected function calculateApportionment($value)
+    {
+        $applicableItems = self::$applicableItems;
+        if ($applicableItems AND count($applicableItems)) {
+            $applicableItemsTotal = Cart::content()->sum(function ($cartItem) use ($applicableItems) {
+                if (!$applicableItems->contains($cartItem->id))
+                    return 0;
+
+                return $cartItem->subtotalWithoutConditions();
+            });
+
+            $value = ($this->target->subtotalWithoutConditions() / $applicableItemsTotal) * (float)$value;
+        }
+
+        return $value;
     }
 
     protected function validateCoupon($couponModel)
