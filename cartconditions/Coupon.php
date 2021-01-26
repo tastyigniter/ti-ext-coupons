@@ -106,7 +106,7 @@ class Coupon extends CartCondition
                 return $cartItem->subtotalWithoutConditions();
             });
 
-            $value = (($this->target->subtotalWithoutConditions() / $this->target->qty) / $applicableItemsTotal) * (float)$value;
+            $value = ($this->target->subtotalWithoutConditions() / $applicableItemsTotal) * (float)$value;
         }
 
         $actions = [
