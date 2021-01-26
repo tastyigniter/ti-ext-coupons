@@ -97,21 +97,11 @@ class Coupon extends CartCondition
 
         // if we are item limited and not a % we need to apportion
         if (stripos($value, '%') === false AND optional($this->getModel())->is_limited_to_cart_item) {
-
-            $applicableItems = self::$applicableItems;
-            $applicableItemsTotal = Cart::content()->sum(function ($cartItem) use ($applicableItems) {
-                if (!$applicableItems->contains($cartItem->id))
-                    return 0;
-
-                return $cartItem->subtotalWithoutConditions();
-            });
-
-            $value = ($this->target->subtotalWithoutConditions() / $applicableItemsTotal) * (float)$value;
+            $value = $this->calculateApportionment($value);
         }
 
         $actions = [
             'value' => $value,
-            'calculateValue' => [$this, 'calculateValue'],
         ];
 
         return [$actions];
@@ -133,6 +123,23 @@ class Coupon extends CartCondition
         ))->now();
 
         $this->removeMetaData('code');
+    }
+
+    protected function calculateApportionment($value)
+    {
+        $applicableItems = self::$applicableItems;
+        if ($applicableItems AND count($applicableItems)) {
+            $applicableItemsTotal = Cart::content()->sum(function ($cartItem) use ($applicableItems) {
+                if (!$applicableItems->contains($cartItem->id))
+                    return 0;
+
+                return $cartItem->subtotalWithoutConditions();
+            });
+
+            $value = ($this->target->subtotalWithoutConditions() / $applicableItemsTotal) * (float)$value;
+        }
+
+        return $value;
     }
 
     protected function validateCoupon($couponModel)
