@@ -10,7 +10,7 @@ use Exception;
 use Igniter\Coupons\Models\Coupons_model;
 use Igniter\Flame\Cart\CartCondition;
 use Igniter\Flame\Cart\Helpers\ActsAsItemable;
-use Location;
+use Igniter\Local\Classes\Location;
 
 class Coupon extends CartCondition
 {
