@@ -3,7 +3,6 @@
 namespace Igniter\Coupons\Models;
 
 use Admin\Traits\Locationable;
-use Carbon\Carbon;
 use Igniter\Flame\Auth\Models\User;
 use Igniter\Flame\Location\Models\AbstractLocation;
 use Model;
@@ -185,7 +184,9 @@ class Coupons_model extends Model
     /**
      * Check if a coupone is expired
      *
-     * @param \Carbon\Carbon $orderDateTime orderDateTime
+     * @param \
+     
+     \Carbon $orderDateTime orderDateTime
      *
      * @return bool
      */
