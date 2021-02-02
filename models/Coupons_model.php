@@ -184,9 +184,7 @@ class Coupons_model extends Model
     /**
      * Check if a coupone is expired
      *
-     * @param \
-     
-     \Carbon $orderDateTime orderDateTime
+     * @param Carbon\Carbon $orderDateTime orderDateTime
      *
      * @return bool
      */
