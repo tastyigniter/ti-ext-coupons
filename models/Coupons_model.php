@@ -3,6 +3,7 @@
 namespace Igniter\Coupons\Models;
 
 use Admin\Traits\Locationable;
+use Carbon\Carbon;
 use Igniter\Flame\Auth\Models\User;
 use Igniter\Flame\Location\Models\AbstractLocation;
 use Model;
@@ -188,8 +189,11 @@ class Coupons_model extends Model
      *
      * @return bool
      */
-    public function isExpired($orderDateTime)
+    public function isExpired($orderDateTime = null)
     {
+        if (is_null($orderDateTime))
+            $orderDateTime = Carbon::now();
+
         switch ($this->validity) {
             case 'forever':
                 return FALSE;
