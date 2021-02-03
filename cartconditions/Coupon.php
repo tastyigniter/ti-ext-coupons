@@ -119,10 +119,12 @@ class Coupon extends CartCondition
     public function whenInvalid()
     {
         $minimumOrder = $this->getModel()->minimumOrderTotal();
-        flash()->warning(sprintf(
-            lang('igniter.cart::default.alert_coupon_not_applied'),
-            currency_format($minimumOrder)
-        ))->now();
+
+        if (!$this->getModel()->auto_apply)
+            flash()->warning(sprintf(
+                lang('igniter.cart::default.alert_coupon_not_applied'),
+                currency_format($minimumOrder)
+            ))->now();
 
         $this->removeMetaData('code');
     }
