@@ -79,7 +79,9 @@ class Coupon extends CartCondition
             $this->getApplicableItems($couponModel);
         }
         catch (Exception $ex) {
-            flash()->alert($ex->getMessage())->now();
+            if (!$couponModel OR !$couponModel->auto_apply)
+                flash()->alert($ex->getMessage())->now();
+
             $this->removeMetaData('code');
         }
     }
