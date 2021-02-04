@@ -79,7 +79,9 @@ class Coupon extends CartCondition
             $this->getApplicableItems($couponModel);
         }
         catch (Exception $ex) {
-            flash()->alert($ex->getMessage())->now();
+            if (!optional($couponModel)->auto_apply)
+                flash()->alert($ex->getMessage())->now();
+
             $this->removeMetaData('code');
         }
     }
@@ -116,11 +118,14 @@ class Coupon extends CartCondition
 
     public function whenInvalid()
     {
-        $minimumOrder = $this->getModel()->minimumOrderTotal();
-        flash()->warning(sprintf(
-            lang('igniter.cart::default.alert_coupon_not_applied'),
-            currency_format($minimumOrder)
-        ))->now();
+        if (!$this->getModel()->auto_apply) {
+            $minimumOrder = $this->getModel()->minimumOrderTotal();
+
+            flash()->warning(sprintf(
+                lang('igniter.cart::default.alert_coupon_not_applied'),
+                currency_format($minimumOrder)
+            ))->now();
+        }
 
         $this->removeMetaData('code');
     }
