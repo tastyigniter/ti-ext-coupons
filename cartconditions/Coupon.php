@@ -147,8 +147,9 @@ class Coupon extends CartCondition
         $user = Auth::getUser();
         $locationId = Location::getId();
         $orderType = Location::orderType();
+        $orderDateTime = Location::orderDateTime();
 
-        if ($couponModel->isExpired())
+        if ($couponModel->isExpired($orderDateTime))
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_expired'));
 
         if ($couponModel->hasRestriction($orderType))

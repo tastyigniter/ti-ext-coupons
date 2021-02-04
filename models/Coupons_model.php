@@ -182,9 +182,17 @@ class Coupons_model extends Model
         return $this->min_total ?: 0;
     }
 
-    public function isExpired()
+    /**
+     * Check if a coupone is expired
+     *
+     * @param Carbon\Carbon $orderDateTime orderDateTime
+     *
+     * @return bool
+     */
+    public function isExpired($orderDateTime = null)
     {
-        $now = Carbon::now();
+        if (is_null($orderDateTime))
+            $orderDateTime = Carbon::now();
 
         switch ($this->validity) {
             case 'forever':
@@ -193,17 +201,17 @@ class Coupons_model extends Model
                 $start = $this->fixed_date->copy()->setTimeFromTimeString($this->fixed_from_time);
                 $end = $this->fixed_date->copy()->setTimeFromTimeString($this->fixed_to_time);
 
-                return !$now->between($start, $end);
+                return !$orderDateTime->between($start, $end);
             case 'period':
-                return !$now->between($this->period_start_date, $this->period_end_date);
+                return !$orderDateTime->between($this->period_start_date, $this->period_end_date);
             case 'recurring':
-                if (!in_array($now->format('w'), $this->recurring_every))
+                if (!in_array($orderDateTime->format('w'), $this->recurring_every))
                     return TRUE;
 
-                $start = $now->copy()->setTimeFromTimeString($this->recurring_from_time);
-                $end = $now->copy()->setTimeFromTimeString($this->recurring_to_time);
+                $start = $orderDateTime->copy()->setTimeFromTimeString($this->recurring_from_time);
+                $end = $orderDateTime->copy()->setTimeFromTimeString($this->recurring_to_time);
 
-                return !$now->between($start, $end);
+                return !$orderDateTime->between($start, $end);
         }
 
         return FALSE;
