@@ -12,6 +12,10 @@ class Coupons extends \Admin\Classes\AdminController
         'Admin\Actions\LocationAwareController',
     ];
 
+    public $locationConfig = [
+        'addAbsenceConstraint' => true,
+    ];
+
     public $listConfig = [
         'list' => [
             'model' => 'Igniter\Coupons\Models\Coupons_model',
