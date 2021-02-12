@@ -100,6 +100,7 @@ class Coupon extends CartCondition
         } catch (Exception $ex) {
 
             $this->removeMetaData('code');
+
             return FALSE;
         }
 
