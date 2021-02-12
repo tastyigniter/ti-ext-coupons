@@ -10,7 +10,6 @@ use Igniter\Coupons\Models\Coupons_history_model;
 use Igniter\Coupons\Models\Coupons_model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
-use Location;
 use System\Classes\BaseExtension;
 
 class Extension extends BaseExtension
@@ -26,10 +25,6 @@ class Extension extends BaseExtension
 
             Coupons_model::isEnabled()->isAutoApplicable()
                 ->each(function ($coupon) {
-                    $orderDateTime = Location::orderDateTime();
-                    if($coupon->isExpired($orderDateTime))
-                        return;
-
                     $cartManager = CartManager::instance();
                     $cartManager->applyCouponCondition($coupon->code);
                 });
