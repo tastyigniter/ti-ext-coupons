@@ -166,5 +166,6 @@ class CouponTest extends TestCase
                     ],
                 ]),
             ]
+        ]
     }
 }
