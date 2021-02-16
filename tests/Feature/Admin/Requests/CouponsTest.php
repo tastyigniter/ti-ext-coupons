@@ -1,8 +1,8 @@
 <?php
 
-namespace Igniter\Coupons\Requests;
+namespace Tests\Feature\Admin\Requests;
 
-use tastyigniter/ti-ext-coupons\Requests\coupon;
+use Igniter\Coupons\Requests;
 use Faker\Factory;
 use Tests\TestCase;
 
