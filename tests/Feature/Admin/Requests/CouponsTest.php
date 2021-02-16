@@ -165,7 +165,7 @@ class CouponTest extends TestCase
 						'fixed_date' => $faker->date(),
                     ],
                 ]),
-            ]
-        ]
+            ],
+        ];
     }
 }
