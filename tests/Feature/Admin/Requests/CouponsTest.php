@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\Requests;
 
-use Igniter\Coupons\Requests;
+use Requests\Coupon;
 use Faker\Factory;
 use Tests\TestCase;
 
