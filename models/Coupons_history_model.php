@@ -47,6 +47,10 @@ class Coupons_history_model extends Model
 
     public $timestamps = TRUE;
 
+    public static $allowedSortingColumns = [
+        'date_used desc', 'date_used asc',
+    ];
+
     public function getCustomerNameAttribute($value)
     {
         return ($this->customer AND $this->customer->exists) ? $this->customer->full_name : $value;
@@ -55,6 +59,44 @@ class Coupons_history_model extends Model
     public function scopeIsEnabled($query)
     {
         return $query->where('status', '1');
+    }
+
+    public function scopeListFrontEnd($query, $options = [])
+    {
+        extract(array_merge([
+            'page' => 1,
+            'pageLimit' => 20,
+            'customer' => null,
+            'order_id' => null,
+            'sort' => 'date_used desc',
+        ], $options));
+
+        $query->where('status', '>=', 1);
+
+        if (strlen($customer_id)) {
+            $query->where('customer_id', $customer_id);
+        }
+
+        if (strlen($order_id)) {
+            $query->where('order_id', $order_id);
+        }
+
+        if (!is_array($sort)) {
+            $sort = [$sort];
+        }
+
+        foreach ($sort as $_sort) {
+            if (in_array($_sort, self::$allowedSortingColumns)) {
+                $parts = explode(' ', $_sort);
+                if (count($parts) < 2) {
+                    array_push($parts, 'desc');
+                }
+                [$sortField, $sortDirection] = $parts;
+                $query->orderBy($sortField, $sortDirection);
+            }
+        }
+
+        return $query->paginate($pageLimit, $page);
     }
 
     public function touchStatus()
