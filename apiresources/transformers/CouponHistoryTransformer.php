@@ -2,8 +2,8 @@
 
 namespace Igniter\Coupons\ApiResources\Transformers;
 
-use League\Fractal\TransformerAbstract;
 use Igniter\Coupons\Models\Coupons_history_model;
+use League\Fractal\TransformerAbstract;
 
 class CouponHistoryTransformer extends TransformerAbstract
 {
