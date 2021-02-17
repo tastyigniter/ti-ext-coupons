@@ -49,6 +49,28 @@ class Extension extends BaseExtension
         ]);
     }
 
+    public function registerApiResources()
+    {
+        return [
+            'coupons' => [
+                'controller' => \Igniter\Coupons\ApiResources\Coupons::class,
+                'name' => 'Coupons',
+                'description' => 'An API resource for coupons',
+                'actions' => [
+                    'index:all', 'show:all', 'store:admin', 'update:admin', 'destroy:admin',
+                ],
+            ],
+            'couponhistory' => [
+                'controller' => \Igniter\Coupons\ApiResources\CouponHistory::class,
+                'name' => 'CouponHistory',
+                'description' => 'An API resource for coupon history',
+                'actions' => [
+                    'index:users',
+                ],
+            ],
+        ];
+    }
+
     public function registerCartConditions()
     {
         return [
