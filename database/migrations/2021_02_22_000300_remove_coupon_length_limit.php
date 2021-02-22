@@ -10,6 +10,8 @@ class ExtendCouponCodeLength extends Migration
 {
     public function up()
     {
-        $table->string('code')->unique('code')->change();
+        Schema::table('igniter_coupons', function (Blueprint $table) {
+            $table->string('code')->unique()->change();
+        });
     }
 }
