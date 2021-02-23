@@ -2,10 +2,10 @@
 
 namespace Igniter\Coupons\ApiResources\Transformers;
 
-use League\Fractal\TransformerAbstract;
 use Igniter\Api\ApiResources\Transformers\CategoryTransformer;
 use Igniter\Api\ApiResources\Transformers\MenuTransformer;
 use Igniter\Coupons\Models\Coupons_model;
+use League\Fractal\TransformerAbstract;
 
 class CouponsTransformer extends TransformerAbstract
 {
