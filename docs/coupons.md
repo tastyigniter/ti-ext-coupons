@@ -18,20 +18,59 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `redemptions`           | `integer`  | *Required**. The total number of times this coupon can be redeemed       |
 | `customer_redemptions`           | `integer`  | *Required**. The number of times a specific customer can redeem this coupon      |
 | `description`           | `string`  | A description of the coupon         |
+| `validity`           | `string`  | One of: `forever`, `fixed`, `period` or `recurring`        |
+| `fixed_date`           | `date`  | Date coupon is valid on. Required when validity is `fixed` |
+| `fixed_from_time`           | `time`  | Time coupon is valid from. Required when validity is `fixed` |
+| `fixed_to_time`           | `time`  | Time coupon is valid to. Required when validity is `fixed` |
+| `period_start_date`           | `date`  | Date coupon is valid from. Required when validity is `period` |
+| `period_end_date`           | `date`  | Date coupon is valid to. Required when validity is `period` |
+| `recurring_every`           | `array`  | Array of days of the week the coupon is valid from (Sunday is 0, Saturday is 6). Required when validity is `recurring` |
+| `recurring_from_time`           | `time`  | Time coupon is valid from. Required when validity is `recurring ` |
+| `recurring_to_time`           | `time`  | Time coupon is valid to. Required when validity is `recurring` |
+| `order_restriction`           | `integer`  | 0 for any delivery type, 1 for delivery only, 2 for pick-up only |
 | `status`           | `boolean`  | Has the value `true` if the coupon is enabled or the value `false` if the coupon is disabled.         |
+| `locations`           | `array`  | An array of location ids this coupon is valid for         |
+| `auto_apply`           | `boolean`  | Has the value `true` if the coupon is to be auto applied or the value `false` if not.         |
+| `is_limited_to_cart_item`           | `boolean`  | Has the value `true` if the coupon is limited to specific cart items or the value `false` if not.         |
 
 #### Coupon object example
 
 ```json
 {
-  "name": "Appetizer",
-  "permalink_slug": "appetizer",
-  "parent_id": null,
-  "locations": [],
-  "priority": null,
-  "status": true,
-  "description": "Sed consequat, sapien in scelerisque egestas",
-  "thumb": null
+  "type": "coupons",
+  "id": "1",
+  "attributes": {
+    "name": "Half Sundays",
+    "code": "2222",
+    "type": "F",
+    "discount": 100,
+    "min_total": 500,
+    "redemptions": 0,
+    "customer_redemptions": 0,
+    "description": null,
+    "status": true,
+    "date_added": "-0001-11-30 00:00:00",
+    "validity": "forever",
+    "fixed_date": null,
+    "fixed_from_time": null,
+    "fixed_to_time": null,
+    "period_start_date": null,
+    "period_end_date": null,
+    "recurring_every": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+    ],
+    "recurring_from_time": null,
+    "recurring_to_time": null,
+    "order_restriction": 0,
+    "is_limited_to_cart_item": 0,
+    "auto_apply": false
+  }
 }
 ```
 
@@ -51,7 +90,7 @@ GET /api/coupons
 | -------------------- | --------- | ------------------------- |
 | `page`           | `integer`  | The page number.         |
 | `pageLimit`           | `integer`  | The number of items per page.         |
-| `include`           | `string`  | What relations to include in the response. Options are `media`, `menus`, `locations`. To include multiple seperate by comma (e.g. ?include=media,menus) |
+| `include`           | `string`  | What relations to include in the response. Options are `menus`, `categories`. To include multiple seperate by comma (e.g. ?include=categories,menus) |
 
 #### Response
 
@@ -62,26 +101,41 @@ Status: 200 OK
 ```json
 {
   "data": [
-    {
-      "type": "coupons",
-      "id": "1",
-      "attributes": {
-        "name": "Appetizer",
-        "permalink_slug": "appetizer",
-        "parent_id": null,
-        "priority": null,
-        "status": true,
-        "description": "Sed consequat, sapien in scelerisque egestas",
-        "thumb": null,
-        "media": [...],
-        "menus": [...],
-        "locations": [...]
+      {
+        "type": "coupons",
+        "id": "1",
+        "attributes": {
+          "name": "Half Sundays",
+          "code": "2222",
+          "type": "F",
+          "discount": 100,
+          "min_total": 500,
+          "redemptions": 0,
+          "customer_redemptions": 0,
+          "description": null,
+          "status": true,
+          "date_added": "-0001-11-30 00:00:00",
+          "validity": "forever",
+          "fixed_date": null,
+          "fixed_from_time": null,
+          "fixed_to_time": null,
+          "period_start_date": null,
+          "period_end_date": null,
+          "recurring_every": [
+            6
+          ],
+          "recurring_from_time": null,
+          "recurring_to_time": null,
+          "order_restriction": 0,
+          "is_limited_to_cart_item": 0,
+          "auto_apply": false
+	    }
       },
       "relationships": {
         "menus": {
           "data": [...]
         },
-        "locations": {
+        "categories": {
           "data": [...]
         }
       }
@@ -122,19 +176,38 @@ POST /api/coupons
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
 | `name`           | `string`  | **Required**. The coupon's name         |
-| `permalink_slug`           | `string`  | The coupon's permalink slug.         |
-| `parent_id`           | `integer`  | The Unique identifier of the parent coupon, if any.         |
-| `locations`           | `array`  | The coupon's locations, if any.         |
-| `priority`           | `integer`  | The coupon's priority.         |
+| `code`           | `string`  | **Required**. The coupon's code.         |
+| `type`           | `character`  | **Required**. F for fixed value, P for percentage         |
+| `discount`           | `float`  | **Required**. The discount value or percentage         |
+| `min_total`           | `float`  | The minimum basket total for the coupon to be valid        |
+| `redemptions`           | `integer`  | *Required**. The total number of times this coupon can be redeemed       |
+| `customer_redemptions`           | `integer`  | *Required**. The number of times a specific customer can redeem this coupon      |
+| `description`           | `string`  | A description of the coupon         |
+| `validity`           | `string`  | One of: `forever`, `fixed`, `period` or `recurring`        |
+| `fixed_date`           | `date`  | Date coupon is valid on. Required when validity is `fixed` |
+| `fixed_from_time`           | `time`  | Time coupon is valid from. Required when validity is `fixed` |
+| `fixed_to_time`           | `time`  | Time coupon is valid to. Required when validity is `fixed` |
+| `period_start_date`           | `date`  | Date coupon is valid from. Required when validity is `period` |
+| `period_end_date`           | `date`  | Date coupon is valid to. Required when validity is `period` |
+| `recurring_every`           | `array`  | Array of days of the week the coupon is valid from (Sunday is 0, Saturday is 6). Required when validity is `recurring` |
+| `recurring_from_time`           | `time`  | Time coupon is valid from. Required when validity is `recurring ` |
+| `recurring_to_time`           | `time`  | Time coupon is valid to. Required when validity is `recurring` |
+| `order_restriction`           | `integer`  | 0 for any delivery type, 1 for delivery only, 2 for pick-up only |
 | `status`           | `boolean`  | Has the value `true` if the coupon is enabled or the value `false` if the coupon is disabled.         |
-| `description`           | `string`  | An arbitrary string attached to the coupon.         |
-| `thumb`           | `string`  | The URL where the coupon's thumbnail can be accessed.         |
+| `locations`           | `array`  | An array of location ids this coupon is valid for         |
+| `auto_apply`           | `boolean`  | Has the value `true` if the coupon is to be auto applied or the value `false` if not.         |
+| `is_limited_to_cart_item`           | `boolean`  | Has the value `true` if the coupon is limited to specific cart items or the value `false` if not.         |
 
 #### Payload example
 
 ```json
 {
-  "name": "Appetizer",
+  "name": "New coupon",
+  "code": "test",
+  "type": "F",
+  "discount": 10,
+  "redemptions": 0,
+  "customer_redemptions": 0,
   "status": true
 }
 ```
@@ -149,16 +222,34 @@ Status: 201 Created
 {
   "data": [
     {
-      "type": "coupons",
-      "id": "1",
-      "attributes": {
-        "name": "Appetizer",
-        "permalink_slug": "appetizer",
-        "parent_id": null,
-        "priority": null,
-        "status": true,
-        "description": "Sed consequat, sapien in scelerisque egestas",
-        "thumb": null,
+        "type": "coupons",
+        "id": "2",
+        "attributes": {
+          "name": "New coupon",
+          "code": "test",
+          "type": "F",
+          "discount": 10,
+          "min_total": 0,
+          "redemptions": 0,
+          "customer_redemptions": 0,
+          "description": null,
+          "status": true,
+          "date_added": "-0001-11-30 00:00:00",
+          "validity": "forever",
+          "fixed_date": null,
+          "fixed_from_time": null,
+          "fixed_to_time": null,
+          "period_start_date": null,
+          "period_end_date": null,
+          "recurring_every": [
+            6
+          ],
+          "recurring_from_time": null,
+          "recurring_to_time": null,
+          "order_restriction": 0,
+          "is_limited_to_cart_item": 0,
+          "auto_apply": false
+        }
       }
     }
   ]
@@ -179,7 +270,7 @@ GET /api/coupons/:coupon_id
 
 | Key                  | Type      | Description          |
 | -------------------- | --------- | ------------------------- |
-| `include`           | `string`  | What relations to include in the response. Options are `media`, `menus`, `locations`. To include multiple seperate by comma (e.g. ?include=media,menus) |
+| `include`           | `string`  | What relations to include in the response. Options are `menus`, `categories`. To include multiple seperate by comma (e.g. ?include=categories,menus) |
 
 #### Response
 
@@ -190,26 +281,41 @@ Status: 200 OK
 ```json
 {
   "data": [
-    {
-      "type": "coupons",
-      "id": "1",
-      "attributes": {
-        "name": "Appetizer",
-        "permalink_slug": "appetizer",
-        "parent_id": null,
-        "priority": null,
-        "status": true,
-        "description": "Sed consequat, sapien in scelerisque egestas",
-        "thumb": null,
-        "media": [...],
-        "menus": [...],
-        "locations": [...]
+      {
+        "type": "coupons",
+        "id": "1",
+        "attributes": {
+          "name": "Half Sundays",
+          "code": "2222",
+          "type": "F",
+          "discount": 100,
+          "min_total": 500,
+          "redemptions": 0,
+          "customer_redemptions": 0,
+          "description": null,
+          "status": true,
+          "date_added": "-0001-11-30 00:00:00",
+          "validity": "forever",
+          "fixed_date": null,
+          "fixed_from_time": null,
+          "fixed_to_time": null,
+          "period_start_date": null,
+          "period_end_date": null,
+          "recurring_every": [
+            6
+          ],
+          "recurring_from_time": null,
+          "recurring_to_time": null,
+          "order_restriction": 0,
+          "is_limited_to_cart_item": 0,
+          "auto_apply": false
+	    }
       },
       "relationships": {
         "menus": {
           "data": [...]
         },
-        "locations": {
+        "categories": {
           "data": [...]
         }
       }
@@ -235,21 +341,34 @@ PATCH /api/coupons/:coupon_id
 
 | Key                  | Type      | Description                                                  |
 | -------------------- | --------- | ------------------------------------------------------------ |
-| `name`           | `string`  | **Required**. The coupon's name         |
-| `permalink_slug`           | `string`  | The coupon's permalink slug.         |
-| `parent_id`           | `integer`  | The Unique identifier of the parent coupon, if any.         |
-| `locations`           | `array`  | The coupon's locations, if any.         |
-| `priority`           | `integer`  | The coupon's priority.         |
+| `name`           | `string`  |     The coupon's name         |
+| `code`           | `string`  |     The coupon's code.         |
+| `type`           | `character`  |     F for fixed value, P for percentage         |
+| `discount`           | `float`  |     The discount value or percentage         |
+| `min_total`           | `float`  | The minimum basket total for the coupon to be valid        |
+| `redemptions`           | `integer`  | *Required**. The total number of times this coupon can be redeemed       |
+| `customer_redemptions`           | `integer`  | *Required**. The number of times a specific customer can redeem this coupon      |
+| `description`           | `string`  | A description of the coupon         |
+| `validity`           | `string`  | One of: `forever`, `fixed`, `period` or `recurring`        |
+| `fixed_date`           | `date`  | Date coupon is valid on. Required when validity is `fixed` |
+| `fixed_from_time`           | `time`  | Time coupon is valid from. Required when validity is `fixed` |
+| `fixed_to_time`           | `time`  | Time coupon is valid to. Required when validity is `fixed` |
+| `period_start_date`           | `date`  | Date coupon is valid from. Required when validity is `period` |
+| `period_end_date`           | `date`  | Date coupon is valid to. Required when validity is `period` |
+| `recurring_every`           | `array`  | Array of days of the week the coupon is valid from (Sunday is 0, Saturday is 6). Required when validity is `recurring` |
+| `recurring_from_time`           | `time`  | Time coupon is valid from. Required when validity is `recurring ` |
+| `recurring_to_time`           | `time`  | Time coupon is valid to. Required when validity is `recurring` |
+| `order_restriction`           | `integer`  | 0 for any delivery type, 1 for delivery only, 2 for pick-up only |
 | `status`           | `boolean`  | Has the value `true` if the coupon is enabled or the value `false` if the coupon is disabled.         |
-| `description`           | `string`  | An arbitrary string attached to the coupon.         |
-| `thumb`           | `string`  | The URL where the coupon's thumbnail can be accessed.         |
+| `locations`           | `array`  | An array of location ids this coupon is valid for         |
+| `auto_apply`           | `boolean`  | Has the value `true` if the coupon is to be auto applied or the value `false` if not.         |
+| `is_limited_to_cart_item`           | `boolean`  | Has the value `true` if the coupon is limited to specific cart items or the value `false` if not.         |
 
 #### Payload example
 
 ```json
 {
-  "description": "Vivamus interdum erat ac aliquam porttitor. ",
-  "parent_id": 2
+  "description": "Vivamus interdum erat ac aliquam porttitor.",
 }
 ```
 
@@ -262,17 +381,35 @@ Status: 200 OK
 ```json
 {
   "data": [
-    {
-      "type": "coupons",
-      "id": "1",
-      "attributes": {
-        "name": "Appetizer",
-        "permalink_slug": "appetizer",
-        "parent_id": null,
-        "priority": null,
-        "status": true,
-        "description": "Sed consequat, sapien in scelerisque egestas",
-        "thumb": null,
+      {
+        "type": "coupons",
+        "id": "1",
+        "attributes": {
+          "name": "Half Sundays",
+          "code": "2222",
+          "type": "F",
+          "discount": 100,
+          "min_total": 500,
+          "redemptions": 0,
+          "customer_redemptions": 0,
+          "description": "Vivamus interdum erat ac aliquam porttitor.",
+          "status": true,
+          "date_added": "-0001-11-30 00:00:00",
+          "validity": "forever",
+          "fixed_date": null,
+          "fixed_from_time": null,
+          "fixed_to_time": null,
+          "period_start_date": null,
+          "period_end_date": null,
+          "recurring_every": [
+            6
+          ],
+          "recurring_from_time": null,
+          "recurring_to_time": null,
+          "order_restriction": 0,
+          "is_limited_to_cart_item": 0,
+          "auto_apply": false
+	    }
       }
     }
   ]
