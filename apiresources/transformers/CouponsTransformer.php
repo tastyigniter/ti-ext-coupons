@@ -13,12 +13,12 @@ class CouponsTransformer extends TransformerAbstract
         'menus',
         'categories',
     ];
-    
+
     public function transform(Coupons_model $coupon)
     {
         return $coupon->toArray();
     }
-    
+
     public function includeCategories(Coupons_model $coupon)
     {
         return $this->collection(
