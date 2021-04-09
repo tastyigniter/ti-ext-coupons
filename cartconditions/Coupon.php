@@ -79,7 +79,6 @@ class Coupon extends CartCondition
             $this->getApplicableItems($couponModel);
         }
         catch (Exception $ex) {
-
             if (!optional($couponModel)->auto_apply)
                 flash()->alert($ex->getMessage())->now();
 
@@ -92,18 +91,6 @@ class Coupon extends CartCondition
         $couponModel = $this->getModel();
         if (!$couponModel OR $couponModel->is_limited_to_cart_item)
             return FALSE;
-
-        try {
-
-            $this->validateCoupon($couponModel);
-
-        } catch (Exception $ex) {
-
-            $this->removeMetaData('code');
-
-            return FALSE;
-        }
-
     }
 
     public function getActions()
@@ -111,7 +98,7 @@ class Coupon extends CartCondition
         $value = optional($this->getModel())->discountWithOperand();
 
         // if we are item limited and not a % we need to apportion
-        if (stripos($value, '%') === false AND optional($this->getModel())->is_limited_to_cart_item) {
+        if (stripos($value, '%') === FALSE AND optional($this->getModel())->is_limited_to_cart_item) {
             $value = $this->calculateApportionment($value);
         }
 
