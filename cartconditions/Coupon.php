@@ -98,7 +98,7 @@ class Coupon extends CartCondition
         $value = optional($this->getModel())->discountWithOperand();
 
         // if we are item limited and not a % we need to apportion
-        if (stripos($value, '%') === false AND optional($this->getModel())->is_limited_to_cart_item) {
+        if (stripos($value, '%') === FALSE AND optional($this->getModel())->is_limited_to_cart_item) {
             $value = $this->calculateApportionment($value);
         }
 

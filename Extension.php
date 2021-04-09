@@ -8,6 +8,7 @@ use Cart;
 use Igniter\Cart\Classes\CartManager;
 use Igniter\Coupons\Models\Coupons_history_model;
 use Igniter\Coupons\Models\Coupons_model;
+use Igniter\Local\Facades\Location;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 use System\Classes\BaseExtension;
@@ -24,6 +25,10 @@ class Extension extends BaseExtension
         Event::listen('cart.added', function ($order) {
             Coupons_model::isEnabled()->isAutoApplicable()
                 ->each(function ($coupon) {
+                    $orderDateTime = Location::orderDateTime();
+                    if ($coupon->isExpired($orderDateTime))
+                        return;
+
                     $cartManager = CartManager::instance();
                     $cartManager->applyCouponCondition($coupon->code);
                 });
