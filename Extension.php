@@ -60,14 +60,6 @@ class Extension extends BaseExtension
                     'index:all', 'show:all', 'store:admin', 'update:admin', 'destroy:admin',
                 ],
             ],
-            'couponhistory' => [
-                'controller' => \Igniter\Coupons\ApiResources\CouponHistory::class,
-                'name' => 'CouponHistory',
-                'description' => 'An API resource for coupon history',
-                'actions' => [
-                    'index:users',
-                ],
-            ],
         ];
     }
 
