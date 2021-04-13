@@ -67,7 +67,7 @@ class Coupons_model extends Model
 
     public static $allowedSortingColumns = [
         'name desc', 'name asc',
-        'id desc', 'id asc',
+        'coupon_id desc', 'coupon_id asc',
         'code desc', 'code asc',
     ];
 
