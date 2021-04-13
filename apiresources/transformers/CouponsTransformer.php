@@ -12,6 +12,7 @@ class CouponsTransformer extends TransformerAbstract
     protected $availableIncludes = [
         'menus',
         'categories',
+        'history',
     ];
 
     public function transform(Coupons_model $coupon)
@@ -34,6 +35,15 @@ class CouponsTransformer extends TransformerAbstract
             $coupon->menus,
             new MenuTransformer,
             'menus'
+        );
+    }
+
+    public function includeHistory(Coupons_model $coupon)
+    {
+        return $this->collection(
+            $coupon->history,
+            new CouponHistoryTransformer,
+            'history'
         );
     }
 }

@@ -74,6 +74,23 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 }
 ```
 
+### The history object
+
+The history object contains key information about the coupon transaction.
+
+#### Attributes
+
+| Key                  | Type      | Description                                                  |
+| -------------------- | --------- | ------------------------------------------------------------ |
+| `coupon_id`           | `integer`  | The coupon id associated with the history log
+| `order_id`           | `integer`  | The order id associated with the history log        |
+| `customer_id`           | `integer `  | The customer id associated with the history log         |
+| `code`           | `string `  | The code used in the transaction        |
+| `amount`           | `float `  | The total value of the order        |
+| `min_total`           | `float`  | The minimum total required for the order   |
+| `date_used`           | `datetime`  | Timestamp of transaction
+| `status`           | `boolean`  | Defaults to true, might change in future   |
+
 ### List coupons
 
 Returns a list of coupons you’ve previously created.
