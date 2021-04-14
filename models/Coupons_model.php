@@ -65,6 +65,12 @@ class Coupons_model extends Model
         ],
     ];
 
+    public static $allowedSortingColumns = [
+        'name desc', 'name asc',
+        'coupon_id desc', 'coupon_id asc',
+        'code desc', 'code asc',
+    ];
+
     public function getRecurringEveryOptions()
     {
         return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -98,6 +104,34 @@ class Coupons_model extends Model
     //
     // Scopes
     //
+
+    public function scopeListFrontEnd($query, $options = [])
+    {
+        extract(array_merge([
+            'page' => 1,
+            'pageLimit' => 20,
+            'sort' => 'id desc',
+        ], $options));
+
+        $query->where('status', '>=', 1);
+
+        if (!is_array($sort)) {
+            $sort = [$sort];
+        }
+
+        foreach ($sort as $_sort) {
+            if (in_array($_sort, self::$allowedSortingColumns)) {
+                $parts = explode(' ', $_sort);
+                if (count($parts) < 2) {
+                    array_push($parts, 'desc');
+                }
+                [$sortField, $sortDirection] = $parts;
+                $query->orderBy($sortField, $sortDirection);
+            }
+        }
+
+        return $query->paginate($pageLimit, $page);
+    }
 
     public function scopeIsEnabled($query)
     {
