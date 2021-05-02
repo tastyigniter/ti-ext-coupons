@@ -34,11 +34,13 @@ class Coupons extends \Admin\Classes\AdminController
             'title' => 'lang:admin::lang.form.create_title',
             'redirect' => 'igniter/coupons/coupons/edit/{coupon_id}',
             'redirectClose' => 'igniter/coupons/coupons',
+            'redirectNew' => 'igniter/coupons/coupons/create',
         ],
         'edit' => [
             'title' => 'lang:admin::lang.form.edit_title',
             'redirect' => 'igniter/coupons/coupons/edit/{coupon_id}',
             'redirectClose' => 'igniter/coupons/coupons',
+            'redirectNew' => 'igniter/coupons/coupons/create',
         ],
         'preview' => [
             'title' => 'lang:admin::lang.form.preview_title',
