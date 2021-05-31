@@ -27,11 +27,6 @@ class Coupon extends CartCondition
 
     protected static $applicableItems;
 
-    public function isValid()
-    {
-        return $this->getMetaData('code') != '';
-    }
-
     public function getLabel()
     {
         return sprintf(lang($this->label), $this->getMetaData('code'));
@@ -45,7 +40,7 @@ class Coupon extends CartCondition
     public function getModel()
     {
         if (!strlen($couponCode = $this->getMetaData('code')))
-            return self::$couponModel;
+            return NULL;
 
         if (is_null(self::$couponModel))
             self::$couponModel = Coupons_model::getByCode($couponCode);
@@ -108,7 +103,7 @@ class Coupon extends CartCondition
         }
 
         $actions = [
-            'value' => $this->isValid() ? $value : 0,
+            'value' => $value,
         ];
 
         return [$actions];
