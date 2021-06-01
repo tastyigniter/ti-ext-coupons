@@ -40,7 +40,7 @@ class Coupon extends CartCondition
     public function getModel()
     {
         if (!strlen($couponCode = $this->getMetaData('code')))
-            return self::$couponModel;
+            return NULL;
 
         if (is_null(self::$couponModel))
             self::$couponModel = Coupons_model::getByCode($couponCode);
