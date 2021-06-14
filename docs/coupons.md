@@ -27,7 +27,7 @@ The endpoint responses are formatted according to the [JSON:API specification](h
 | `recurring_every`           | `array`  | Array of days of the week the coupon is valid from (Sunday is 0, Saturday is 6). Required when validity is `recurring` |
 | `recurring_from_time`           | `time`  | Time coupon is valid from. Required when validity is `recurring ` |
 | `recurring_to_time`           | `time`  | Time coupon is valid to. Required when validity is `recurring` |
-| `order_restriction`           | `integer`  | 0 for any delivery type, 1 for delivery only, 2 for pick-up only |
+| `order_restriction`           | `string`  | `null` for any delivery type, `delivery` for delivery only, `collection` for pick-up only |
 | `status`           | `boolean`  | Has the value `true` if the coupon is enabled or the value `false` if the coupon is disabled.         |
 | `locations`           | `array`  | An array of location ids this coupon is valid for         |
 | `auto_apply`           | `boolean`  | Has the value `true` if the coupon is to be auto applied or the value `false` if not.         |
@@ -67,7 +67,7 @@ The endpoint responses are formatted according to the [JSON:API specification](h
     ],
     "recurring_from_time": null,
     "recurring_to_time": null,
-    "order_restriction": 0,
+    "order_restriction": null,
     "is_limited_to_cart_item": 0,
     "auto_apply": false
   }
@@ -143,7 +143,7 @@ Status: 200 OK
           ],
           "recurring_from_time": null,
           "recurring_to_time": null,
-          "order_restriction": 0,
+          "order_restriction": null,
           "is_limited_to_cart_item": 0,
           "auto_apply": false
 	    }
@@ -209,7 +209,7 @@ POST /api/coupons
 | `recurring_every`           | `array`  | Array of days of the week the coupon is valid from (Sunday is 0, Saturday is 6). Required when validity is `recurring` |
 | `recurring_from_time`           | `time`  | Time coupon is valid from. Required when validity is `recurring ` |
 | `recurring_to_time`           | `time`  | Time coupon is valid to. Required when validity is `recurring` |
-| `order_restriction`           | `integer`  | 0 for any delivery type, 1 for delivery only, 2 for pick-up only |
+| `order_restriction`           | `string`  | `null` for any delivery type, `delivery` for delivery only, `collection` for pick-up only |
 | `status`           | `boolean`  | Has the value `true` if the coupon is enabled or the value `false` if the coupon is disabled.         |
 | `locations`           | `array`  | An array of location ids this coupon is valid for         |
 | `auto_apply`           | `boolean`  | Has the value `true` if the coupon is to be auto applied or the value `false` if not.         |
@@ -263,7 +263,7 @@ Status: 201 Created
           ],
           "recurring_from_time": null,
           "recurring_to_time": null,
-          "order_restriction": 0,
+          "order_restriction": null,
           "is_limited_to_cart_item": 0,
           "auto_apply": false
         }
@@ -323,7 +323,7 @@ Status: 200 OK
           ],
           "recurring_from_time": null,
           "recurring_to_time": null,
-          "order_restriction": 0,
+          "order_restriction": null,
           "is_limited_to_cart_item": 0,
           "auto_apply": false
 	    }
@@ -375,7 +375,7 @@ PATCH /api/coupons/:coupon_id
 | `recurring_every`           | `array`  | Array of days of the week the coupon is valid from (Sunday is 0, Saturday is 6). Required when validity is `recurring` |
 | `recurring_from_time`           | `time`  | Time coupon is valid from. Required when validity is `recurring ` |
 | `recurring_to_time`           | `time`  | Time coupon is valid to. Required when validity is `recurring` |
-| `order_restriction`           | `integer`  | 0 for any delivery type, 1 for delivery only, 2 for pick-up only |
+| `order_restriction`           | `string`  | `null` for any delivery type, `delivery` for delivery only, `collection` for pick-up only |
 | `status`           | `boolean`  | Has the value `true` if the coupon is enabled or the value `false` if the coupon is disabled.         |
 | `locations`           | `array`  | An array of location ids this coupon is valid for         |
 | `auto_apply`           | `boolean`  | Has the value `true` if the coupon is to be auto applied or the value `false` if not.         |
@@ -423,7 +423,7 @@ Status: 200 OK
           ],
           "recurring_from_time": null,
           "recurring_to_time": null,
-          "order_restriction": 0,
+          "order_restriction": null,
           "is_limited_to_cart_item": 0,
           "auto_apply": false
 	    }

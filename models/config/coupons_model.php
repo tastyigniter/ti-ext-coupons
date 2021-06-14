@@ -293,14 +293,11 @@ $config['form']['tabs'] = [
         'order_restriction' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:igniter.coupons::default.label_order_restriction',
-            'type' => 'radiotoggle',
+            'type' => 'select',
+            'multiOption' => TRUE,
             'comment' => 'lang:igniter.coupons::default.help_order_restriction',
             'span' => 'right',
-            'options' => [
-                'lang:admin::lang.text_none',
-                'lang:igniter.coupons::default.text_delivery_only',
-                'lang:igniter.coupons::default.text_collection_only',
-            ],
+            'options' => ['Admin\Models\Locations_model', 'getOrderTypeOptions'],
         ],
         'redemptions' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',

@@ -7,8 +7,7 @@
     "min_total": 500,
     "customer_redemptions": 0,
     "status": 1,
-    "validity": "forever",
-    "order_restriction": 0
+    "validity": "forever"
   },
   {
     "name": "Half Tuesdays",
@@ -18,8 +17,7 @@
     "min_total": 1000,
     "customer_redemptions": 0,
     "status": 1,
-    "validity": "forever",
-    "order_restriction": 0
+    "validity": "forever"
   },
   {
     "name": "Full Mondays",
@@ -29,8 +27,7 @@
     "min_total": 0,
     "customer_redemptions": 1,
     "status": 1,
-    "validity": "forever",
-    "order_restriction": 0
+    "validity": "forever"
   },
   {
     "name": "Full Tuesdays",
@@ -40,7 +37,6 @@
     "min_total": 5000,
     "customer_redemptions": 0,
     "status": 1,
-    "validity": "forever",
-    "order_restriction": 0
+    "validity": "forever"
   }
 ]

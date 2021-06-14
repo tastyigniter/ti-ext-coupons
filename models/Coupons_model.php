@@ -5,7 +5,6 @@ namespace Igniter\Coupons\Models;
 use Admin\Traits\Locationable;
 use Carbon\Carbon;
 use Igniter\Flame\Auth\Models\User;
-use Igniter\Flame\Location\Models\AbstractLocation;
 use Model;
 
 /**
@@ -48,7 +47,7 @@ class Coupons_model extends Model
         'fixed_to_time' => 'time',
         'recurring_from_time' => 'time',
         'recurring_to_time' => 'time',
-        'order_restriction' => 'integer',
+        'order_restriction' => 'array',
         'auto_apply' => 'boolean',
     ];
 
@@ -256,9 +255,7 @@ class Coupons_model extends Model
         if (empty($this->order_restriction))
             return FALSE;
 
-        $orderTypes = [AbstractLocation::DELIVERY => 1, AbstractLocation::COLLECTION => 2];
-
-        return array_get($orderTypes, $orderType, $orderType) != $this->order_restriction;
+        return !in_array($orderType, $this->order_restriction);
     }
 
     public function hasLocationRestriction($locationId)

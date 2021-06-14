@@ -26,7 +26,7 @@ class Coupon extends FormRequest
             ['recurring_every', 'igniter.coupons::default.label_recurring_every', 'nullable|required_if:validity,recurring'],
             ['recurring_from_time', 'igniter.coupons::default.label_recurring_from_time', 'nullable|required_if:validity,recurring|valid_time'],
             ['recurring_to_time', 'igniter.coupons::default.label_recurring_to_time', 'nullable|required_if:validity,recurring|valid_time'],
-            ['order_restriction', 'igniter.coupons::default.label_order_restriction', 'integer'],
+            ['order_restriction.*', 'igniter.coupons::default.label_order_restriction', 'nullable|string'],
             ['status', 'admin::lang.label_status', 'boolean'],
             ['locations.*', 'admin::lang.column_location', 'integer'],
         ];
