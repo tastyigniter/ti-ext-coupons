@@ -11,7 +11,7 @@ $config['list']['filter'] = [
             'scope' => 'whereHasLocation',
             'modelClass' => 'Admin\Models\Locations_model',
             'nameFrom' => 'location_name',
-            'locationAware' => 'hide',
+            'locationAware' => TRUE,
         ],
         'type' => [
             'label' => 'lang:igniter.coupons::default.text_filter_type',
@@ -73,7 +73,7 @@ $config['list']['columns'] = [
         'type' => 'text',
         'relation' => 'locations',
         'select' => 'location_name',
-        'locationAware' => 'hide',
+        'locationAware' => TRUE,
         'invisible' => TRUE,
     ],
     'formatted_discount' => [
