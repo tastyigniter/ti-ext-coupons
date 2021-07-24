@@ -3,14 +3,14 @@
 namespace Igniter\Coupons\CartConditions;
 
 use Admin\Models\Menus_model;
-use ApplicationException;
-use Auth;
-use Cart;
 use Exception;
 use Igniter\Coupons\Models\Coupons_model;
 use Igniter\Flame\Cart\CartCondition;
+use Igniter\Flame\Cart\Facades\Cart;
 use Igniter\Flame\Cart\Helpers\ActsAsItemable;
-use Location;
+use Igniter\Flame\Exception\ApplicationException;
+use Igniter\Local\Facades\Location;
+use Main\Facades\Auth;
 
 class Coupon extends CartCondition
 {
@@ -40,7 +40,7 @@ class Coupon extends CartCondition
     public function getModel()
     {
         if (!strlen($couponCode = $this->getMetaData('code')))
-            return NULL;
+            return null;
 
         if (is_null(self::$couponModel))
             self::$couponModel = Coupons_model::getByCode($couponCode);

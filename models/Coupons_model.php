@@ -5,7 +5,7 @@ namespace Igniter\Coupons\Models;
 use Admin\Traits\Locationable;
 use Carbon\Carbon;
 use Igniter\Flame\Auth\Models\User;
-use Model;
+use Igniter\Flame\Database\Model;
 
 /**
  * Coupons Model Class

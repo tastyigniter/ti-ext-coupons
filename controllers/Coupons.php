@@ -2,7 +2,7 @@
 
 namespace Igniter\Coupons\Controllers;
 
-use AdminMenu;
+use Admin\Facades\AdminMenu;
 
 class Coupons extends \Admin\Classes\AdminController
 {
@@ -13,7 +13,7 @@ class Coupons extends \Admin\Classes\AdminController
     ];
 
     public $locationConfig = [
-        'addAbsenceConstraint' => true,
+        'addAbsenceConstraint' => TRUE,
     ];
 
     public $listConfig = [
