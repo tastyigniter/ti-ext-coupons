@@ -25,6 +25,8 @@ return [
     'text_not_redeemed' => 'Not Yet Redeemed',
     'text_coupon' => 'Coupon [%s]',
 
+    'alert_coupon_login_required' => 'Please login or register to use this coupon',
+
     'column_code' => 'Code',
     'column_discount' => 'Discount',
     'column_validity' => 'Validity',
