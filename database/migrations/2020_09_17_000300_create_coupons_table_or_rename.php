@@ -72,7 +72,12 @@ class CreateCouponsTableOrRename extends Migration
         if (DB::table('igniter_coupons')->count())
             return;
 
-        DB::table('igniter_coupons')->insert($this->getSeedRecords('coupons'));
+        DB::table('igniter_coupons')->insert(array_map(function ($record) {
+            $record['order_restriction'] = 0;
+            $record['date_added'] = now();
+
+            return $record;
+        }, $this->getSeedRecords('coupons')));
     }
 
     protected function getSeedRecords($name)
