@@ -370,7 +370,7 @@ $config['form']['tabs'] = [
                 'amount' => [
                     'title' => 'lang:igniter.coupons::default.column_amount',
                 ],
-                'date_used' => [
+                'created_at' => [
                     'title' => 'lang:igniter.coupons::default.column_date_used',
                 ],
             ],

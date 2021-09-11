@@ -31,7 +31,7 @@ class RedeemsCoupon extends ModelAction
             return FALSE;
 
         $couponLog->status = 1;
-        $couponLog->date_used = Carbon::now();
+        $couponLog->created_at = Carbon::now();
         $couponLog->save();
 
         Event::fire('admin.order.couponRedeemed', [$couponLog]);

@@ -9,10 +9,6 @@ use Igniter\Flame\Database\Model;
  */
 class Coupons_history_model extends Model
 {
-    const CREATED_AT = 'date_used';
-
-    const UPDATED_AT = null;
-
     /**
      * @var string The database table name
      */
@@ -48,7 +44,7 @@ class Coupons_history_model extends Model
     public $timestamps = TRUE;
 
     public static $allowedSortingColumns = [
-        'date_used desc', 'date_used asc',
+        'created_at desc', 'created_at asc',
     ];
 
     public function getCustomerNameAttribute($value)
@@ -68,7 +64,7 @@ class Coupons_history_model extends Model
             'pageLimit' => 20,
             'customer' => null,
             'order_id' => null,
-            'sort' => 'date_used desc',
+            'sort' => 'created_at desc',
         ], $options));
 
         $query->where('status', '>=', 1);

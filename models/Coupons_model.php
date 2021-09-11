@@ -14,10 +14,6 @@ class Coupons_model extends Model
 {
     use Locationable;
 
-    const UPDATED_AT = null;
-
-    const CREATED_AT = 'date_added';
-
     const LOCATIONABLE_RELATION = 'locations';
 
     /**
