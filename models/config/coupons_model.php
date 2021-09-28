@@ -160,7 +160,7 @@ $config['form']['tabs'] = [
         ],
         'discount' => [
             'label' => 'lang:igniter.coupons::default.label_discount',
-            'type' => 'money',
+            'type' => 'currency',
             'span' => 'left',
             'cssClass' => 'flex-width',
         ],
