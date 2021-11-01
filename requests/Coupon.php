@@ -34,7 +34,7 @@ class Coupon extends FormRequest
 
     protected function prepareMaxRule($parameters, $field)
     {
-        if ($field === 'discount' AND $this->inputWith('type') != 'P') {
+        if ($field === 'discount' && $this->inputWith('type') != 'P') {
             return '';
         }
 
