@@ -45,7 +45,7 @@ class Coupon extends CartCondition
         if (is_null(self::$couponModel))
             self::$couponModel = Coupons_model::getByCode($couponCode);
 
-        if (self::$couponModel AND strtolower(self::$couponModel->code) !== strtolower($couponCode))
+        if (self::$couponModel && strtolower(self::$couponModel->code) !== strtolower($couponCode))
             self::$couponModel = Coupons_model::getByCode($couponCode);
 
         return self::$couponModel;
@@ -89,7 +89,7 @@ class Coupon extends CartCondition
     public function beforeApply()
     {
         $couponModel = $this->getModel();
-        if (!$couponModel OR $couponModel->is_limited_to_cart_item)
+        if (!$couponModel || $couponModel->is_limited_to_cart_item)
             return FALSE;
     }
 
@@ -98,7 +98,7 @@ class Coupon extends CartCondition
         $value = optional($this->getModel())->discountWithOperand();
 
         // if we are item limited and not a % we need to apportion
-        if (stripos($value, '%') === FALSE AND optional($this->getModel())->is_limited_to_cart_item) {
+        if (stripos($value, '%') === FALSE && optional($this->getModel())->is_limited_to_cart_item) {
             $value = $this->calculateApportionment($value);
         }
 
@@ -133,7 +133,7 @@ class Coupon extends CartCondition
     protected function calculateApportionment($value)
     {
         $applicableItems = self::$applicableItems;
-        if ($applicableItems AND count($applicableItems)) {
+        if ($applicableItems && count($applicableItems)) {
             $applicableItemsTotal = Cart::content()->sum(function ($cartItem) use ($applicableItems) {
                 if (!$applicableItems->contains($cartItem->id))
                     return 0;
@@ -168,10 +168,10 @@ class Coupon extends CartCondition
         if ($couponModel->hasReachedMaxRedemption())
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
 
-        if ($couponModel->customer_redemptions AND !$user)
+        if ($couponModel->customer_redemptions && !$user)
             throw new ApplicationException(lang('igniter.coupons::default.alert_coupon_login_required'));
 
-        if ($user AND $couponModel->customerHasMaxRedemption($user))
+        if ($user && $couponModel->customerHasMaxRedemption($user))
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
     }
 
