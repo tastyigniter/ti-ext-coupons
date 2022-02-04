@@ -116,7 +116,7 @@ class Coupons_history_model extends Model
 
         $model = new static;
         $model->order_id = $order->getKey();
-        $model->customer_id = $order->customer ? $order->customer->getKey() : 0;
+        $model->customer_id = $order->customer ? $order->customer->getKey() : null;
         $model->coupon_id = $coupon->coupon_id;
         $model->code = $coupon->code;
         $model->amount = $couponCondition->getValue();
