@@ -18,7 +18,7 @@ class Coupons extends \Admin\Classes\AdminController
 
     public $listConfig = [
         'list' => [
-            'model' => 'Igniter\Coupons\Models\Coupons_model',
+            'model' => \Igniter\Coupons\Models\Coupons_model::class,
             'title' => 'igniter.coupons::default.text_title',
             'emptyMessage' => 'igniter.coupons::default.text_empty',
             'defaultSort' => ['coupon_id', 'DESC'],
@@ -28,8 +28,8 @@ class Coupons extends \Admin\Classes\AdminController
 
     public $formConfig = [
         'name' => 'igniter.coupons::default.text_form_name',
-        'model' => 'Igniter\Coupons\Models\Coupons_model',
-        'request' => 'Igniter\Coupons\Requests\Coupon',
+        'model' => \Igniter\Coupons\Models\Coupons_model::class,
+        'request' => \Igniter\Coupons\Requests\Coupon::class,
         'create' => [
             'title' => 'lang:admin::lang.form.create_title',
             'redirect' => 'igniter/coupons/coupons/edit/{coupon_id}',

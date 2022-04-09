@@ -37,7 +37,7 @@ class Coupons_history_model extends Model
         'belongsTo' => [
             'customer' => \Admin\Models\Customers_model::class,
             'order' => \Admin\Models\Orders_model::class,
-            'coupon' => 'Igniter\Coupons\Models\Coupons_model',
+            'coupon' => \Igniter\Coupons\Models\Coupons_model::class,
         ],
     ];
 

@@ -53,7 +53,7 @@ class Coupons_model extends Model
             'menus' => [\Admin\Models\Menus_model::class, 'table' => 'igniter_coupon_menus'],
         ],
         'hasMany' => [
-            'history' => 'Igniter\Coupons\Models\Coupons_history_model',
+            'history' => \Igniter\Coupons\Models\Coupons_history_model::class,
         ],
         'morphToMany' => [
             'locations' => [\Admin\Models\Locations_model::class, 'name' => 'locationable'],

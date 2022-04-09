@@ -18,7 +18,7 @@ class Extension extends BaseExtension
     public function boot()
     {
         Orders_model::extend(function ($model) {
-            $model->relation['hasMany']['coupon_history'] = ['Igniter\Coupons\Models\Coupons_history_model', 'delete' => TRUE];
+            $model->relation['hasMany']['coupon_history'] = [\Igniter\Coupons\Models\Coupons_history_model::class, 'delete' => TRUE];
             $model->implement[] = 'Igniter.Coupons.Actions.RedeemsCoupon';
         });
 
@@ -49,8 +49,8 @@ class Extension extends BaseExtension
         });
 
         Relation::morphMap([
-            'coupon_history' => 'Igniter\Coupons\Models\Coupons_history_model',
-            'coupons' => 'Igniter\Coupons\Models\Coupons_model',
+            'coupon_history' => \Igniter\Coupons\Models\Coupons_history_model::class,
+            'coupons' => \Igniter\Coupons\Models\Coupons_model::class,
         ]);
     }
 
