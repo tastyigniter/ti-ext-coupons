@@ -28,7 +28,7 @@ class RedeemsCoupon extends ModelAction
         }
 
         if (!$couponLog = $this->logCouponHistory($couponCondition))
-            return FALSE;
+            return false;
 
         $couponLog->status = 1;
         $couponLog->created_at = Carbon::now();
@@ -50,7 +50,7 @@ class RedeemsCoupon extends ModelAction
     {
         // Make sure order model exists
         if (!$this->model->exists)
-            return FALSE;
+            return false;
 
         return Coupons_history_model::createHistory($couponCondition, $this->model);
     }

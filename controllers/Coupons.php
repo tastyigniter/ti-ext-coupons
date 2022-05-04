@@ -13,7 +13,7 @@ class Coupons extends \Admin\Classes\AdminController
     ];
 
     public $locationConfig = [
-        'addAbsenceConstraint' => TRUE,
+        'addAbsenceConstraint' => true,
     ];
 
     public $listConfig = [

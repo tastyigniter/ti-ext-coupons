@@ -41,7 +41,7 @@ class Coupons_history_model extends Model
         ],
     ];
 
-    public $timestamps = TRUE;
+    public $timestamps = true;
 
     public static $allowedSortingColumns = [
         'created_at desc', 'created_at asc',
@@ -112,7 +112,7 @@ class Coupons_history_model extends Model
     public static function createHistory($couponCondition, $order)
     {
         if (!$coupon = $couponCondition->getModel())
-            return FALSE;
+            return false;
 
         $model = new static;
         $model->order_id = $order->getKey();
@@ -122,8 +122,8 @@ class Coupons_history_model extends Model
         $model->amount = $couponCondition->getValue();
         $model->min_total = $coupon->min_total;
 
-        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$model, $couponCondition, $order->customer, $coupon], TRUE) === FALSE)
-            return FALSE;
+        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$model, $couponCondition, $order->customer, $coupon], true) === false)
+            return false;
 
         $model->save();
 

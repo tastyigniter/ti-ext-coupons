@@ -28,7 +28,7 @@ class Coupons_model extends Model
 
     protected $timeFormat = 'H:i';
 
-    public $timestamps = TRUE;
+    public $timestamps = true;
 
     protected $casts = [
         'discount' => 'float',
@@ -174,7 +174,7 @@ class Coupons_model extends Model
     public function addMenuCategories(array $categoryIds = [])
     {
         if (!$this->exists)
-            return FALSE;
+            return false;
 
         $this->categories()->sync($categoryIds);
     }
@@ -189,7 +189,7 @@ class Coupons_model extends Model
     public function addMenus(array $menuIds = [])
     {
         if (!$this->exists)
-            return FALSE;
+            return false;
 
         $this->menus()->sync($menuIds);
     }
@@ -227,7 +227,7 @@ class Coupons_model extends Model
 
         switch ($this->validity) {
             case 'forever':
-                return FALSE;
+                return false;
             case 'fixed':
                 $start = $this->fixed_date->copy()->setTimeFromTimeString($this->fixed_from_time);
                 $end = $this->fixed_date->copy()->setTimeFromTimeString($this->fixed_to_time);
@@ -237,7 +237,7 @@ class Coupons_model extends Model
                 return !$orderDateTime->between($this->period_start_date, $this->period_end_date);
             case 'recurring':
                 if (!in_array($orderDateTime->format('w'), $this->recurring_every))
-                    return TRUE;
+                    return true;
 
                 $start = $orderDateTime->copy()->setTimeFromTimeString($this->recurring_from_time);
                 $end = $orderDateTime->copy()->setTimeFromTimeString($this->recurring_to_time);
@@ -245,13 +245,13 @@ class Coupons_model extends Model
                 return !$orderDateTime->between($start, $end);
         }
 
-        return FALSE;
+        return false;
     }
 
     public function hasRestriction($orderType)
     {
         if (empty($this->order_restriction))
-            return FALSE;
+            return false;
 
         return !in_array($orderType, $this->order_restriction);
     }
@@ -259,7 +259,7 @@ class Coupons_model extends Model
     public function hasLocationRestriction($locationId)
     {
         if (!$this->locations || $this->locations->isEmpty())
-            return FALSE;
+            return false;
 
         $locationKeyColumn = $this->locations()->getModel()->qualifyColumn('location_id');
 

@@ -82,6 +82,6 @@ class CreateCouponsTableOrRename extends Migration
 
     protected function getSeedRecords($name)
     {
-        return json_decode(file_get_contents(__DIR__.'/../records/'.$name.'.json'), TRUE);
+        return json_decode(file_get_contents(__DIR__.'/../records/'.$name.'.json'), true);
     }
 }
