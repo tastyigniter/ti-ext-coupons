@@ -11,7 +11,7 @@ class AddAutoApplyFieldOnCouponsTable extends Migration
     public function up()
     {
         Schema::table('igniter_coupons', function (Blueprint $table) {
-            $table->boolean('auto_apply')->default(FALSE);
+            $table->boolean('auto_apply')->default(false);
         });
     }
 }

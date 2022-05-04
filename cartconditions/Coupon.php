@@ -16,7 +16,7 @@ class Coupon extends CartCondition
 {
     use ActsAsItemable;
 
-    public $removeable = TRUE;
+    public $removeable = true;
 
     public $priority = 200;
 
@@ -90,7 +90,7 @@ class Coupon extends CartCondition
     {
         $couponModel = $this->getModel();
         if (!$couponModel || $couponModel->is_limited_to_cart_item)
-            return FALSE;
+            return false;
     }
 
     public function getActions()
@@ -98,7 +98,7 @@ class Coupon extends CartCondition
         $value = optional($this->getModel())->discountWithOperand();
 
         // if we are item limited and not a % we need to apportion
-        if (stripos($value, '%') === FALSE && optional($this->getModel())->is_limited_to_cart_item) {
+        if (stripos($value, '%') === false && optional($this->getModel())->is_limited_to_cart_item) {
             $value = $this->calculateApportionment($value);
         }
 
@@ -178,13 +178,13 @@ class Coupon extends CartCondition
     public static function isApplicableTo($cartItem)
     {
         if (!$couponModel = self::$couponModel)
-            return FALSE;
+            return false;
 
         if (!$couponModel->is_limited_to_cart_item)
-            return FALSE;
+            return false;
 
         if (!$applicableItems = self::$applicableItems)
-            return FALSE;
+            return false;
 
         return $applicableItems->contains($cartItem->id);
     }

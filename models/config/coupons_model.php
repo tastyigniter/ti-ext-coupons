@@ -11,7 +11,7 @@ $config['list']['filter'] = [
             'scope' => 'whereHasLocation',
             'modelClass' => \Admin\Models\Locations_model::class,
             'nameFrom' => 'location_name',
-            'locationAware' => TRUE,
+            'locationAware' => true,
         ],
         'type' => [
             'label' => 'lang:igniter.coupons::default.text_filter_type',
@@ -78,25 +78,25 @@ $config['list']['columns'] = [
     'name' => [
         'label' => 'lang:admin::lang.label_name',
         'type' => 'text',
-        'searchable' => TRUE,
+        'searchable' => true,
     ],
     'code' => [
         'label' => 'lang:igniter.coupons::default.column_code',
         'type' => 'text',
-        'searchable' => TRUE,
+        'searchable' => true,
     ],
     'locations' => [
         'label' => 'lang:admin::lang.column_location',
         'type' => 'text',
         'relation' => 'locations',
         'select' => 'location_name',
-        'locationAware' => TRUE,
-        'invisible' => TRUE,
+        'locationAware' => true,
+        'invisible' => true,
     ],
     'formatted_discount' => [
         'label' => 'lang:igniter.coupons::default.column_discount',
         'type' => 'text',
-        'sortable' => FALSE,
+        'sortable' => false,
         'formatter' => function ($record, $column, $value) {
             return $record->isFixed() ? currency_format($value) : $value;
         },
@@ -104,7 +104,7 @@ $config['list']['columns'] = [
     'validity' => [
         'label' => 'lang:igniter.coupons::default.column_validity',
         'type' => 'text',
-        'searchable' => TRUE,
+        'searchable' => true,
         'formatter' => function ($record, $column, $value) {
             return $value ? ucwords($value) : null;
         },
@@ -115,7 +115,7 @@ $config['list']['columns'] = [
     ],
     'coupon_id' => [
         'label' => 'lang:admin::lang.column_id',
-        'invisible' => TRUE,
+        'invisible' => true,
     ],
 
 ];
@@ -371,7 +371,7 @@ $config['form']['tabs'] = [
         'history' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_history',
             'type' => 'datatable',
-            'useAjax' => TRUE,
+            'useAjax' => true,
             'defaultSort' => ['coupon_history_id', 'desc'],
             'columns' => [
                 'order_id' => [
