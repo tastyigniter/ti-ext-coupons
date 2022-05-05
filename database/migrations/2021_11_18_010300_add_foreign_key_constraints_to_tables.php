@@ -72,20 +72,24 @@ class AddForeignKeyConstraintsToTables extends Migration
 
     public function down()
     {
-        Schema::table('igniter_coupons_history', function (Blueprint $table) {
-            $table->dropForeign(['coupon_id']);
-            $table->dropForeign(['order_id']);
-            $table->dropForeign(['customer_id']);
-        });
+        try {
+            Schema::table('igniter_coupons_history', function (Blueprint $table) {
+                $table->dropForeign(['coupon_id']);
+                $table->dropForeign(['order_id']);
+                $table->dropForeign(['customer_id']);
+            });
 
-        Schema::table('igniter_coupon_categories', function (Blueprint $table) {
-            $table->dropForeign(['coupon_id']);
-            $table->dropForeign(['category_id']);
-        });
+            Schema::table('igniter_coupon_categories', function (Blueprint $table) {
+                $table->dropForeign(['coupon_id']);
+                $table->dropForeign(['category_id']);
+            });
 
-        Schema::table('igniter_coupon_menus', function (Blueprint $table) {
-            $table->dropForeign(['coupon_id']);
-            $table->dropForeign(['menu_id']);
-        });
+            Schema::table('igniter_coupon_menus', function (Blueprint $table) {
+                $table->dropForeign(['coupon_id']);
+                $table->dropForeign(['menu_id']);
+            });
+        }
+        catch (\Exception $e) {
+        }
     }
 }
