@@ -2,28 +2,28 @@
 
 namespace Igniter\Coupons;
 
-use Admin\Models\Customers_model;
-use Admin\Models\Orders_model;
+use Igniter\Admin\Models\Customer;
+use Igniter\Admin\Models\Order;
 use Igniter\Cart\Classes\CartManager;
-use Igniter\Coupons\Models\Coupons_history_model;
-use Igniter\Coupons\Models\Coupons_model;
+use Igniter\Coupons\Models\Coupon;
+use Igniter\Coupons\Models\CouponHistory;
 use Igniter\Flame\Cart\Facades\Cart;
 use Igniter\Local\Facades\Location;
+use Igniter\System\Classes\BaseExtension;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
-use System\Classes\BaseExtension;
 
 class Extension extends BaseExtension
 {
     public function boot()
     {
-        Orders_model::extend(function ($model) {
-            $model->relation['hasMany']['coupon_history'] = [\Igniter\Coupons\Models\Coupons_history_model::class, 'delete' => true];
+        Order::extend(function ($model) {
+            $model->relation['hasMany']['coupon_history'] = [\Igniter\Coupons\Models\CouponHistory::class, 'delete' => true];
             $model->implement[] = 'Igniter.Coupons.Actions.RedeemsCoupon';
         });
 
         Event::listen('cart.added', function ($order) {
-            Coupons_model::isEnabled()->isAutoApplicable()
+            Coupon::isEnabled()->isAutoApplicable()
                 ->each(function ($coupon) {
                     $orderDateTime = Location::orderDateTime();
                     if ($coupon->isExpired($orderDateTime))
@@ -39,18 +39,18 @@ class Extension extends BaseExtension
                 $order->redeemCoupon($couponCondition);
         });
 
-        Customers_model::created(function ($customer) {
-            Orders_model::where('email', $customer->email)
+        Customer::created(function ($customer) {
+            Order::where('email', $customer->email)
                 ->get()
                 ->each(function ($order) use ($customer) {
-                    Coupons_history_model::where('order_id', $order->order_id)
+                    CouponHistory::where('order_id', $order->order_id)
                         ->update(['customer_id' => $customer->customer_id]);
                 });
         });
 
         Relation::morphMap([
-            'coupon_history' => \Igniter\Coupons\Models\Coupons_history_model::class,
-            'coupons' => \Igniter\Coupons\Models\Coupons_model::class,
+            'coupon_history' => \Igniter\Coupons\Models\CouponHistory::class,
+            'coupons' => \Igniter\Coupons\Models\Coupon::class,
         ]);
     }
 

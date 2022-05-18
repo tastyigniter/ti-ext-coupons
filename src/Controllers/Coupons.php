@@ -2,14 +2,14 @@
 
 namespace Igniter\Coupons\Controllers;
 
-use Admin\Facades\AdminMenu;
+use Igniter\Admin\Facades\AdminMenu;
 
-class Coupons extends \Admin\Classes\AdminController
+class Coupons extends \Igniter\Admin\Classes\AdminController
 {
     public $implement = [
-        \Admin\Actions\ListController::class,
-        \Admin\Actions\FormController::class,
-        \Admin\Actions\LocationAwareController::class,
+        \Igniter\Admin\Actions\ListController::class,
+        \Igniter\Admin\Actions\FormController::class,
+        \Igniter\Admin\Actions\LocationAwareController::class,
     ];
 
     public $locationConfig = [
@@ -18,17 +18,17 @@ class Coupons extends \Admin\Classes\AdminController
 
     public $listConfig = [
         'list' => [
-            'model' => \Igniter\Coupons\Models\Coupons_model::class,
+            'model' => \Igniter\Coupons\Models\Coupon::class,
             'title' => 'igniter.coupons::default.text_title',
             'emptyMessage' => 'igniter.coupons::default.text_empty',
             'defaultSort' => ['coupon_id', 'DESC'],
-            'configFile' => 'coupons_model',
+            'configFile' => 'coupon',
         ],
     ];
 
     public $formConfig = [
         'name' => 'igniter.coupons::default.text_form_name',
-        'model' => \Igniter\Coupons\Models\Coupons_model::class,
+        'model' => \Igniter\Coupons\Models\Coupon::class,
         'request' => \Igniter\Coupons\Requests\Coupon::class,
         'create' => [
             'title' => 'lang:admin::lang.form.create_title',
@@ -49,7 +49,7 @@ class Coupons extends \Admin\Classes\AdminController
         'delete' => [
             'redirect' => 'igniter/coupons/coupons',
         ],
-        'configFile' => 'coupons_model',
+        'configFile' => 'coupon',
     ];
 
     protected $requiredPermissions = 'Admin.Coupons';

@@ -3,11 +3,11 @@
 namespace Igniter\Coupons\Actions;
 
 use Carbon\Carbon;
-use Igniter\Coupons\Models\Coupons_history_model;
+use Igniter\Coupons\Models\CouponHistory;
 use Igniter\Flame\Cart\CartCondition;
 use Igniter\Flame\Traits\ExtensionTrait;
+use Igniter\System\Actions\ModelAction;
 use Illuminate\Support\Facades\Event;
-use System\Actions\ModelAction;
 
 class RedeemsCoupon extends ModelAction
 {
@@ -40,9 +40,9 @@ class RedeemsCoupon extends ModelAction
     /**
      * Add cart coupon to order by order_id
      *
-     * @param \Admin\Models\Orders_model $order
+     * @param \Igniter\Admin\Models\Order $order
      * @param \Igniter\Flame\Cart\CartCondition $couponCondition
-     * @param \Admin\Models\Customers_model $customer
+     * @param \Igniter\Admin\Models\Customer $customer
      *
      * @return int|bool
      */
@@ -52,6 +52,6 @@ class RedeemsCoupon extends ModelAction
         if (!$this->model->exists)
             return false;
 
-        return Coupons_history_model::createHistory($couponCondition, $this->model);
+        return CouponHistory::createHistory($couponCondition, $this->model);
     }
 }

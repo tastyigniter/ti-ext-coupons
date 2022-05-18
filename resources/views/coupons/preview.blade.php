@@ -4,7 +4,7 @@
         'role' => 'form',
     ]) !!}
 
-    {!! $this->renderForm(['preview' => TRUE]) !!}
+    {!! $this->renderForm(['preview' => true]) !!}
 
     {!! form_close() !!}
 </div>

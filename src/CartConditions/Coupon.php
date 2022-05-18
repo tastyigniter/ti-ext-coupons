@@ -2,15 +2,15 @@
 
 namespace Igniter\Coupons\CartConditions;
 
-use Admin\Models\Menus_model;
 use Exception;
-use Igniter\Coupons\Models\Coupons_model;
+use Igniter\Admin\Models\Menu;
+use Igniter\Coupons\Models\Coupon as CouponModel;
 use Igniter\Flame\Cart\CartCondition;
 use Igniter\Flame\Cart\Facades\Cart;
 use Igniter\Flame\Cart\Helpers\ActsAsItemable;
 use Igniter\Flame\Exception\ApplicationException;
 use Igniter\Local\Facades\Location;
-use Main\Facades\Auth;
+use Igniter\Main\Facades\Auth;
 
 class Coupon extends CartCondition
 {
@@ -21,7 +21,7 @@ class Coupon extends CartCondition
     public $priority = 200;
 
     /**
-     * @var Coupons_model
+     * @var CouponModel
      */
     protected static $couponModel;
 
@@ -43,10 +43,10 @@ class Coupon extends CartCondition
             return null;
 
         if (is_null(self::$couponModel))
-            self::$couponModel = Coupons_model::getByCode($couponCode);
+            self::$couponModel = CouponModel::getByCode($couponCode);
 
         if (self::$couponModel && strtolower(self::$couponModel->code) !== strtolower($couponCode))
-            self::$couponModel = Coupons_model::getByCode($couponCode);
+            self::$couponModel = CouponModel::getByCode($couponCode);
 
         return self::$couponModel;
     }
@@ -57,7 +57,7 @@ class Coupon extends CartCondition
         $couponModel->categories->pluck('category_id')
             ->each(function ($category) use (&$applicableItems) {
                 $applicableItems = $applicableItems
-                    ->merge(Menus_model::whereHasCategory($category)->pluck('menu_id'));
+                    ->merge(Menu::whereHasCategory($category)->pluck('menu_id'));
             });
 
         self::$applicableItems = $applicableItems;
@@ -67,7 +67,7 @@ class Coupon extends CartCondition
 
     public function onLoad()
     {
-        if (!strlen($couponCode = $this->getMetaData('code')))
+        if (!strlen($this->getMetaData('code')))
             return;
 
         try {

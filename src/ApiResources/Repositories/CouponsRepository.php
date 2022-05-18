@@ -3,9 +3,9 @@
 namespace Igniter\Coupons\ApiResources\Repositories;
 
 use Igniter\Api\Classes\AbstractRepository;
-use Igniter\Coupons\Models\Coupons_model;
+use Igniter\Coupons\Models\Coupon;
 
 class CouponsRepository extends AbstractRepository
 {
-    protected $modelClass = Coupons_model::class;
+    protected $modelClass = Coupon::class;
 }

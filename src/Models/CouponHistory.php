@@ -7,7 +7,7 @@ use Igniter\Flame\Database\Model;
 /**
  * Coupons History Model Class
  */
-class Coupons_history_model extends Model
+class CouponHistory extends Model
 {
     /**
      * @var string The database table name
@@ -35,9 +35,9 @@ class Coupons_history_model extends Model
 
     public $relation = [
         'belongsTo' => [
-            'customer' => \Admin\Models\Customers_model::class,
-            'order' => \Admin\Models\Orders_model::class,
-            'coupon' => \Igniter\Coupons\Models\Coupons_model::class,
+            'customer' => \Igniter\Admin\Models\Customer::class,
+            'order' => \Igniter\Admin\Models\Order::class,
+            'coupon' => \Igniter\Coupons\Models\Coupon::class,
         ],
     ];
 
@@ -106,8 +106,8 @@ class Coupons_history_model extends Model
 
     /**
      * @param \Igniter\Flame\Cart\CartCondition $couponCondition
-     * @param \Admin\Models\Orders_model $order
-     * @return \Admin\Models\Coupons_history_model|bool
+     * @param \Igniter\Admin\Models\Order $order
+     * @return \Igniter\Admin\Models\CouponHistory|bool
      */
     public static function createHistory($couponCondition, $order)
     {
