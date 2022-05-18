@@ -2,20 +2,19 @@
 
 namespace Igniter\Coupons\Models;
 
-use Admin\Models\Customer_groups_model;
-use Admin\Traits\Locationable;
 use Carbon\Carbon;
+use Igniter\Admin\Traits\Locationable;
 use Igniter\Flame\Auth\Models\User;
 use Igniter\Flame\Database\Model;
 
 /**
  * Coupons Model Class
  */
-class Coupons_model extends Model
+class Coupon extends Model
 {
     use Locationable;
 
-    public const LOCATIONABLE_RELATION = 'locations';
+    const LOCATIONABLE_RELATION = 'locations';
 
     /**
      * @var string The database table name
@@ -30,8 +29,6 @@ class Coupons_model extends Model
     protected $timeFormat = 'H:i';
 
     public $timestamps = true;
-
-    protected $guarded = [];
 
     protected $casts = [
         'discount' => 'float',
@@ -52,16 +49,14 @@ class Coupons_model extends Model
 
     public $relation = [
         'belongsToMany' => [
-            'categories' => [\Admin\Models\Categories_model::class, 'table' => 'igniter_coupon_categories'],
-            'menus' => [\Admin\Models\Menus_model::class, 'table' => 'igniter_coupon_menus'],
-            'customers' => [\Admin\Models\Customers_model::class, 'table' => 'igniter_coupon_customers'],
-            'customer_groups' => [\Admin\Models\Customer_groups_model::class, 'table' => 'igniter_coupon_customer_groups'],
+            'categories' => [\Admin\Models\Category::class, 'table' => 'igniter_coupon_categories'],
+            'menus' => [\Admin\Models\Menu::class, 'table' => 'igniter_coupon_menus'],
         ],
         'hasMany' => [
-            'history' => \Igniter\Coupons\Models\Coupons_history_model::class,
+            'history' => \Igniter\Coupons\Models\CouponHistory::class,
         ],
         'morphToMany' => [
-            'locations' => [\Admin\Models\Locations_model::class, 'name' => 'locationable'],
+            'locations' => [\Admin\Models\Location::class, 'name' => 'locationable'],
         ],
     ];
 
@@ -74,11 +69,6 @@ class Coupons_model extends Model
     public function getRecurringEveryOptions()
     {
         return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    }
-
-    public static function getDropdownOptions()
-    {
-        return static::isEnabled()->dropdown('name');
     }
 
     //
@@ -164,11 +154,6 @@ class Coupons_model extends Model
         });
     }
 
-    public function scopeWhereCodeAndLocation($query, $code, $locationId)
-    {
-        $query->whereHasOrDoesntHaveLocation($locationId)->whereCode($code);
-    }
-
     //
     // Events
     //
@@ -188,9 +173,8 @@ class Coupons_model extends Model
      */
     public function addMenuCategories(array $categoryIds = [])
     {
-        if (!$this->exists) {
+        if (!$this->exists)
             return false;
-        }
 
         $this->categories()->sync($categoryIds);
     }
@@ -204,9 +188,8 @@ class Coupons_model extends Model
      */
     public function addMenus(array $menuIds = [])
     {
-        if (!$this->exists) {
+        if (!$this->exists)
             return false;
-        }
 
         $this->menus()->sync($menuIds);
     }
@@ -239,9 +222,8 @@ class Coupons_model extends Model
      */
     public function isExpired($orderDateTime = null)
     {
-        if (is_null($orderDateTime)) {
+        if (is_null($orderDateTime))
             $orderDateTime = Carbon::now();
-        }
 
         switch ($this->validity) {
             case 'forever':
@@ -254,9 +236,8 @@ class Coupons_model extends Model
             case 'period':
                 return !$orderDateTime->between($this->period_start_date, $this->period_end_date);
             case 'recurring':
-                if (!in_array($orderDateTime->format('w'), $this->recurring_every)) {
+                if (!in_array($orderDateTime->format('w'), $this->recurring_every))
                     return true;
-                }
 
                 $start = $orderDateTime->copy()->setTimeFromTimeString($this->recurring_from_time);
                 $end = $orderDateTime->copy()->setTimeFromTimeString($this->recurring_to_time);
@@ -264,27 +245,21 @@ class Coupons_model extends Model
                 return !$orderDateTime->between($start, $end);
         }
 
-        if ($result = $this->fireSystemEvent('igniter.coupon.isExpired', [$orderDateTime])) {
-            return $result;
-        }
-
         return false;
     }
 
     public function hasRestriction($orderType)
     {
-        if (empty($this->order_restriction)) {
+        if (empty($this->order_restriction))
             return false;
-        }
 
         return !in_array($orderType, $this->order_restriction);
     }
 
     public function hasLocationRestriction($locationId)
     {
-        if (!$this->locations || $this->locations->isEmpty()) {
+        if (!$this->locations || $this->locations->isEmpty())
             return false;
-        }
 
         $locationKeyColumn = $this->locations()->getModel()->qualifyColumn('location_id');
 
@@ -301,24 +276,6 @@ class Coupons_model extends Model
         return $this->customer_redemptions && $this->customer_redemptions <= $this->countCustomerRedemptions($user->getKey());
     }
 
-    public function customerCanRedeem(?User $user = null)
-    {
-        if (!$this->customers || $this->customers->isEmpty()) {
-            return true;
-        }
-
-        return $user && $this->customers->contains('customer_id', $user->getKey());
-    }
-
-    public function customerGroupCanRedeem(?Customer_groups_model $group = null)
-    {
-        if (!$this->customer_groups || $this->customer_groups->isEmpty()) {
-            return true;
-        }
-
-        return $group && $this->customer_groups->contains('customer_group_id', $group->getKey());
-    }
-
     public function countRedemptions()
     {
         return $this->history()->isEnabled()->count();
@@ -330,28 +287,8 @@ class Coupons_model extends Model
             ->where('customer_id', $id)->count();
     }
 
-    public function appliesOnWholeCart()
-    {
-        return $this->apply_coupon_on == 'whole_cart';
-    }
-
-    public function appliesOnMenuItems()
-    {
-        return $this->apply_coupon_on == 'menu_items';
-    }
-
-    public function appliesOnDelivery()
-    {
-        return $this->apply_coupon_on == 'delivery_fee';
-    }
-
     public static function getByCode($code)
     {
         return self::isEnabled()->whereCode($code)->first();
-    }
-
-    public static function getByCodeAndLocation($code, $locationId)
-    {
-        return self::isEnabled()->whereCodeAndLocation($code, $locationId)->first();
     }
 }

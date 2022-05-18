@@ -2,7 +2,7 @@
 
 namespace Igniter\Coupons\Requests;
 
-use System\Classes\FormRequest;
+use Igniter\System\Classes\FormRequest;
 
 class Coupon extends FormRequest
 {

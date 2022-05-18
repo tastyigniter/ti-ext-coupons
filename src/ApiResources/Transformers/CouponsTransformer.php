@@ -4,7 +4,7 @@ namespace Igniter\Coupons\ApiResources\Transformers;
 
 use Igniter\Api\ApiResources\Transformers\CategoryTransformer;
 use Igniter\Api\ApiResources\Transformers\MenuTransformer;
-use Igniter\Coupons\Models\Coupons_model;
+use Igniter\Coupons\Models\Coupon;
 use League\Fractal\TransformerAbstract;
 
 class CouponsTransformer extends TransformerAbstract
@@ -15,12 +15,12 @@ class CouponsTransformer extends TransformerAbstract
         'history',
     ];
 
-    public function transform(Coupons_model $coupon)
+    public function transform(Coupon $coupon)
     {
         return $coupon->toArray();
     }
 
-    public function includeCategories(Coupons_model $coupon)
+    public function includeCategories(Coupon $coupon)
     {
         return $this->collection(
             $coupon->categories,
@@ -29,7 +29,7 @@ class CouponsTransformer extends TransformerAbstract
         );
     }
 
-    public function includeMenus(Coupons_model $coupon)
+    public function includeMenus(Coupon $coupon)
     {
         return $this->collection(
             $coupon->menus,
@@ -38,7 +38,7 @@ class CouponsTransformer extends TransformerAbstract
         );
     }
 
-    public function includeHistory(Coupons_model $coupon)
+    public function includeHistory(Coupon $coupon)
     {
         return $this->collection(
             $coupon->history,

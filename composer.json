@@ -14,6 +14,11 @@
       "email": "sam@sampoyigi.com"
     }
   ],
+  "autoload": {
+    "psr-4": {
+      "Igniter\\Coupons\\": "src/"
+    }
+  },
   "extra": {
     "tastyigniter-extension": {
       "code": "igniter.coupons",

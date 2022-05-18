@@ -3,12 +3,11 @@
 namespace Igniter\Coupons\Models;
 
 use Igniter\Flame\Database\Model;
-use Illuminate\Support\Facades\Event;
 
 /**
  * Coupons History Model Class
  */
-class Coupons_history_model extends Model
+class CouponHistory extends Model
 {
     /**
      * @var string The database table name
@@ -36,9 +35,9 @@ class Coupons_history_model extends Model
 
     public $relation = [
         'belongsTo' => [
-            'customer' => \Admin\Models\Customers_model::class,
-            'order' => \Admin\Models\Orders_model::class,
-            'coupon' => \Igniter\Coupons\Models\Coupons_model::class,
+            'customer' => \Igniter\Admin\Models\Customer::class,
+            'order' => \Igniter\Admin\Models\Order::class,
+            'coupon' => \Igniter\Coupons\Models\Coupon::class,
         ],
     ];
 
@@ -47,24 +46,6 @@ class Coupons_history_model extends Model
     public static $allowedSortingColumns = [
         'created_at desc', 'created_at asc',
     ];
-
-    public static function redeem($orderId)
-    {
-        if (!$couponHistory = static::query()->orderBy('created_at', 'desc')->firstWhere('order_id', $orderId)) {
-            return false;
-        }
-
-        $couponHistory->update([
-            'status' => 1,
-            'created_at' => now(),
-        ]);
-
-        static::query()->where('order_id', $orderId)
-            ->where('coupon_history_id', '<>', $couponHistory->coupon_history_id)
-            ->delete();
-
-        Event::fire('admin.order.couponRedeemed', [$couponHistory]);
-    }
 
     public function getCustomerNameAttribute($value)
     {
@@ -124,17 +105,13 @@ class Coupons_history_model extends Model
     }
 
     /**
-     * @param object $couponTotal
-     * @param \Admin\Models\Orders_model $order
-     * @return \Admin\Models\Coupons_history_model|bool
+     * @param \Igniter\Flame\Cart\CartCondition $couponCondition
+     * @param \Igniter\Admin\Models\Order $order
+     * @return \Igniter\Admin\Models\CouponHistory|bool
      */
-    public static function createHistory($couponTotal, $order)
+    public static function createHistory($couponCondition, $order)
     {
-        if ($couponTotal->code === 'coupon' && $couponTotal->title) {
-            $couponTotal->code = str_after(str_before($couponTotal->title, ']'), '[');
-        }
-
-        if (!$coupon = Coupons_model::firstWhere('code', $couponTotal->code))
+        if (!$coupon = $couponCondition->getModel())
             return false;
 
         $model = new static;
@@ -142,10 +119,10 @@ class Coupons_history_model extends Model
         $model->customer_id = $order->customer ? $order->customer->getKey() : null;
         $model->coupon_id = $coupon->coupon_id;
         $model->code = $coupon->code;
-        $model->amount = $couponTotal->value;
+        $model->amount = $couponCondition->getValue();
         $model->min_total = $coupon->min_total;
 
-        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$model, $couponTotal, $order->customer, $coupon], true) === false)
+        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$model, $couponCondition, $order->customer, $coupon], true) === false)
             return false;
 
         $model->save();
