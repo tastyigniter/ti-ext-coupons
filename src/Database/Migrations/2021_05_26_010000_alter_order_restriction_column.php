@@ -7,8 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class AlterOrderRestrictionColumn extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::table('igniter_coupons', function (Blueprint $table) {
@@ -40,4 +39,4 @@ class AlterOrderRestrictionColumn extends Migration
                 ->update(['order_restriction' => $restriction]);
         });
     }
-}
+};

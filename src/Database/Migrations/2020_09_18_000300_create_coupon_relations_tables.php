@@ -6,8 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCouponRelationsTables extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         if (Schema::hasTable('igniter_coupon_categories'))
@@ -33,4 +32,4 @@ class CreateCouponRelationsTables extends Migration
         Schema::dropIfExists('igniter_coupon_categories');
         Schema::dropIfExists('igniter_coupon_menus');
     }
-}
+};

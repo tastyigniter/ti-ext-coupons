@@ -10,7 +10,7 @@ use Igniter\Coupons\Requests\Coupon;
  */
 class Coupons extends ApiController
 {
-    public $implement = ['Igniter.Api.Actions.RestController'];
+    public $implement = [\Igniter\Api\Http\Actions\RestController::class];
 
     public $restConfig = [
         'actions' => [
