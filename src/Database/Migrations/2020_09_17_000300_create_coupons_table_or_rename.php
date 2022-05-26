@@ -7,8 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCouponsTableOrRename extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         if (Schema::hasTable('coupons'))
@@ -82,6 +81,6 @@ class CreateCouponsTableOrRename extends Migration
 
     protected function getSeedRecords($name)
     {
-        return json_decode(file_get_contents(__DIR__.'/../records/'.$name.'.json'), true);
+        return json_decode(file_get_contents(__DIR__.'/../../../database/records/'.$name.'.json'), true);
     }
-}
+};

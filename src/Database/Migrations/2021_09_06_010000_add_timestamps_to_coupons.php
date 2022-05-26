@@ -6,8 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTimestampsToCoupons extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::table('igniter_coupons', function (Blueprint $table) {
@@ -26,4 +25,4 @@ class AddTimestampsToCoupons extends Migration
     public function down()
     {
     }
-}
+};

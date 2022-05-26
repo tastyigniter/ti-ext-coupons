@@ -9,7 +9,7 @@ use League\Fractal\TransformerAbstract;
 
 class CouponsTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = [
+    protected array $availableIncludes = [
         'menus',
         'categories',
         'history',
