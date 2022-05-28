@@ -2,13 +2,13 @@
 
 namespace Igniter\Coupons;
 
-use Igniter\Admin\Models\Customer;
 use Igniter\Admin\Models\Order;
 use Igniter\Cart\Classes\CartManager;
 use Igniter\Coupons\Models\Coupon;
 use Igniter\Coupons\Models\CouponHistory;
 use Igniter\Flame\Cart\Facades\Cart;
 use Igniter\Local\Facades\Location;
+use Igniter\Main\Models\Customer;
 use Igniter\System\Classes\BaseExtension;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
