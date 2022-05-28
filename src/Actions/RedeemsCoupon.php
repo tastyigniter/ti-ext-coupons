@@ -42,7 +42,7 @@ class RedeemsCoupon extends ModelAction
      *
      * @param \Igniter\Admin\Models\Order $order
      * @param \Igniter\Flame\Cart\CartCondition $couponCondition
-     * @param \Igniter\Admin\Models\Customer $customer
+     * @param \Igniter\Main\Models\Customer $customer
      *
      * @return int|bool
      */

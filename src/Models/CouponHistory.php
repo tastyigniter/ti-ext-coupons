@@ -35,7 +35,7 @@ class CouponHistory extends Model
 
     public $relation = [
         'belongsTo' => [
-            'customer' => \Igniter\Admin\Models\Customer::class,
+            'customer' => \Igniter\Main\Models\Customer::class,
             'order' => \Igniter\Admin\Models\Order::class,
             'coupon' => \Igniter\Coupons\Models\Coupon::class,
         ],
