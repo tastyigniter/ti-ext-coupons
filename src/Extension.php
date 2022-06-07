@@ -29,7 +29,7 @@ class Extension extends BaseExtension
                     if ($coupon->isExpired($orderDateTime))
                         return;
 
-                    $cartManager = CartManager::instance();
+                    $cartManager = resolve(CartManager::class);
                     $cartManager->applyCouponCondition($coupon->code);
                 });
         });
