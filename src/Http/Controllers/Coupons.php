@@ -1,6 +1,6 @@
 <?php
 
-namespace Igniter\Coupons\Controllers;
+namespace Igniter\Coupons\Http\Controllers;
 
 use Igniter\Admin\Facades\AdminMenu;
 
