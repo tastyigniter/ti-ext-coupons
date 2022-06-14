@@ -22,15 +22,16 @@ class Extension extends BaseExtension
             $model->implement[] = 'Igniter.Coupons.Actions.RedeemsCoupon';
         });
 
-        Event::listen('cart.added', function ($order) {
-            Coupons_model::isEnabled()->isAutoApplicable()
+        Event::listen('cart.added', function () {
+            Coupons_model::isEnabled()
+                ->isAutoApplicable()
+                ->whereHasOrDoesntHaveLocation(Location::getId())
                 ->each(function ($coupon) {
                     $orderDateTime = Location::orderDateTime();
                     if ($coupon->isExpired($orderDateTime))
                         return;
 
-                    $cartManager = CartManager::instance();
-                    $cartManager->applyCouponCondition($coupon->code);
+                    CartManager::instance()->applyCouponCondition($coupon->code);
                 });
         });
 

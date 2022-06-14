@@ -154,6 +154,11 @@ class Coupons_model extends Model
         });
     }
 
+    public function scopeWhereCodeAndLocation($query, $code, $locationId)
+    {
+        $query->whereHasOrDoesntHaveLocation($locationId)->whereCode($code);
+    }
+
     //
     // Events
     //
@@ -290,5 +295,10 @@ class Coupons_model extends Model
     public static function getByCode($code)
     {
         return self::isEnabled()->whereCode($code)->first();
+    }
+
+    public static function getByCodeAndLocation($code, $locationId)
+    {
+        return self::isEnabled()->whereCodeAndLocation($code, $locationId)->first();
     }
 }
