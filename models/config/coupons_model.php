@@ -1,4 +1,5 @@
 <?php
+
 $config['list']['filter'] = [
     'search' => [
         'prompt' => 'lang:igniter.coupons::default.text_filter_search',
@@ -85,7 +86,7 @@ $config['list']['columns'] = [
         'type' => 'text',
         'searchable' => true,
     ],
-    'locations' => [
+    'location_name' => [
         'label' => 'lang:admin::lang.column_location',
         'type' => 'text',
         'relation' => 'locations',
