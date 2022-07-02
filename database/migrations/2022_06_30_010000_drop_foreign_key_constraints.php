@@ -14,22 +14,22 @@ class DropForeignKeyConstraints extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::table('igniter_coupons_history', function (Blueprint $table) {
-            $table->dropForeign(['coupon_id']);
-            $table->dropForeign(['order_id']);
-            $table->dropForeign(['customer_id']);
-            $table->dropIndex(sprintf('%s%s_%s_foreign', DB::getTablePrefix(), 'igniter_coupons_history', 'coupon_id'));
-            $table->dropIndex(sprintf('%s%s_%s_foreign', DB::getTablePrefix(), 'igniter_coupons_history', 'order_id'));
-            $table->dropIndex(sprintf('%s%s_%s_foreign', DB::getTablePrefix(), 'igniter_coupons_history', 'customer_id'));
+            $table->dropForeignKeyIfExists('coupon_id');
+            $table->dropForeignKeyIfExists('order_id');
+            $table->dropForeignKeyIfExists('customer_id');
+            $table->dropIndexIfExists(sprintf('%s%s_%s_foreign', DB::getTablePrefix(), 'igniter_coupons_history', 'coupon_id'));
+            $table->dropIndexIfExists(sprintf('%s%s_%s_foreign', DB::getTablePrefix(), 'igniter_coupons_history', 'order_id'));
+            $table->dropIndexIfExists(sprintf('%s%s_%s_foreign', DB::getTablePrefix(), 'igniter_coupons_history', 'customer_id'));
         });
 
         Schema::table('igniter_coupon_categories', function (Blueprint $table) {
-            $table->dropForeign(['coupon_id']);
-            $table->dropForeign(['category_id']);
+            $table->dropForeignKeyIfExists('coupon_id');
+            $table->dropForeignKeyIfExists('category_id');
         });
 
         Schema::table('igniter_coupon_menus', function (Blueprint $table) {
-            $table->dropForeign(['coupon_id']);
-            $table->dropForeign(['menu_id']);
+            $table->dropForeignKeyIfExists('coupon_id');
+            $table->dropForeignKeyIfExists('menu_id');
         });
 
         Schema::enableForeignKeyConstraints();
