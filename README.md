@@ -25,4 +25,5 @@ security vulnerabilities.
 
 ### License
 
-TastyIgniter Coupons extension is open-sourced software licensed under the [MIT license](LICENSE).
+TastyIgniter Coupons extension is open-sourced software licensed under
+the [MIT license](https://github.com/tastyigniter/ti-ext-coupons/LICENSE.md).
