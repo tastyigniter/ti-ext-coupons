@@ -3,8 +3,8 @@
 namespace Igniter\Coupons\Actions;
 
 use Carbon\Carbon;
+use Igniter\Cart\CartCondition;
 use Igniter\Coupons\Models\CouponHistory;
-use Igniter\Flame\Cart\CartCondition;
 use Igniter\Flame\Traits\ExtensionTrait;
 use Igniter\System\Actions\ModelAction;
 use Illuminate\Support\Facades\Event;
@@ -41,7 +41,7 @@ class RedeemsCoupon extends ModelAction
      * Add cart coupon to order by order_id
      *
      * @param \Igniter\Admin\Models\Order $order
-     * @param \Igniter\Flame\Cart\CartCondition $couponCondition
+     * @param \Igniter\Cart\CartCondition $couponCondition
      * @param \Igniter\Main\Models\Customer $customer
      *
      * @return int|bool

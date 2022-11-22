@@ -105,7 +105,7 @@ class CouponHistory extends Model
     }
 
     /**
-     * @param \Igniter\Flame\Cart\CartCondition $couponCondition
+     * @param \Igniter\Cart\CartCondition $couponCondition
      * @param \Igniter\Admin\Models\Order $order
      * @return \Igniter\Admin\Models\CouponHistory|bool
      */
