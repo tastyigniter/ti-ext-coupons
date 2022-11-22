@@ -4,9 +4,9 @@ namespace Igniter\Coupons;
 
 use Igniter\Admin\Models\Order;
 use Igniter\Cart\Classes\CartManager;
+use Igniter\Cart\Facades\Cart;
 use Igniter\Coupons\Models\Coupon;
 use Igniter\Coupons\Models\CouponHistory;
-use Igniter\Flame\Cart\Facades\Cart;
 use Igniter\Local\Facades\Location;
 use Igniter\Main\Models\Customer;
 use Igniter\System\Classes\BaseExtension;
