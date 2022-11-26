@@ -73,19 +73,19 @@ return new class extends Migration {
     {
         try {
             Schema::table('igniter_coupons_history', function (Blueprint $table) {
-                $table->dropForeign(['coupon_id']);
-                $table->dropForeign(['order_id']);
-                $table->dropForeign(['customer_id']);
+                $table->dropForeignKeyIfExists('coupon_id');
+                $table->dropForeignKeyIfExists('order_id');
+                $table->dropForeignKeyIfExists('customer_id');
             });
 
             Schema::table('igniter_coupon_categories', function (Blueprint $table) {
-                $table->dropForeign(['coupon_id']);
-                $table->dropForeign(['category_id']);
+                $table->dropForeignKeyIfExists('coupon_id');
+                $table->dropForeignKeyIfExists('category_id');
             });
 
             Schema::table('igniter_coupon_menus', function (Blueprint $table) {
-                $table->dropForeign(['coupon_id']);
-                $table->dropForeign(['menu_id']);
+                $table->dropForeignKeyIfExists('coupon_id');
+                $table->dropForeignKeyIfExists('menu_id');
             });
         }
         catch (\Exception $e) {
