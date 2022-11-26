@@ -1,6 +1,6 @@
 {
   "name": "tastyigniter/ti-ext-coupons",
-  "type": "tastyigniter-extension",
+  "type": "tastyigniter-package",
   "description": "Extend the checkout experience with coupons and discount codes.",
   "keywords": [
     "tastyigniter",
