@@ -1,7 +1,5 @@
 <?php
 
-namespace Igniter\Coupons\Database\Migrations;
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -62,8 +60,8 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('igniter_coupons');
         Schema::dropIfExists('igniter_coupons_history');
+        Schema::dropIfExists('igniter_coupons');
     }
 
     protected function seedCoupons()
@@ -81,6 +79,6 @@ return new class extends Migration {
 
     protected function getSeedRecords($name)
     {
-        return json_decode(file_get_contents(__DIR__.'/../../../database/records/'.$name.'.json'), true);
+        return json_decode(file_get_contents(__DIR__.'/../../database/records/'.$name.'.json'), true);
     }
 };
