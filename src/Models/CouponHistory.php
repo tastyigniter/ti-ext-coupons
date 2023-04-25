@@ -111,8 +111,9 @@ class CouponHistory extends Model
      */
     public static function createHistory($couponCondition, $order)
     {
-        if (!$coupon = $couponCondition->getModel())
+        if (!$coupon = $couponCondition->getModel()) {
             return false;
+        }
 
         $model = new static;
         $model->order_id = $order->getKey();
@@ -122,8 +123,9 @@ class CouponHistory extends Model
         $model->amount = $couponCondition->getValue();
         $model->min_total = $coupon->min_total;
 
-        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$model, $couponCondition, $order->customer, $coupon], true) === false)
+        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$model, $couponCondition, $order->customer, $coupon], true) === false) {
             return false;
+        }
 
         $model->save();
 

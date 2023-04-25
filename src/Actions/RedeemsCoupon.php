@@ -15,7 +15,6 @@ class RedeemsCoupon extends ModelAction
 
     /**
      * Redeem coupon by order
-     * @param $couponCondition
      * @throws \Exception
      */
     public function redeemCoupon($couponCondition)
@@ -27,8 +26,9 @@ class RedeemsCoupon extends ModelAction
             ));
         }
 
-        if (!$couponLog = $this->logCouponHistory($couponCondition))
+        if (!$couponLog = $this->logCouponHistory($couponCondition)) {
             return false;
+        }
 
         $couponLog->status = 1;
         $couponLog->created_at = Carbon::now();
@@ -49,8 +49,9 @@ class RedeemsCoupon extends ModelAction
     public function logCouponHistory($couponCondition)
     {
         // Make sure order model exists
-        if (!$this->model->exists)
+        if (!$this->model->exists) {
             return false;
+        }
 
         return CouponHistory::createHistory($couponCondition, $this->model);
     }

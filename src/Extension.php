@@ -26,8 +26,9 @@ class Extension extends BaseExtension
             Coupon::isEnabled()->isAutoApplicable()
                 ->each(function ($coupon) {
                     $orderDateTime = Location::orderDateTime();
-                    if ($coupon->isExpired($orderDateTime))
+                    if ($coupon->isExpired($orderDateTime)) {
                         return;
+                    }
 
                     $cartManager = resolve(CartManager::class);
                     $cartManager->applyCouponCondition($coupon->code);
@@ -35,8 +36,9 @@ class Extension extends BaseExtension
         });
 
         Event::listen('admin.order.paymentProcessed', function ($order) {
-            if ($couponCondition = Cart::conditions()->get('coupon'))
+            if ($couponCondition = Cart::conditions()->get('coupon')) {
                 $order->redeemCoupon($couponCondition);
+            }
         });
 
         Customer::created(function ($customer) {
