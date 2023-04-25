@@ -1,5 +1,5 @@
 ---
-title: "Frontend Extension"
+title: "Coupons Extension"
 section: "extensions"
 sortOrder: 50
 ---
