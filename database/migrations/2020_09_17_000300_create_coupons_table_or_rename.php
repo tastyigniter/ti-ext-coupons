@@ -5,17 +5,21 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up()
     {
-        if (Schema::hasTable('coupons'))
+        if (Schema::hasTable('coupons')) {
             Schema::rename('coupons', 'igniter_coupons');
+        }
 
-        if (Schema::hasTable('coupons_history'))
+        if (Schema::hasTable('coupons_history')) {
             Schema::rename('coupons_history', 'igniter_coupons_history');
+        }
 
-        if (Schema::hasTable('igniter_coupons'))
+        if (Schema::hasTable('igniter_coupons')) {
             return;
+        }
 
         Schema::create('igniter_coupons', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -66,8 +70,9 @@ return new class extends Migration {
 
     protected function seedCoupons()
     {
-        if (DB::table('igniter_coupons')->count())
+        if (DB::table('igniter_coupons')->count()) {
             return;
+        }
 
         DB::table('igniter_coupons')->insert(array_map(function ($record) {
             $record['order_restriction'] = 0;
