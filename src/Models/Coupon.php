@@ -49,14 +49,14 @@ class Coupon extends Model
 
     public $relation = [
         'belongsToMany' => [
-            'categories' => [\Admin\Models\Category::class, 'table' => 'igniter_coupon_categories'],
-            'menus' => [\Admin\Models\Menu::class, 'table' => 'igniter_coupon_menus'],
+            'categories' => [\Igniter\Admin\Models\Category::class, 'table' => 'igniter_coupon_categories'],
+            'menus' => [\Igniter\Admin\Models\Menu::class, 'table' => 'igniter_coupon_menus'],
         ],
         'hasMany' => [
             'history' => \Igniter\Coupons\Models\CouponHistory::class,
         ],
         'morphToMany' => [
-            'locations' => [\Admin\Models\Location::class, 'name' => 'locationable'],
+            'locations' => [\Igniter\Admin\Models\Location::class, 'name' => 'locationable'],
         ],
     ];
 
