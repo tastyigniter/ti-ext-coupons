@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Function array_get not found\\.$#"
-			count: 1
-			path: database/migrations/2021_05_26_010000_alter_order_restriction_column.php
-
-		-
 			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Schema\\\\Blueprint\\:\\:dropForeignKeyIfExists\\(\\)\\.$#"
 			count: 7
 			path: database/migrations/2021_11_18_010300_add_foreign_key_constraints_to_tables.php
@@ -19,26 +14,6 @@ parameters:
 			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Schema\\\\Blueprint\\:\\:dropIndexIfExists\\(\\)\\.$#"
 			count: 3
 			path: database/migrations/2022_06_30_010000_drop_foreign_key_constraints.php
-
-		-
-			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Location not found\\.$#"
-			count: 2
-			path: resources/models/coupon.php
-
-		-
-			message: "#^Function admin_url not found\\.$#"
-			count: 2
-			path: resources/models/coupon.php
-
-		-
-			message: "#^Function currency_format not found\\.$#"
-			count: 1
-			path: resources/models/coupon.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Actions\\\\RedeemsCoupon\\:\\:\\$model\\.$#"
-			count: 2
-			path: src/Actions/RedeemsCoupon.php
 
 		-
 			message: "#^Call to an undefined static method Illuminate\\\\Support\\\\Facades\\\\Event\\:\\:fire\\(\\)\\.$#"
@@ -61,11 +36,6 @@ parameters:
 			path: src/Actions/RedeemsCoupon.php
 
 		-
-			message: "#^Class Igniter\\\\Cart\\\\CartCondition not found\\.$#"
-			count: 2
-			path: src/Actions/RedeemsCoupon.php
-
-		-
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$customer$#"
 			count: 1
 			path: src/Actions/RedeemsCoupon.php
@@ -74,21 +44,6 @@ parameters:
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$order$#"
 			count: 1
 			path: src/Actions/RedeemsCoupon.php
-
-		-
-			message: "#^Parameter \\$couponCondition of method Igniter\\\\Coupons\\\\Actions\\\\RedeemsCoupon\\:\\:logCouponHistory\\(\\) has invalid type Igniter\\\\Cart\\\\CartCondition\\.$#"
-			count: 1
-			path: src/Actions/RedeemsCoupon.php
-
-		-
-			message: "#^Class Igniter\\\\Api\\\\Http\\\\Actions\\\\RestController not found\\.$#"
-			count: 1
-			path: src/ApiResources/Coupons.php
-
-		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:toArray\\(\\)\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/CouponHistoryTransformer.php
 
 		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$categories\\.$#"
@@ -106,41 +61,6 @@ parameters:
 			path: src/ApiResources/Transformers/CouponsTransformer.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\ApiResources\\\\Transformers\\\\CouponsTransformer\\:\\:collection\\(\\)\\.$#"
-			count: 3
-			path: src/ApiResources/Transformers/CouponsTransformer.php
-
-		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:toArray\\(\\)\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/CouponsTransformer.php
-
-		-
-			message: "#^Instantiated class Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\CategoryTransformer not found\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/CouponsTransformer.php
-
-		-
-			message: "#^Instantiated class Igniter\\\\Api\\\\ApiResources\\\\Transformers\\\\MenuTransformer not found\\.$#"
-			count: 1
-			path: src/ApiResources/Transformers/CouponsTransformer.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\CartConditions\\\\Coupon\\:\\:\\$calculatedValue\\.$#"
-			count: 1
-			path: src/CartConditions/Coupon.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\CartConditions\\\\Coupon\\:\\:\\$label\\.$#"
-			count: 1
-			path: src/CartConditions/Coupon.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\CartConditions\\\\Coupon\\:\\:\\$target\\.$#"
-			count: 1
-			path: src/CartConditions/Coupon.php
-
-		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$code\\.$#"
 			count: 1
 			path: src/CartConditions/Coupon.php
@@ -151,64 +71,49 @@ parameters:
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\CartConditions\\\\Coupon\\:\\:getMetaData\\(\\)\\.$#"
-			count: 3
+			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Models\\\\Menu\\:\\:whereHasCategory\\(\\)\\.$#"
+			count: 1
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\CartConditions\\\\Coupon\\:\\:removeMetaData\\(\\)\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Cart\\\\Facades\\\\Cart\\:\\:content\\(\\)\\.$#"
+			count: 1
+			path: src/CartConditions/Coupon.php
+
+		-
+			message: "#^Call to an undefined static method Igniter\\\\Local\\\\Facades\\\\Location\\:\\:getId\\(\\)\\.$#"
 			count: 2
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to static method content\\(\\) on an unknown class Igniter\\\\Cart\\\\Facades\\\\Cart\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Local\\\\Facades\\\\Location\\:\\:orderDateTime\\(\\)\\.$#"
 			count: 1
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to static method getId\\(\\) on an unknown class Igniter\\\\Local\\\\Facades\\\\Location\\.$#"
-			count: 2
-			path: src/CartConditions/Coupon.php
-
-		-
-			message: "#^Call to static method getUser\\(\\) on an unknown class Igniter\\\\Main\\\\Facades\\\\Auth\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Local\\\\Facades\\\\Location\\:\\:orderType\\(\\)\\.$#"
 			count: 1
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to static method orderDateTime\\(\\) on an unknown class Igniter\\\\Local\\\\Facades\\\\Location\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Main\\\\Facades\\\\Auth\\:\\:getUser\\(\\)\\.$#"
 			count: 1
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to static method orderType\\(\\) on an unknown class Igniter\\\\Local\\\\Facades\\\\Location\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Models\\\\Order\\:\\:where\\(\\)\\.$#"
 			count: 1
-			path: src/CartConditions/Coupon.php
+			path: src/Extension.php
 
 		-
-			message: "#^Call to static method whereHasCategory\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Menu\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Cart\\\\Classes\\\\CartManager\\:\\:instance\\(\\)\\.$#"
 			count: 1
-			path: src/CartConditions/Coupon.php
+			path: src/Extension.php
 
 		-
-			message: "#^Function currency_format not found\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Cart\\\\Facades\\\\Cart\\:\\:conditions\\(\\)\\.$#"
 			count: 1
-			path: src/CartConditions/Coupon.php
-
-		-
-			message: "#^Function flash not found\\.$#"
-			count: 2
-			path: src/CartConditions/Coupon.php
-
-		-
-			message: "#^Function lang not found\\.$#"
-			count: 9
-			path: src/CartConditions/Coupon.php
-
-		-
-			message: "#^Instantiated class Igniter\\\\Flame\\\\Exception\\\\ApplicationException not found\\.$#"
-			count: 7
-			path: src/CartConditions/Coupon.php
+			path: src/Extension.php
 
 		-
 			message: "#^Call to an undefined static method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:isEnabled\\(\\)\\.$#"
@@ -221,79 +126,19 @@ parameters:
 			path: src/Extension.php
 
 		-
-			message: "#^Call to static method conditions\\(\\) on an unknown class Igniter\\\\Cart\\\\Facades\\\\Cart\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Local\\\\Facades\\\\Location\\:\\:getId\\(\\)\\.$#"
 			count: 1
 			path: src/Extension.php
 
 		-
-			message: "#^Call to static method created\\(\\) on an unknown class Igniter\\\\Main\\\\Models\\\\Customer\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Local\\\\Facades\\\\Location\\:\\:orderDateTime\\(\\)\\.$#"
 			count: 1
 			path: src/Extension.php
 
 		-
-			message: "#^Call to static method extend\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
-			count: 1
-			path: src/Extension.php
-
-		-
-			message: "#^Call to static method getId\\(\\) on an unknown class Igniter\\\\Local\\\\Facades\\\\Location\\.$#"
-			count: 1
-			path: src/Extension.php
-
-		-
-			message: "#^Call to static method instance\\(\\) on an unknown class Igniter\\\\Cart\\\\Classes\\\\CartManager\\.$#"
-			count: 1
-			path: src/Extension.php
-
-		-
-			message: "#^Call to static method orderDateTime\\(\\) on an unknown class Igniter\\\\Local\\\\Facades\\\\Location\\.$#"
-			count: 1
-			path: src/Extension.php
-
-		-
-			message: "#^Call to static method where\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
-			count: 1
-			path: src/Extension.php
-
-		-
-			message: "#^Function admin_url not found\\.$#"
-			count: 1
-			path: src/Extension.php
-
-		-
-			message: "#^Function lang not found\\.$#"
-			count: 1
-			path: src/Extension.php
-
-		-
-			message: "#^Call to static method setContext\\(\\) on an unknown class Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\:\\:setContext\\(\\)\\.$#"
 			count: 1
 			path: src/Http/Controllers/Coupons.php
-
-		-
-			message: "#^Class Igniter\\\\Admin\\\\Http\\\\Actions\\\\FormController not found\\.$#"
-			count: 1
-			path: src/Http/Controllers/Coupons.php
-
-		-
-			message: "#^Class Igniter\\\\Admin\\\\Http\\\\Actions\\\\ListController not found\\.$#"
-			count: 1
-			path: src/Http/Controllers/Coupons.php
-
-		-
-			message: "#^Class Igniter\\\\Admin\\\\Http\\\\Actions\\\\LocationAwareController not found\\.$#"
-			count: 1
-			path: src/Http/Controllers/Coupons.php
-
-		-
-			message: "#^Igniter\\\\Coupons\\\\Http\\\\Controllers\\\\Coupons\\:\\:__construct\\(\\) calls parent\\:\\:__construct\\(\\) but Igniter\\\\Coupons\\\\Http\\\\Controllers\\\\Coupons does not extend any class\\.$#"
-			count: 1
-			path: src/Http/Controllers/Coupons.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$attributes\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
 
 		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$customer_redemptions\\.$#"
@@ -303,11 +148,6 @@ parameters:
 		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$discount\\.$#"
 			count: 3
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$exists\\.$#"
-			count: 2
 			path: src/Models/Coupon.php
 
 		-
@@ -381,11 +221,6 @@ parameters:
 			path: src/Models/Coupon.php
 
 		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:fireEvent\\(\\)\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
-
-		-
 			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:history\\(\\)\\.$#"
 			count: 2
 			path: src/Models/Coupon.php
@@ -421,31 +256,6 @@ parameters:
 			path: src/Models/Coupon.php
 
 		-
-			message: "#^Call to method getKey\\(\\) on an unknown class Igniter\\\\Flame\\\\Auth\\\\Models\\\\User\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Category not found\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Location not found\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Menu not found\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Function lang not found\\.$#"
-			count: 2
-			path: src/Models/Coupon.php
-
-		-
 			message: "#^Method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:addMenuCategories\\(\\) should return bool but return statement is missing\\.$#"
 			count: 1
 			path: src/Models/Coupon.php
@@ -457,11 +267,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\$orderDateTime of method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:isExpired\\(\\) has invalid type Carbon\\\\Carbon\\\\Carbon\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Parameter \\$user of method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:customerHasMaxRedemption\\(\\) has invalid type Igniter\\\\Flame\\\\Auth\\\\Models\\\\User\\.$#"
 			count: 1
 			path: src/Models/Coupon.php
 
@@ -479,6 +284,11 @@ parameters:
 			message: "#^Variable \\$sort might not be defined\\.$#"
 			count: 1
 			path: src/Models/Coupon.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Order\\:\\:\\$customer\\.$#"
+			count: 1
+			path: src/Models/CouponHistory.php
 
 		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:\\$amount\\.$#"
@@ -521,62 +331,12 @@ parameters:
 			path: src/Models/CouponHistory.php
 
 		-
-			message: "#^Access to property \\$customer on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
-			count: 3
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:fireEvent\\(\\)\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:fireSystemEvent\\(\\)\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:save\\(\\)\\.$#"
-			count: 2
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Call to method getKey\\(\\) on an unknown class Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Call to method getModel\\(\\) on an unknown class Igniter\\\\Cart\\\\CartCondition\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Call to method getValue\\(\\) on an unknown class Igniter\\\\Cart\\\\CartCondition\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Class Igniter\\\\Admin\\\\Models\\\\Order not found\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Class Igniter\\\\Main\\\\Models\\\\Customer not found\\.$#"
+			message: "#^Call to an undefined method Igniter\\\\Cart\\\\CartCondition\\:\\:getModel\\(\\)\\.$#"
 			count: 1
 			path: src/Models/CouponHistory.php
 
 		-
 			message: "#^Method Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:createHistory\\(\\) has invalid return type Igniter\\\\Admin\\\\Models\\\\CouponHistory\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Parameter \\$couponCondition of method Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:createHistory\\(\\) has invalid type Igniter\\\\Cart\\\\CartCondition\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Parameter \\$order of method Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:createHistory\\(\\) has invalid type Igniter\\\\Admin\\\\Models\\\\Order\\.$#"
 			count: 1
 			path: src/Models/CouponHistory.php
 
@@ -609,13 +369,3 @@ parameters:
 			message: "#^Variable \\$sort might not be defined\\.$#"
 			count: 1
 			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Requests\\\\Coupon\\:\\:inputWith\\(\\)\\.$#"
-			count: 1
-			path: src/Requests/Coupon.php
-
-		-
-			message: "#^Function lang not found\\.$#"
-			count: 20
-			path: src/Requests/Coupon.php
