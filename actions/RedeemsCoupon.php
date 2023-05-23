@@ -15,26 +15,14 @@ class RedeemsCoupon extends ModelAction
 
     /**
      * Redeem coupon by order
-     * @param $couponCondition
-     * @throws \Exception
      */
-    public function redeemCoupon($couponCondition)
+    public function redeemCoupon()
     {
-        if (!$couponCondition instanceof CartCondition) {
-            throw new \InvalidArgumentException(sprintf(
-                'Invalid argument, expected %s, got %s',
-                CartCondition::class, get_class($couponCondition)
-            ));
+        if (!$this->model->getOrderTotals()->keyBy()->get('coupon')) {
+            return;
         }
 
-        if (!$couponLog = $this->logCouponHistory($couponCondition))
-            return false;
-
-        $couponLog->status = 1;
-        $couponLog->created_at = Carbon::now();
-        $couponLog->save();
-
-        Event::fire('admin.order.couponRedeemed', [$couponLog]);
+        Coupons_history_model::redeem($this->model->order_id);
     }
 
     /**
@@ -48,6 +36,13 @@ class RedeemsCoupon extends ModelAction
      */
     public function logCouponHistory($couponCondition)
     {
+        if (!$couponCondition instanceof CartCondition) {
+            throw new \InvalidArgumentException(sprintf(
+                'Invalid argument, expected %s, got %s',
+                CartCondition::class, get_class($couponCondition)
+            ));
+        }
+
         // Make sure order model exists
         if (!$this->model->exists)
             return false;

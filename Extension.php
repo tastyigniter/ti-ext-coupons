@@ -35,9 +35,14 @@ class Extension extends BaseExtension
                 });
         });
 
+        Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
+            if ($couponCondition = Cart::conditions()->get('coupon')) {
+                $order->logCouponHistory($couponCondition);
+            }
+        });
+
         Event::listen('admin.order.paymentProcessed', function ($order) {
-            if ($couponCondition = Cart::conditions()->get('coupon'))
-                $order->redeemCoupon($couponCondition);
+            $order->redeemCoupon();
         });
 
         Customers_model::created(function ($customer) {
