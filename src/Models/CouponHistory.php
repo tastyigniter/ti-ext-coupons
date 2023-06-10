@@ -3,12 +3,15 @@
 namespace Igniter\Coupons\Models;
 
 use Igniter\Flame\Database\Model;
+use Igniter\Main\Models\Concerns\HasCustomer;
 
 /**
  * Coupons History Model Class
  */
 class CouponHistory extends Model
 {
+    use HasCustomer;
+
     /**
      * @var string The database table name
      */
@@ -18,6 +21,8 @@ class CouponHistory extends Model
      * @var string The database table primary key
      */
     protected $primaryKey = 'coupon_history_id';
+
+    public $timestamps = true;
 
     protected $guarded = [];
 
@@ -71,7 +76,7 @@ class CouponHistory extends Model
     /**
      * @param \Igniter\Cart\CartCondition $couponCondition
      * @param \Igniter\Admin\Models\Order $order
-     * @return \Igniter\Admin\Models\CouponHistory|bool
+     * @return \Igniter\Coupons\Models\CouponHistory|bool
      */
     public static function createHistory($couponCondition, $order)
     {
