@@ -62,7 +62,11 @@ class Coupon extends Model
         ],
     ];
 
-    public static $allowedSortingColumns = [
+    protected array $queryModifierFilters = [
+        'enabled' => ['applySwitchable', 'default' => true],
+    ];
+
+    protected array $queryModifierSorts = [
         'name desc', 'name asc',
         'coupon_id desc', 'coupon_id asc',
         'code desc', 'code asc',
@@ -96,69 +100,6 @@ class Coupon extends Model
     public function getFormattedDiscountAttribute($value)
     {
         return ($this->type == 'P') ? round($this->discount).'%' : number_format($this->discount, 2);
-    }
-
-    //
-    // Scopes
-    //
-
-    public function scopeListFrontEnd($query, $options = [])
-    {
-        extract(array_merge([
-            'page' => 1,
-            'pageLimit' => 20,
-            'sort' => 'id desc',
-        ], $options));
-
-        $query->where('status', '>=', 1);
-
-        if (!is_array($sort)) {
-            $sort = [$sort];
-        }
-
-        foreach ($sort as $_sort) {
-            if (in_array($_sort, self::$allowedSortingColumns)) {
-                $parts = explode(' ', $_sort);
-                if (count($parts) < 2) {
-                    array_push($parts, 'desc');
-                }
-                [$sortField, $sortDirection] = $parts;
-                $query->orderBy($sortField, $sortDirection);
-            }
-        }
-
-        $this->fireEvent('model.extendListFrontEndQuery', [$query]);
-
-        return $query->paginate($pageLimit, $page);
-    }
-
-    public function scopeIsEnabled($query)
-    {
-        return $query->where('status', '1');
-    }
-
-    public function scopeIsAutoApplicable($query)
-    {
-        return $query->where('auto_apply', '1');
-    }
-
-    public function scopeWhereHasCategory($query, $categoryId)
-    {
-        $query->whereHas('categories', function ($q) use ($categoryId) {
-            $q->where('categories.category_id', $categoryId);
-        });
-    }
-
-    public function scopeWhereHasMenu($query, $menuId)
-    {
-        $query->whereHas('menus', function ($q) use ($menuId) {
-            $q->where('menus.menu_id', $menuId);
-        });
-    }
-
-    public function scopeWhereCodeAndLocation($query, $code, $locationId)
-    {
-        $query->whereHasOrDoesntHaveLocation($locationId)->whereCode($code);
     }
 
     //
@@ -225,7 +166,7 @@ class Coupon extends Model
     /**
      * Check if a coupone is expired
      *
-     * @param Carbon\Carbon $orderDateTime orderDateTime
+     * @param \Carbon\Carbon $orderDateTime orderDateTime
      *
      * @return bool
      */
