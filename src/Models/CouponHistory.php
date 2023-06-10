@@ -41,10 +41,14 @@ class CouponHistory extends Model
         ],
     ];
 
-    public $timestamps = true;
+    protected array $queryModifierFilters = [
+        'redeemed' => ['applyRedeemed', 'default' => true],
+        'customer' => 'applyCustomer',
+        'order_id' => 'whereOrderId',
+    ];
 
-    public static $allowedSortingColumns = [
-        'created_at desc', 'created_at asc',
+    protected array $queryModifierSorts = [
+        'created_at desc' => true, 'created_at asc',
     ];
 
     public function getCustomerNameAttribute($value)
@@ -52,49 +56,9 @@ class CouponHistory extends Model
         return ($this->customer && $this->customer->exists) ? $this->customer->full_name : $value;
     }
 
-    public function scopeIsEnabled($query)
+    public function scopeApplyRedeemed($query)
     {
-        return $query->where('status', '1');
-    }
-
-    public function scopeListFrontEnd($query, $options = [])
-    {
-        extract(array_merge([
-            'page' => 1,
-            'pageLimit' => 20,
-            'customer' => null,
-            'order_id' => null,
-            'sort' => 'created_at desc',
-        ], $options));
-
-        $query->where('status', '>=', 1);
-
-        if (strlen($customer_id)) {
-            $query->where('customer_id', $customer_id);
-        }
-
-        if (strlen($order_id)) {
-            $query->where('order_id', $order_id);
-        }
-
-        if (!is_array($sort)) {
-            $sort = [$sort];
-        }
-
-        foreach ($sort as $_sort) {
-            if (in_array($_sort, self::$allowedSortingColumns)) {
-                $parts = explode(' ', $_sort);
-                if (count($parts) < 2) {
-                    array_push($parts, 'desc');
-                }
-                [$sortField, $sortDirection] = $parts;
-                $query->orderBy($sortField, $sortDirection);
-            }
-        }
-
-        $this->fireEvent('model.extendListFrontEndQuery', [$query]);
-
-        return $query->paginate($pageLimit, $page);
+        return $query->where('status', '>=', 1);
     }
 
     public function touchStatus()
