@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Igniter\Admin\Traits\Locationable;
 use Igniter\Flame\Auth\Models\User;
 use Igniter\Flame\Database\Model;
+use Igniter\System\Models\Concerns\Switchable;
 
 /**
  * Coupons Model Class
@@ -13,6 +14,7 @@ use Igniter\Flame\Database\Model;
 class Coupon extends Model
 {
     use Locationable;
+    use Switchable;
 
     const LOCATIONABLE_RELATION = 'locations';
 
@@ -154,6 +156,11 @@ class Coupon extends Model
         });
     }
 
+    public function scopeWhereCodeAndLocation($query, $code, $locationId)
+    {
+        $query->whereHasOrDoesntHaveLocation($locationId)->whereCode($code);
+    }
+
     //
     // Events
     //
@@ -284,7 +291,7 @@ class Coupon extends Model
 
     public function countRedemptions()
     {
-        return $this->history()->isEnabled()->count();
+        return $this->history()->whereIsEnabled()->count();
     }
 
     public function countCustomerRedemptions($id)
@@ -295,6 +302,11 @@ class Coupon extends Model
 
     public static function getByCode($code)
     {
-        return self::isEnabled()->whereCode($code)->first();
+        return self::whereIsEnabled()->whereCode($code)->first();
+    }
+
+    public static function getByCodeAndLocation($code, $locationId)
+    {
+        return self::whereIsEnabled()->whereCodeAndLocation($code, $locationId)->first();
     }
 }
