@@ -3,7 +3,7 @@
 namespace Igniter\Coupons\ApiResources;
 
 use Igniter\Api\Classes\ApiController;
-use Igniter\Coupons\Requests\Coupon;
+use Igniter\Coupons\Requests\CouponRequest;
 
 /**
  * Coupons API Controller
@@ -22,7 +22,7 @@ class Coupons extends ApiController
             'update' => [],
             'destroy' => [],
         ],
-        'request' => Coupon::class,
+        'request' => CouponRequest::class,
         'repository' => Repositories\CouponsRepository::class,
         'transformer' => Transformers\CouponsTransformer::class,
     ];

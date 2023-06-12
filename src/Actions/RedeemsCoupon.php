@@ -40,9 +40,9 @@ class RedeemsCoupon extends ModelAction
     /**
      * Add cart coupon to order by order_id
      *
-     * @param \Igniter\Admin\Models\Order $order
+     * @param \Igniter\Cart\Models\Order $order
      * @param \Igniter\Cart\CartCondition $couponCondition
-     * @param \Igniter\Main\Models\Customer $customer
+     * @param \Igniter\User\Models\Customer $customer
      *
      * @return int|bool
      */

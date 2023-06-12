@@ -3,14 +3,14 @@
 namespace Igniter\Coupons\CartConditions;
 
 use Exception;
-use Igniter\Admin\Models\Menu;
 use Igniter\Cart\CartCondition;
 use Igniter\Cart\Concerns\ActsAsItemable;
 use Igniter\Cart\Facades\Cart;
+use Igniter\Cart\Models\Menu;
 use Igniter\Coupons\Models\Coupon as CouponModel;
 use Igniter\Flame\Exception\ApplicationException;
 use Igniter\Local\Facades\Location;
-use Igniter\Main\Facades\Auth;
+use Igniter\User\Facades\Auth;
 
 class Coupon extends CartCondition
 {

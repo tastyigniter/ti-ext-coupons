@@ -10,7 +10,7 @@ $config['list']['filter'] = [
             'label' => 'lang:admin::lang.text_filter_location',
             'type' => 'selectlist',
             'scope' => 'whereHasLocation',
-            'modelClass' => \Igniter\Admin\Models\Location::class,
+            'modelClass' => \Igniter\Local\Models\Location::class,
             'nameFrom' => 'location_name',
             'locationAware' => true,
         ],
@@ -314,7 +314,7 @@ $config['form']['tabs'] = [
             'type' => 'checkboxtoggle',
             'comment' => 'lang:igniter.coupons::default.help_order_restriction',
             'span' => 'right',
-            'options' => [\Igniter\Admin\Models\Location::class, 'getOrderTypeOptions'],
+            'options' => [\Igniter\Local\Models\Location::class, 'getOrderTypeOptions'],
         ],
         'redemptions' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',

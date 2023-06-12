@@ -4,7 +4,7 @@ namespace Igniter\Coupons\Requests;
 
 use Igniter\System\Classes\FormRequest;
 
-class Coupon extends FormRequest
+class CouponRequest extends FormRequest
 {
     public function attributes()
     {

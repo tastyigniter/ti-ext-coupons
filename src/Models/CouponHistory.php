@@ -3,7 +3,7 @@
 namespace Igniter\Coupons\Models;
 
 use Igniter\Flame\Database\Model;
-use Igniter\Main\Models\Concerns\HasCustomer;
+use Igniter\User\Models\Concerns\HasCustomer;
 
 /**
  * Coupons History Model Class
@@ -40,8 +40,8 @@ class CouponHistory extends Model
 
     public $relation = [
         'belongsTo' => [
-            'customer' => \Igniter\Main\Models\Customer::class,
-            'order' => \Igniter\Admin\Models\Order::class,
+            'customer' => \Igniter\User\Models\Customer::class,
+            'order' => \Igniter\Cart\Models\Order::class,
             'coupon' => \Igniter\Coupons\Models\Coupon::class,
         ],
     ];
@@ -75,7 +75,7 @@ class CouponHistory extends Model
 
     /**
      * @param \Igniter\Cart\CartCondition $couponCondition
-     * @param \Igniter\Admin\Models\Order $order
+     * @param \Igniter\Cart\Models\Order $order
      * @return \Igniter\Coupons\Models\CouponHistory|bool
      */
     public static function createHistory($couponCondition, $order)
