@@ -2,19 +2,24 @@
 
 namespace Igniter\Coupons;
 
-use Igniter\Admin\Models\Order;
 use Igniter\Cart\Classes\CartManager;
 use Igniter\Cart\Facades\Cart;
+use Igniter\Cart\Models\Order;
 use Igniter\Coupons\Models\Coupon;
 use Igniter\Coupons\Models\CouponHistory;
+use Igniter\Coupons\Models\Scopes\CouponScope;
 use Igniter\Local\Facades\Location;
-use Igniter\Main\Models\Customer;
 use Igniter\System\Classes\BaseExtension;
+use Igniter\User\Models\Customer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 
 class Extension extends BaseExtension
 {
+    protected array $scopes = [
+        Coupon::class => CouponScope::class,
+    ];
+
     public function boot()
     {
         Order::extend(function ($model) {
@@ -22,16 +27,17 @@ class Extension extends BaseExtension
             $model->implement[] = 'Igniter.Coupons.Actions.RedeemsCoupon';
         });
 
-        Event::listen('cart.added', function ($order) {
-            Coupon::isEnabled()->isAutoApplicable()
+        Event::listen('cart.added', function () {
+            Coupon::query()->isEnabled()
+                ->isAutoApplicable()
+                ->whereHasOrDoesntHaveLocation(Location::getId())
                 ->each(function ($coupon) {
                     $orderDateTime = Location::orderDateTime();
                     if ($coupon->isExpired($orderDateTime)) {
                         return;
                     }
 
-                    $cartManager = resolve(CartManager::class);
-                    $cartManager->applyCouponCondition($coupon->code);
+                    resolve(CartManager::class)->applyCouponCondition($coupon->code);
                 });
         });
 

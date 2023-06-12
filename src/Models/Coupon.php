@@ -3,10 +3,10 @@
 namespace Igniter\Coupons\Models;
 
 use Carbon\Carbon;
-use Igniter\Admin\Traits\Locationable;
-use Igniter\Flame\Auth\Models\User;
 use Igniter\Flame\Database\Model;
+use Igniter\Local\Models\Concerns\Locationable;
 use Igniter\System\Models\Concerns\Switchable;
+use Igniter\User\Auth\Models\User;
 
 /**
  * Coupons Model Class
@@ -51,14 +51,14 @@ class Coupon extends Model
 
     public $relation = [
         'belongsToMany' => [
-            'categories' => [\Igniter\Admin\Models\Category::class, 'table' => 'igniter_coupon_categories'],
-            'menus' => [\Igniter\Admin\Models\Menu::class, 'table' => 'igniter_coupon_menus'],
+            'categories' => [\Igniter\Cart\Models\Category::class, 'table' => 'igniter_coupon_categories'],
+            'menus' => [\Igniter\Cart\Models\Menu::class, 'table' => 'igniter_coupon_menus'],
         ],
         'hasMany' => [
             'history' => \Igniter\Coupons\Models\CouponHistory::class,
         ],
         'morphToMany' => [
-            'locations' => [\Igniter\Admin\Models\Location::class, 'name' => 'locationable'],
+            'locations' => [\Igniter\Local\Models\Location::class, 'name' => 'locationable'],
         ],
     ];
 

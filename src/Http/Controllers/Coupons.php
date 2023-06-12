@@ -9,7 +9,7 @@ class Coupons extends \Igniter\Admin\Classes\AdminController
     public $implement = [
         \Igniter\Admin\Http\Actions\ListController::class,
         \Igniter\Admin\Http\Actions\FormController::class,
-        \Igniter\Admin\Http\Actions\LocationAwareController::class,
+        \Igniter\Local\Http\Actions\LocationAwareController::class,
     ];
 
     public $locationConfig = [
@@ -29,7 +29,7 @@ class Coupons extends \Igniter\Admin\Classes\AdminController
     public $formConfig = [
         'name' => 'igniter.coupons::default.text_form_name',
         'model' => \Igniter\Coupons\Models\Coupon::class,
-        'request' => \Igniter\Coupons\Requests\Coupon::class,
+        'request' => \Igniter\Coupons\Requests\CouponRequest::class,
         'create' => [
             'title' => 'lang:admin::lang.form.create_title',
             'redirect' => 'igniter/coupons/coupons/edit/{coupon_id}',
