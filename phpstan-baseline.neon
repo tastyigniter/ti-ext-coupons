@@ -71,12 +71,12 @@ parameters:
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Models\\\\Menu\\:\\:whereHasCategory\\(\\)\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Cart\\\\Facades\\\\Cart\\:\\:content\\(\\)\\.$#"
 			count: 1
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to an undefined static method Igniter\\\\Cart\\\\Facades\\\\Cart\\:\\:content\\(\\)\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Cart\\\\Models\\\\Menu\\:\\:whereHasCategory\\(\\)\\.$#"
 			count: 1
 			path: src/CartConditions/Coupon.php
 
@@ -96,17 +96,12 @@ parameters:
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to an undefined static method Igniter\\\\Main\\\\Facades\\\\Auth\\:\\:getUser\\(\\)\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\User\\\\Facades\\\\Auth\\:\\:getUser\\(\\)\\.$#"
 			count: 1
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Models\\\\Order\\:\\:where\\(\\)\\.$#"
-			count: 1
-			path: src/Extension.php
-
-		-
-			message: "#^Call to an undefined static method Igniter\\\\Cart\\\\Classes\\\\CartManager\\:\\:instance\\(\\)\\.$#"
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\:\\:isEnabled\\(\\)\\.$#"
 			count: 1
 			path: src/Extension.php
 
@@ -116,7 +111,7 @@ parameters:
 			path: src/Extension.php
 
 		-
-			message: "#^Call to an undefined static method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:isEnabled\\(\\)\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Cart\\\\Models\\\\Order\\:\\:where\\(\\)\\.$#"
 			count: 1
 			path: src/Extension.php
 
@@ -236,23 +231,8 @@ parameters:
 			path: src/Models/Coupon.php
 
 		-
-			message: "#^Call to an undefined static method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:isEnabled\\(\\)\\.$#"
+			message: "#^Call to an undefined static method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:whereIsEnabled\\(\\)\\.$#"
 			count: 2
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Call to method between\\(\\) on an unknown class Carbon\\\\Carbon\\\\Carbon\\.$#"
-			count: 3
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Call to method copy\\(\\) on an unknown class Carbon\\\\Carbon\\\\Carbon\\.$#"
-			count: 2
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Call to method format\\(\\) on an unknown class Carbon\\\\Carbon\\\\Carbon\\.$#"
-			count: 1
 			path: src/Models/Coupon.php
 
 		-
@@ -266,27 +246,7 @@ parameters:
 			path: src/Models/Coupon.php
 
 		-
-			message: "#^Parameter \\$orderDateTime of method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:isExpired\\(\\) has invalid type Carbon\\\\Carbon\\\\Carbon\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Variable \\$page might not be defined\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Variable \\$pageLimit might not be defined\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Variable \\$sort might not be defined\\.$#"
-			count: 1
-			path: src/Models/Coupon.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Admin\\\\Models\\\\Order\\:\\:\\$customer\\.$#"
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$customer\\.$#"
 			count: 1
 			path: src/Models/CouponHistory.php
 
@@ -336,36 +296,16 @@ parameters:
 			path: src/Models/CouponHistory.php
 
 		-
-			message: "#^Method Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:createHistory\\(\\) has invalid return type Igniter\\\\Admin\\\\Models\\\\CouponHistory\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: src/Models/CouponHistory.php
 
 		-
-			message: "#^Variable \\$customer_id might not be defined\\.$#"
-			count: 2
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Variable \\$order_id might not be defined\\.$#"
-			count: 2
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Variable \\$page might not be defined\\.$#"
+			message: "#^Call to an undefined method Igniter\\\\Flame\\\\Database\\\\Builder\\:\\:whereHasOrDoesntHaveLocation\\(\\)\\.$#"
 			count: 1
-			path: src/Models/CouponHistory.php
+			path: src/Models/Scopes/CouponScope.php
 
 		-
-			message: "#^Variable \\$pageLimit might not be defined\\.$#"
+			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Requests\\\\CouponRequest\\:\\:inputWith\\(\\)\\.$#"
 			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Variable \\$sort might not be defined\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
+			path: src/Requests/CouponRequest.php
