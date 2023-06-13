@@ -3,6 +3,7 @@
 namespace Igniter\Coupons\Requests;
 
 use Igniter\System\Classes\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CouponRequest extends FormRequest
 {
@@ -36,9 +37,9 @@ class CouponRequest extends FormRequest
     {
         return [
             'name' => ['required', 'between:2,128'],
-            'code' => ['required', 'min:2', 'unique:igniter_coupons,code'],
-            'type' => ['required', 'string', 'size:1'],
-            'discount' => ['required', 'numeric', 'max:100'],
+            'code' => ['required', 'min:2', Rule::unique('igniter_coupons')->ignore($this->getRecordId(), 'coupon_id')],
+            'type' => ['required', 'string', 'size:1', 'in:P,F'],
+            'discount' => ['required', 'numeric', 'min:0'],
             'min_total' => ['numeric'],
             'redemptions' => ['required', 'integer'],
             'customer_redemptions' => ['required', 'integer'],
