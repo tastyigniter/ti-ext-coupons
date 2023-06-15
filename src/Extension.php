@@ -41,6 +41,15 @@ class Extension extends BaseExtension
                 });
         });
 
+        Event::listen('payregister.paypalexpress.extendFields', function ($payment, &$fields, $order, $data) {
+            if ($coupon = $order->getOrderTotals()->firstWhere('code', 'coupon')) {
+                $fields['purchase_units'][0]['amount']['breakdown']['discount'] = [
+                    'currency_code' => $fields['purchase_units'][0]['amount']['currency_code'],
+                    'value' => number_format($coupon->value, 2, '.', ''),
+                ];
+            }
+        });
+
         Event::listen('admin.order.paymentProcessed', function ($order) {
             if ($couponCondition = Cart::conditions()->get('coupon')) {
                 $order->redeemCoupon($couponCondition);
