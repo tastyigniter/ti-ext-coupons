@@ -6,14 +6,6 @@ $config['list']['filter'] = [
         'mode' => 'all',
     ],
     'scopes' => [
-        'location' => [
-            'label' => 'lang:admin::lang.text_filter_location',
-            'type' => 'selectlist',
-            'scope' => 'whereHasLocation',
-            'modelClass' => \Igniter\Local\Models\Location::class,
-            'nameFrom' => 'location_name',
-            'locationAware' => true,
-        ],
         'type' => [
             'label' => 'lang:igniter.coupons::default.text_filter_type',
             'type' => 'select',
