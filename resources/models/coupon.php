@@ -84,7 +84,6 @@ $config['list']['columns'] = [
         'relation' => 'locations',
         'select' => 'location_name',
         'locationAware' => true,
-        'invisible' => true,
     ],
     'formatted_discount' => [
         'label' => 'lang:igniter.coupons::default.column_discount',
