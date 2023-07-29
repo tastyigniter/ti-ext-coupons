@@ -101,7 +101,7 @@ class Extension extends BaseExtension
         return [
             'Admin.Coupons' => [
                 'label' => 'igniter.coupons::default.permissions',
-                'group' => 'admin::lang.permissions.name',
+                'group' => 'order',
             ],
         ];
     }
