@@ -44,7 +44,7 @@ class Coupons extends \Igniter\Admin\Classes\AdminController
         ],
         'preview' => [
             'title' => 'lang:admin::lang.form.preview_title',
-            'redirect' => 'igniter/coupons/coupons',
+            'back' => 'igniter/coupons/coupons',
         ],
         'delete' => [
             'redirect' => 'igniter/coupons/coupons',
