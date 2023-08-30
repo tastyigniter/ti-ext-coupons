@@ -71,6 +71,11 @@ class Coupons_model extends Model
         return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     }
 
+    public static function getDropdownOptions()
+    {
+        return static::isEnabled()->dropdown('name');
+    }
+
     //
     // Accessors & Mutators
     //
