@@ -332,6 +332,22 @@ $config['form']['tabs'] = [
             'default' => 0,
             'comment' => 'lang:igniter.coupons::default.help_customer_redemption',
         ],
+        'customers' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
+            'label' => 'lang:igniter.coupons::default.label_customer',
+            'type' => 'relation',
+            'span' => 'left',
+            'nameFrom' => 'full_name',
+            'comment' => 'lang:igniter.coupons::default.help_customer',
+        ],
+        'customer_groups' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
+            'label' => 'lang:igniter.coupons::default.label_customer_group',
+            'type' => 'relation',
+            'span' => 'right',
+            'nameFrom' => 'group_name',
+            'comment' => 'lang:igniter.coupons::default.help_customer_group',
+        ],
         'locations' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:admin::lang.label_location',

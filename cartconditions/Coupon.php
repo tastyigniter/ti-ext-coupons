@@ -165,11 +165,19 @@ class Coupon extends CartCondition
         if ($couponModel->hasReachedMaxRedemption())
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
 
-        if ($couponModel->customer_redemptions && !$user)
-            throw new ApplicationException(lang('igniter.coupons::default.alert_coupon_login_required'));
+        if (($couponModel->customer_redemptions
+            || optional($this->customers)->isNotEmpty()
+            || optional($this->customer_groups)->isNotEmpty()) && !$user
+        ) throw new ApplicationException(lang('igniter.coupons::default.alert_coupon_login_required'));
 
         if ($user && $couponModel->customerHasMaxRedemption($user))
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
+
+        throw_unless($couponModel->customerCanRedeem($user),
+            new ApplicationException(lang('igniter.coupons::default.alert_customer_cannot_redeem')));
+
+        throw_unless($couponModel->customerGroupCanRedeem($user->group),
+            new ApplicationException(lang('igniter.coupons::default.alert_customer_group_cannot_redeem')));
     }
 
     public static function isApplicableTo($cartItem)

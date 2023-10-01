@@ -2,6 +2,7 @@
 
 namespace Igniter\Coupons\Models;
 
+use Admin\Models\Customer_groups_model;
 use Admin\Traits\Locationable;
 use Carbon\Carbon;
 use Igniter\Flame\Auth\Models\User;
@@ -51,6 +52,8 @@ class Coupons_model extends Model
         'belongsToMany' => [
             'categories' => [\Admin\Models\Categories_model::class, 'table' => 'igniter_coupon_categories'],
             'menus' => [\Admin\Models\Menus_model::class, 'table' => 'igniter_coupon_menus'],
+            'customers' => [\Admin\Models\Customers_model::class, 'table' => 'igniter_coupon_customers'],
+            'customer_groups' => [\Admin\Models\Customer_groups_model::class, 'table' => 'igniter_coupon_customer_groups'],
         ],
         'hasMany' => [
             'history' => \Igniter\Coupons\Models\Coupons_history_model::class,
@@ -284,6 +287,24 @@ class Coupons_model extends Model
     public function customerHasMaxRedemption(User $user)
     {
         return $this->customer_redemptions && $this->customer_redemptions <= $this->countCustomerRedemptions($user->getKey());
+    }
+
+    public function customerCanRedeem(?User $user = null)
+    {
+        if (!$this->customers || $this->customers->isEmpty()) {
+            return true;
+        }
+
+        return $user && $this->customers->contains('customer_id', $user->getKey());
+    }
+
+    public function customerGroupCanRedeem(?Customer_groups_model $group = null)
+    {
+        if (!$this->customer_groups || $this->customer_groups->isEmpty()) {
+            return true;
+        }
+
+        return $group && $this->customer_groups->contains('customer_group_id', $group->getKey());
     }
 
     public function countRedemptions()
