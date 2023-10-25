@@ -27,6 +27,8 @@ class Coupon extends CartCondition
 
     protected static $applicableItems;
 
+    protected $deliveryCharge = 0;
+
     public function getLabel()
     {
         return sprintf(lang($this->label), $this->getMetaData('code'));
@@ -86,7 +88,9 @@ class Coupon extends CartCondition
     public function beforeApply()
     {
         $couponModel = $this->getModel();
-        if (!$couponModel || $couponModel->is_limited_to_cart_item)
+        $cartSubtotal = Cart::subtotal();
+        $this->deliveryCharge = Location::coveredArea()->deliveryAmount($cartSubtotal);
+        if (!$couponModel || $couponModel->apply_coupon_on == 'menu_items')
             return false;
     }
 
@@ -94,8 +98,11 @@ class Coupon extends CartCondition
     {
         $value = optional($this->getModel())->discountWithOperand();
 
+        if (optional($this->getModel())->apply_coupon_on == 'delivery_fee') {
+            $value = $this->calculateDeliveryDiscount();
+        }
         // if we are item limited and not a % we need to apportion
-        if (stripos($value, '%') === false && optional($this->getModel())->is_limited_to_cart_item) {
+        else if (stripos($value, '%') === false && optional($this->getModel())->apply_coupon_on == 'menu_items') {
             $value = $this->calculateApportionment($value);
         }
 
@@ -144,6 +151,21 @@ class Coupon extends CartCondition
         return $value;
     }
 
+    protected function calculateDeliveryDiscount() {
+        $couponModel = optional($this->getModel());
+        $value = 0;
+        if ($couponModel->isFixed()) {
+            if ($couponModel->discount > $this->deliveryCharge) {
+                $value = $this->deliveryCharge;
+            } else {
+                $value = $couponModel->discount;
+            }
+        } else {
+            $value =  $this->deliveryCharge * ($couponModel->discount * 0.01);
+        }
+        return '-' . $value;
+    }
+
     protected function validateCoupon($couponModel)
     {
         $user = Auth::getUser();
@@ -185,7 +207,7 @@ class Coupon extends CartCondition
         if (!$couponModel = self::$couponModel)
             return false;
 
-        if (!$couponModel->is_limited_to_cart_item)
+        if ($couponModel->apply_coupon_on != 'menu_items')
             return false;
 
         if (!$applicableItems = self::$applicableItems)

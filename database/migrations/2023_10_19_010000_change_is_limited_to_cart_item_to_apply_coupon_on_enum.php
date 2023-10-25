@@ -12,8 +12,10 @@ class ChangeIsLimitedToCartItemToApplyCouponOnEnum extends Migration
     {
         Schema::table('igniter_coupons', function (Blueprint $table) {
             $table->dropColumn('is_limited_to_cart_item');
-            $table->enum('apply_coupon_on',
-                ['whole_cart','menu_items', 'delivery_fee'])->default('whole_cart')->after('order_restriction');
+            $table->enum(
+                'apply_coupon_on',
+                ['whole_cart', 'menu_items', 'delivery_fee']
+            )->default('whole_cart')->after('order_restriction');
         });
     }
 

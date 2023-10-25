@@ -49,7 +49,7 @@ return [
     'label_customer_group' => 'Customer Groups',
     'label_validity' => 'Validity',
     'label_order_restriction' => 'Order Restriction',
-    'label_cart_restriction' => 'Apply this coupon on:',
+    'label_cart_restriction' => 'Apply this coupon on',
     'label_categories' => 'Apply discount to menu items from these categories',
     'label_menus' => 'Apply discount to these menu items',
     'label_date' => 'Date',
