@@ -27,8 +27,6 @@ class Coupon extends CartCondition
 
     protected static $applicableItems;
 
-    protected $deliveryCharge = 0;
-
     public function getLabel()
     {
         return sprintf(lang($this->label), $this->getMetaData('code'));
@@ -88,8 +86,6 @@ class Coupon extends CartCondition
     public function beforeApply()
     {
         $couponModel = $this->getModel();
-        $cartSubtotal = Cart::subtotal();
-        $this->deliveryCharge = Location::coveredArea()->deliveryAmount($cartSubtotal);
         if (!$couponModel || $couponModel->apply_coupon_on == 'menu_items')
             return false;
     }
@@ -151,17 +147,20 @@ class Coupon extends CartCondition
         return $value;
     }
 
-    protected function calculateDeliveryDiscount() {
+    protected function calculateDeliveryDiscount()
+    {
+        $cartSubtotal = Cart::subtotal();
+        $deliveryCharge = Location::coveredArea()->deliveryAmount($cartSubtotal);
         $couponModel = optional($this->getModel());
         $value = 0;
         if ($couponModel->isFixed()) {
-            if ($couponModel->discount > $this->deliveryCharge) {
-                $value = $this->deliveryCharge;
+            if ($couponModel->discount > $deliveryCharge) {
+                $value = $deliveryCharge;
             } else {
                 $value = $couponModel->discount;
             }
         } else {
-            $value =  $this->deliveryCharge * ($couponModel->discount * 0.01);
+            $value =  $deliveryCharge * ($couponModel->discount * 0.01);
         }
         return '-' . $value;
     }
