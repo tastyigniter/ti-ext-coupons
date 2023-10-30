@@ -2,11 +2,9 @@
 
 namespace Igniter\Coupons\Actions;
 
-use Carbon\Carbon;
 use Igniter\Coupons\Models\Coupons_history_model;
 use Igniter\Flame\Cart\CartCondition;
 use Igniter\Flame\Traits\ExtensionTrait;
-use Illuminate\Support\Facades\Event;
 use System\Actions\ModelAction;
 
 class RedeemsCoupon extends ModelAction

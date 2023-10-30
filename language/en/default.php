@@ -24,6 +24,9 @@ return [
     'text_redeemed' => 'Redeemed',
     'text_not_redeemed' => 'Not Yet Redeemed',
     'text_coupon' => 'Coupon [%s]',
+    'text_cart_restriction_whole_cart' => 'Whole Cart',
+    'text_cart_restriction_menu_items' => 'Menu Items',
+    'text_cart_restriction_delivery_fee' => 'Delivery Fee',
 
     'alert_coupon_login_required' => 'Please login or register to use this coupon',
 
@@ -46,7 +49,7 @@ return [
     'label_customer_group' => 'Customer Groups',
     'label_validity' => 'Validity',
     'label_order_restriction' => 'Order Restriction',
-    'label_cart_restriction' => 'Do not apply to the whole cart',
+    'label_cart_restriction' => 'Apply this coupon on',
     'label_categories' => 'Apply discount to menu items from these categories',
     'label_menus' => 'Apply discount to these menu items',
     'label_date' => 'Date',
