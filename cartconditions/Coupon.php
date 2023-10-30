@@ -96,9 +96,8 @@ class Coupon extends CartCondition
 
         if (optional($this->getModel())->apply_coupon_on == 'delivery_fee') {
             $value = $this->calculateDeliveryDiscount();
-        }
-        // if we are item limited and not a % we need to apportion
-        else if (stripos($value, '%') === false && optional($this->getModel())->apply_coupon_on == 'menu_items') {
+        } // if we are item limited and not a % we need to apportion
+        elseif (stripos($value, '%') === false && optional($this->getModel())->apply_coupon_on == 'menu_items') {
             $value = $this->calculateApportionment($value);
         }
 
@@ -152,7 +151,6 @@ class Coupon extends CartCondition
         $cartSubtotal = Cart::subtotal();
         $deliveryCharge = Location::coveredArea()->deliveryAmount($cartSubtotal);
         $couponModel = optional($this->getModel());
-        $value = 0;
         if ($couponModel->isFixed()) {
             if ($couponModel->discount > $deliveryCharge) {
                 $value = $deliveryCharge;
@@ -160,9 +158,9 @@ class Coupon extends CartCondition
                 $value = $couponModel->discount;
             }
         } else {
-            $value =  $deliveryCharge * ($couponModel->discount * 0.01);
+            $value = $deliveryCharge * ($couponModel->discount * 0.01);
         }
-        return '-' . $value;
+        return '-'.$value;
     }
 
     protected function validateCoupon($couponModel)
