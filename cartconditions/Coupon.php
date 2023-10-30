@@ -74,8 +74,7 @@ class Coupon extends CartCondition
             $this->validateCoupon($couponModel);
 
             $this->getApplicableItems($couponModel);
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             if (!optional($couponModel)->auto_apply)
                 flash()->alert($ex->getMessage())->now();
 
@@ -160,6 +159,7 @@ class Coupon extends CartCondition
         } else {
             $value = $deliveryCharge * ($couponModel->discount * 0.01);
         }
+
         return '-'.$value;
     }
 
@@ -185,8 +185,8 @@ class Coupon extends CartCondition
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
 
         if (($couponModel->customer_redemptions
-            || optional($couponModel->customers)->isNotEmpty()
-            || optional($couponModel->customer_groups)->isNotEmpty()) && !$user
+                || optional($couponModel->customers)->isNotEmpty()
+                || optional($couponModel->customer_groups)->isNotEmpty()) && !$user
         ) throw new ApplicationException(lang('igniter.coupons::default.alert_coupon_login_required'));
 
         if ($user && $couponModel->customerHasMaxRedemption($user))

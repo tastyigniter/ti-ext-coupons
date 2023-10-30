@@ -24,14 +24,15 @@ class ChangeIsLimitedToCartItemToApplyCouponOnEnum extends Migration
     }
 
     // migrate is_limited_to_cart_item to the new apply_coupon_on enum that supports multiple options
-    protected function updateApplyCouponOnEnum() {
+    protected function updateApplyCouponOnEnum()
+    {
         DB::table('igniter_coupons')
             ->where('is_limited_to_cart_item', 1)->get()->each(
                 function ($model) {
                     DB::table('igniter_coupons')
                         ->where('coupon_id', $model->coupon_id)
                         ->update([
-                            'apply_coupon_on' => 'menu_items'
+                            'apply_coupon_on' => 'menu_items',
                         ]);
                 }
             );
