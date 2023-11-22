@@ -87,6 +87,9 @@ class Coupon extends CartCondition
         $couponModel = $this->getModel();
         if (!$couponModel || $couponModel->apply_coupon_on == 'menu_items')
             return false;
+
+        if ($couponModel->apply_coupon_on == 'delivery_fee' && !Location::orderTypeIsDelivery())
+            return false;
     }
 
     public function getActions()
