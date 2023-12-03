@@ -27,6 +27,8 @@ class Coupon extends CartCondition
 
     protected static $applicableItems;
 
+    protected static $hasErrors = false;
+
     public function getLabel()
     {
         return sprintf(lang($this->label), $this->getMetaData('code'));
@@ -64,7 +66,7 @@ class Coupon extends CartCondition
 
     public function onLoad()
     {
-        if (!strlen($couponCode = $this->getMetaData('code')))
+        if (!strlen($this->getMetaData('code')) || self::$hasErrors)
             return;
 
         try {
@@ -75,8 +77,7 @@ class Coupon extends CartCondition
 
             $this->getApplicableItems($couponModel);
         } catch (Exception $ex) {
-            if (!optional($couponModel)->auto_apply)
-                flash()->alert($ex->getMessage())->now();
+            flash()->alert($ex->getMessage())->now();
 
             $this->removeMetaData('code');
         }
@@ -85,10 +86,10 @@ class Coupon extends CartCondition
     public function beforeApply()
     {
         $couponModel = $this->getModel();
-        if (!$couponModel || $couponModel->apply_coupon_on == 'menu_items')
+        if (!$couponModel || $couponModel->appliesOnMenuItems() || self::$hasErrors)
             return false;
 
-        if ($couponModel->apply_coupon_on == 'delivery_fee' && !Location::orderTypeIsDelivery())
+        if ($couponModel->appliesOnDelivery() && !Location::orderTypeIsDelivery())
             return false;
     }
 
@@ -96,10 +97,10 @@ class Coupon extends CartCondition
     {
         $value = optional($this->getModel())->discountWithOperand();
 
-        if (optional($this->getModel())->apply_coupon_on == 'delivery_fee') {
+        if (optional($this->getModel())->appliesOnDelivery()) {
             $value = $this->calculateDeliveryDiscount();
         } // if we are item limited and not a % we need to apportion
-        elseif (stripos($value, '%') === false && optional($this->getModel())->apply_coupon_on == 'menu_items') {
+        elseif (stripos($value, '%') === false && optional($this->getModel())->appliesOnMenuItems()) {
             $value = $this->calculateApportionment($value);
         }
 
@@ -108,13 +109,6 @@ class Coupon extends CartCondition
         ];
 
         return [$actions];
-    }
-
-    public function getRules()
-    {
-        $minimumOrder = optional($this->getModel())->minimumOrderTotal();
-
-        return ["subtotal > {$minimumOrder}"];
     }
 
     public function whenInvalid()
@@ -184,6 +178,12 @@ class Coupon extends CartCondition
         if ($couponModel->hasLocationRestriction($locationId))
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_location_restricted'));
 
+        if (Cart::subtotal() < $couponModel->minimumOrderTotal())
+            throw new ApplicationException(sprintf(
+                lang('igniter.cart::default.alert_coupon_not_applied'),
+                currency_format($couponModel->minimumOrderTotal())
+            ));
+
         if ($couponModel->hasReachedMaxRedemption())
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
 
@@ -204,10 +204,10 @@ class Coupon extends CartCondition
 
     public static function isApplicableTo($cartItem)
     {
-        if (!$couponModel = self::$couponModel)
+        if (!($couponModel = self::$couponModel) || self::$hasErrors)
             return false;
 
-        if ($couponModel->apply_coupon_on != 'menu_items')
+        if (!$couponModel->appliesOnMenuItems())
             return false;
 
         if (!$applicableItems = self::$applicableItems)

@@ -318,6 +318,21 @@ class Coupons_model extends Model
             ->where('customer_id', $id)->count();
     }
 
+    public function appliesOnWholeCart()
+    {
+        return $this->apply_coupon_on == 'whole_cart';
+    }
+
+    public function appliesOnMenuItems()
+    {
+        return $this->apply_coupon_on == 'menu_items';
+    }
+
+    public function appliesOnDelivery()
+    {
+        return $this->apply_coupon_on == 'delivery_fee';
+    }
+
     public static function getByCode($code)
     {
         return self::isEnabled()->whereCode($code)->first();
