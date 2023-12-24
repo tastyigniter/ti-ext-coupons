@@ -66,6 +66,6 @@ class CouponRequest extends FormRequest
             return '';
         }
 
-        return 'max:' . implode(',', $parameters);
+        return 'max:'.implode(',', $parameters);
     }
 }
