@@ -17,15 +17,8 @@ class RedeemsCoupon extends ModelAction
      * Redeem coupon by order
      * @throws \Exception
      */
-    public function redeemCoupon($couponCondition)
+    public function redeemCoupon(CartCondition $couponCondition)
     {
-        if (!$couponCondition instanceof CartCondition) {
-            throw new \InvalidArgumentException(sprintf(
-                'Invalid argument, expected %s, got %s',
-                CartCondition::class, get_class($couponCondition)
-            ));
-        }
-
         if (!$couponLog = $this->logCouponHistory($couponCondition)) {
             return false;
         }
