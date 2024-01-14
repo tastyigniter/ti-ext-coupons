@@ -6,7 +6,7 @@ use Igniter\Admin\Facades\AdminMenu;
 
 class Coupons extends \Igniter\Admin\Classes\AdminController
 {
-    public $implement = [
+    public array $implement = [
         \Igniter\Admin\Http\Actions\ListController::class,
         \Igniter\Admin\Http\Actions\FormController::class,
         \Igniter\Local\Http\Actions\LocationAwareController::class,
@@ -16,7 +16,7 @@ class Coupons extends \Igniter\Admin\Classes\AdminController
         'addAbsenceConstraint' => true,
     ];
 
-    public $listConfig = [
+    public array $listConfig = [
         'list' => [
             'model' => \Igniter\Coupons\Models\Coupon::class,
             'title' => 'igniter.coupons::default.text_title',
@@ -26,7 +26,7 @@ class Coupons extends \Igniter\Admin\Classes\AdminController
         ],
     ];
 
-    public $formConfig = [
+    public array $formConfig = [
         'name' => 'igniter.coupons::default.text_form_name',
         'model' => \Igniter\Coupons\Models\Coupon::class,
         'request' => \Igniter\Coupons\Requests\CouponRequest::class,
@@ -52,7 +52,7 @@ class Coupons extends \Igniter\Admin\Classes\AdminController
         'configFile' => 'coupon',
     ];
 
-    protected $requiredPermissions = 'Admin.Coupons';
+    protected null|string|array $requiredPermissions = 'Admin.Coupons';
 
     public function __construct()
     {
