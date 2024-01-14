@@ -96,7 +96,7 @@ class Extension extends BaseExtension
         ];
     }
 
-    public function registerPermissions()
+    public function registerPermissions(): array
     {
         return [
             'Admin.Coupons' => [
@@ -106,7 +106,7 @@ class Extension extends BaseExtension
         ];
     }
 
-    public function registerNavigation()
+    public function registerNavigation(): array
     {
         return [
             'marketing' => [
