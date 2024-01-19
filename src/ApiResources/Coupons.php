@@ -27,5 +27,5 @@ class Coupons extends ApiController
         'transformer' => Transformers\CouponsTransformer::class,
     ];
 
-    protected $requiredAbilities = ['coupons:*'];
+    protected string|array $requiredAbilities = ['coupons:*'];
 }
