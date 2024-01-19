@@ -55,6 +55,7 @@ class CouponRequest extends FormRequest
             'recurring_to_time' => ['nullable', 'required_if:validity,recurring', 'valid_time'],
             'order_restriction.*' => ['nullable', 'string'],
             'status' => ['boolean'],
+            'auto_apply' => ['boolean'],
             'locations.*' => ['integer'],
         ];
     }
