@@ -27,6 +27,8 @@ class Coupon extends CartCondition
 
     protected static $applicableItems;
 
+    protected static $hasErrors = false;
+
     public function getLabel()
     {
         return sprintf(lang($this->label), $this->getMetaData('code'));
@@ -66,7 +68,7 @@ class Coupon extends CartCondition
 
     public function onLoad()
     {
-        if (!strlen($this->getMetaData('code'))) {
+        if (!strlen($this->getMetaData('code')) || self::$hasErrors) {
             return;
         }
 
@@ -79,9 +81,7 @@ class Coupon extends CartCondition
 
             $this->getApplicableItems($couponModel);
         } catch (Exception $ex) {
-            if (!optional($couponModel)->auto_apply) {
-                flash()->alert($ex->getMessage())->now();
-            }
+            flash()->alert($ex->getMessage())->now();
 
             $this->removeMetaData('code');
         }
@@ -90,7 +90,11 @@ class Coupon extends CartCondition
     public function beforeApply()
     {
         $couponModel = $this->getModel();
-        if (!$couponModel || $couponModel->is_limited_to_cart_item) {
+        if (!$couponModel || $couponModel->appliesOnMenuItems() || self::$hasErrors) {
+            return false;
+        }
+
+        if ($couponModel->appliesOnDelivery() && !Location::orderTypeIsDelivery()) {
             return false;
         }
     }
@@ -99,8 +103,10 @@ class Coupon extends CartCondition
     {
         $value = optional($this->getModel())->discountWithOperand();
 
-        // if we are item limited and not a % we need to apportion
-        if (stripos($value, '%') === false && optional($this->getModel())->is_limited_to_cart_item) {
+        if (optional($this->getModel())->appliesOnDelivery()) {
+            $value = $this->calculateDeliveryDiscount();
+        }// if we are item limited and not a % we need to apportion
+        elseif (!str_contains($value, '%') && optional($this->getModel())->appliesOnMenuItems()) {
             $value = $this->calculateApportionment($value);
         }
 
@@ -109,13 +115,6 @@ class Coupon extends CartCondition
         ];
 
         return [$actions];
-    }
-
-    public function getRules()
-    {
-        $minimumOrder = optional($this->getModel())->minimumOrderTotal();
-
-        return ["subtotal > {$minimumOrder}"];
     }
 
     public function whenInvalid()
@@ -150,6 +149,24 @@ class Coupon extends CartCondition
         return $value;
     }
 
+    protected function calculateDeliveryDiscount()
+    {
+        $cartSubtotal = Cart::subtotal();
+        $deliveryCharge = Location::coveredArea()->deliveryAmount($cartSubtotal);
+        $couponModel = optional($this->getModel());
+        if ($couponModel->isFixed()) {
+            if ($couponModel->discount > $deliveryCharge) {
+                $value = $deliveryCharge;
+            } else {
+                $value = $couponModel->discount;
+            }
+        } else {
+            $value = $deliveryCharge * ($couponModel->discount * 0.01);
+        }
+
+        return '-'.$value;
+    }
+
     protected function validateCoupon($couponModel)
     {
         $user = Auth::getUser();
@@ -171,26 +188,42 @@ class Coupon extends CartCondition
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_location_restricted'));
         }
 
+        if (Cart::subtotal() < $couponModel->minimumOrderTotal()) {
+            throw new ApplicationException(sprintf(
+                lang('igniter.cart::default.alert_coupon_not_applied'),
+                currency_format($couponModel->minimumOrderTotal())
+            ));
+        }
+
         if ($couponModel->hasReachedMaxRedemption()) {
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
         }
 
-        if ($couponModel->customer_redemptions && !$user) {
+        if (($couponModel->customer_redemptions
+                || optional($couponModel->customers)->isNotEmpty()
+                || optional($couponModel->customer_groups)->isNotEmpty()) && !$user
+        ) {
             throw new ApplicationException(lang('igniter.coupons::default.alert_coupon_login_required'));
         }
 
         if ($user && $couponModel->customerHasMaxRedemption($user)) {
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
         }
+
+        throw_unless($couponModel->customerCanRedeem($user),
+            new ApplicationException(lang('igniter.coupons::default.alert_customer_cannot_redeem')));
+
+        throw_unless($couponModel->customerGroupCanRedeem(optional($user)->group),
+            new ApplicationException(lang('igniter.coupons::default.alert_customer_group_cannot_redeem')));
     }
 
     public static function isApplicableTo($cartItem)
     {
-        if (!$couponModel = self::$couponModel) {
+        if (!($couponModel = self::$couponModel) || self::$hasErrors) {
             return false;
         }
 
-        if (!$couponModel->is_limited_to_cart_item) {
+        if (!$couponModel->appliesOnMenuItems()) {
             return false;
         }
 

@@ -4,6 +4,7 @@ namespace Igniter\Coupons\Models;
 
 use Igniter\Flame\Database\Model;
 use Igniter\User\Models\Concerns\HasCustomer;
+use Illuminate\Support\Facades\Event;
 
 /**
  * Coupons History Model Class
@@ -55,6 +56,21 @@ class CouponHistory extends Model
     protected array $queryModifierSorts = [
         'created_at desc' => true, 'created_at asc',
     ];
+
+    public static function redeem($orderId)
+    {
+        self::query()
+            ->where('order_id', $orderId)
+            ->get()
+            ->each(function ($couponHistory) {
+                $couponHistory->update([
+                    'status' => 1,
+                    'created_at' => now(),
+                ]);
+
+                Event::fire('admin.order.couponRedeemed', [$couponHistory]);
+            });
+    }
 
     public function getCustomerNameAttribute($value)
     {

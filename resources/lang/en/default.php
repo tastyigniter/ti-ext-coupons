@@ -48,6 +48,8 @@ return [
     'label_customer' => 'Customers',
     'label_customer_group' => 'Customer Groups',
     'label_validity' => 'Validity',
+    'label_customer' => 'Customers',
+    'label_customer_group' => 'Customer Groups',
     'label_order_restriction' => 'Order Restriction',
     'label_cart_restriction' => 'Apply this coupon on',
     'label_categories' => 'Apply discount to menu items from these categories',
@@ -65,6 +67,8 @@ return [
 
     'help_type' => 'Whether to subtract a fixed amount or percentage from order total.',
     'help_redemption' => 'The total number of times this coupon can be redeemed. Set to 0 to allow any number of redemptions.',
+    'help_customer' => 'Apply this coupon ONLY to the selected customers. Leave blank to make coupon available to all customers.',
+    'help_customer_group' => 'Apply this coupon ONLY to the selected customer groups. Leave blank to make coupon available to all customer groups.',
     'help_customer_redemption' => 'The number of times a specific customer can redeem this coupon. Set to 0 to allow any number of redemptions.',
     'help_customer' => 'Apply this coupon ONLY to the selected customers. Leave blank to make coupon available to all customers.',
     'help_customer_group' => 'Apply this coupon ONLY to the selected customer groups. Leave blank to make coupon available to all customer groups.',

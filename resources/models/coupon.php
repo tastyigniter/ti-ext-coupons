@@ -347,9 +347,9 @@ $config['form']['tabs'] = [
             'label' => 'lang:igniter.coupons::default.label_cart_restriction',
             'type' => 'select',
             'options' => [
-                'whole_cart'=> 'lang:igniter.coupons::default.text_cart_restriction_whole_cart',
-                'menu_items'=> 'lang:igniter.coupons::default.text_cart_restriction_menu_items',
-                'delivery_fee'=> 'lang:igniter.coupons::default.text_cart_restriction_delivery_fee',
+                'whole_cart' => 'lang:igniter.coupons::default.text_cart_restriction_whole_cart',
+                'menu_items' => 'lang:igniter.coupons::default.text_cart_restriction_menu_items',
+                'delivery_fee' => 'lang:igniter.coupons::default.text_cart_restriction_delivery_fee',
             ],
         ],
         'categories' => [

@@ -2,12 +2,11 @@
 
 namespace Igniter\Coupons\Actions;
 
-use Carbon\Carbon;
 use Igniter\Cart\CartCondition;
+use Igniter\Cart\Models\Order;
 use Igniter\Coupons\Models\CouponHistory;
 use Igniter\Flame\Traits\ExtensionTrait;
 use Igniter\System\Actions\ModelAction;
-use Illuminate\Support\Facades\Event;
 
 class RedeemsCoupon extends ModelAction
 {
@@ -15,19 +14,14 @@ class RedeemsCoupon extends ModelAction
 
     /**
      * Redeem coupon by order
-     * @throws \Exception
      */
-    public function redeemCoupon(CartCondition $couponCondition)
+    public function redeemCoupon()
     {
-        if (!$couponLog = $this->logCouponHistory($couponCondition)) {
-            return false;
+        if (!$this->model->getOrderTotals()->keyBy('code')->get('coupon')) {
+            return;
         }
 
-        $couponLog->status = 1;
-        $couponLog->created_at = Carbon::now();
-        $couponLog->save();
-
-        Event::fire('admin.order.couponRedeemed', [$couponLog]);
+        CouponHistory::redeem($this->model->order_id);
     }
 
     /**
@@ -41,11 +35,19 @@ class RedeemsCoupon extends ModelAction
      */
     public function logCouponHistory($couponCondition)
     {
+        if (!$couponCondition instanceof CartCondition) {
+            throw new \InvalidArgumentException(sprintf(
+                'Invalid argument, expected %s, got %s',
+                CartCondition::class, get_class($couponCondition)
+            ));
+        }
+
         // Make sure order model exists
         if (!$this->model->exists) {
             return false;
         }
 
+        /** @var Order $this */
         return CouponHistory::createHistory($couponCondition, $this->model);
     }
 }
