@@ -24,6 +24,9 @@ return [
     'text_redeemed' => 'Redeemed',
     'text_not_redeemed' => 'Not Yet Redeemed',
     'text_coupon' => 'Coupon [%s]',
+    'text_cart_restriction_whole_cart' => 'Whole Cart',
+    'text_cart_restriction_menu_items' => 'Menu Items',
+    'text_cart_restriction_delivery_fee' => 'Delivery Fee',
 
     'alert_coupon_login_required' => 'Please login or register to use this coupon',
 
@@ -39,14 +42,16 @@ return [
 
     'label_code' => 'Code',
     'label_discount' => 'Discount',
-    'label_min_total' => 'Minimum Total',
+    'label_min_total' => 'Minimum Order Total Amount',
     'label_redemption' => 'Redemptions',
     'label_customer_redemption' => 'Customer Redemptions',
     'label_validity' => 'Validity',
+    'label_customer' => 'Customers',
+    'label_customer_group' => 'Customer Groups',
     'label_order_restriction' => 'Order Restriction',
-    'label_cart_restriction' => 'Do not apply to the whole cart',
-    'label_categories' => 'Apply to menu items from these categories',
-    'label_menus' => 'Apply to these menu items',
+    'label_cart_restriction' => 'Apply this coupon on',
+    'label_categories' => 'Apply discount to menu items from these categories',
+    'label_menus' => 'Apply discount to these menu items',
     'label_date' => 'Date',
     'label_fixed_date' => 'Fixed date',
     'label_fixed_from_time' => 'Fixed from time',
@@ -60,10 +65,15 @@ return [
 
     'help_type' => 'Whether to subtract a fixed amount or percentage from order total.',
     'help_redemption' => 'The total number of times this coupon can be redeemed. Set to 0 to allow any number of redemptions.',
+    'help_customer' => 'Apply this coupon ONLY to the selected customers. Leave blank to make coupon available to all customers.',
+    'help_customer_group' => 'Apply this coupon ONLY to the selected customer groups. Leave blank to make coupon available to all customer groups.',
     'help_customer_redemption' => 'The number of times a specific customer can redeem this coupon. Set to 0 to allow any number of redemptions.',
     'help_order_restriction' => 'Whether to restrict the coupon to a specific order type.',
     'help_locations' => 'Apply this coupon ONLY on orders made at the selected location(s). Leave blank to make coupon available across all locations',
     'help_categories' => 'Apply this coupon ONLY on menu items in the order that appear in this/these categories. Leave blank to make coupon available across all items',
     'help_menus' => 'Apply this coupon ONLY on these menu items in the order. Leave blank to make coupon available across all items',
     'help_coupon_condition' => 'Applies coupon to cart.',
+
+    'alert_customer_cannot_redeem' => 'Coupon cannot be redeemed by this customer',
+    'alert_customer_group_cannot_redeem' => 'Coupon cannot be redeemed by this customer group',
 ];

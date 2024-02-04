@@ -50,18 +50,23 @@ class Extension extends BaseExtension
             }
         });
 
-        Event::listen('admin.order.paymentProcessed', function ($order) {
+        Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
             if ($couponCondition = Cart::conditions()->get('coupon')) {
-                $order->redeemCoupon($couponCondition);
+                $order->logCouponHistory($couponCondition);
             }
+        });
+
+        Event::listen('admin.order.paymentProcessed', function ($order) {
+            $order->redeemCoupon();
         });
 
         Customer::created(function ($customer) {
             Order::where('email', $customer->email)
-                ->get()
-                ->each(function ($order) use ($customer) {
-                    CouponHistory::where('order_id', $order->order_id)
-                        ->update(['customer_id' => $customer->customer_id]);
+                ->chunk(100, function ($orders) use ($customer) {
+                    foreach ($orders as $order) {
+                        CouponHistory::where('order_id', $order->order_id)
+                            ->update(['customer_id' => $customer->customer_id]);
+                    }
                 });
         });
 

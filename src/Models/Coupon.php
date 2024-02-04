@@ -6,7 +6,8 @@ use Carbon\Carbon;
 use Igniter\Flame\Database\Model;
 use Igniter\Local\Models\Concerns\Locationable;
 use Igniter\System\Models\Concerns\Switchable;
-use Igniter\User\Auth\Models\User;
+use Igniter\User\Models\Customer;
+use Igniter\User\Models\CustomerGroup;
 
 /**
  * Coupons Model Class
@@ -53,6 +54,8 @@ class Coupon extends Model
         'belongsToMany' => [
             'categories' => [\Igniter\Cart\Models\Category::class, 'table' => 'igniter_coupon_categories'],
             'menus' => [\Igniter\Cart\Models\Menu::class, 'table' => 'igniter_coupon_menus'],
+            'customers' => [\Igniter\User\Models\Customer::class, 'table' => 'igniter_coupon_customers'],
+            'customer_groups' => [\Igniter\User\Models\CustomerGroup::class, 'table' => 'igniter_coupon_customer_groups'],
         ],
         'hasMany' => [
             'history' => \Igniter\Coupons\Models\CouponHistory::class,
@@ -75,6 +78,11 @@ class Coupon extends Model
     public function getRecurringEveryOptions()
     {
         return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    }
+
+    public static function getDropdownOptions()
+    {
+        return static::whereIsEnabled()->dropdown('name');
     }
 
     //
@@ -225,9 +233,27 @@ class Coupon extends Model
         return $this->redemptions && $this->redemptions <= $this->countRedemptions();
     }
 
-    public function customerHasMaxRedemption(User $user)
+    public function customerHasMaxRedemption(Customer $customer)
     {
-        return $this->customer_redemptions && $this->customer_redemptions <= $this->countCustomerRedemptions($user->getKey());
+        return $this->customer_redemptions && $this->customer_redemptions <= $this->countCustomerRedemptions($customer->getKey());
+    }
+
+    public function customerCanRedeem(?Customer $customer = null)
+    {
+        if (!$this->customers || $this->customers->isEmpty()) {
+            return true;
+        }
+
+        return $customer && $this->customers->contains('customer_id', $customer->getKey());
+    }
+
+    public function customerGroupCanRedeem(?CustomerGroup $group = null)
+    {
+        if (!$this->customer_groups || $this->customer_groups->isEmpty()) {
+            return true;
+        }
+
+        return $group && $this->customer_groups->contains('customer_group_id', $group->getKey());
     }
 
     public function countRedemptions()
@@ -239,6 +265,21 @@ class Coupon extends Model
     {
         return $this->history()->isEnabled()
             ->where('customer_id', $id)->count();
+    }
+
+    public function appliesOnWholeCart()
+    {
+        return $this->apply_coupon_on == 'whole_cart';
+    }
+
+    public function appliesOnMenuItems()
+    {
+        return $this->apply_coupon_on == 'menu_items';
+    }
+
+    public function appliesOnDelivery()
+    {
+        return $this->apply_coupon_on == 'delivery_fee';
     }
 
     public static function getByCode($code)

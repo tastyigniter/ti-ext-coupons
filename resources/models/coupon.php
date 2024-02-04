@@ -318,6 +318,22 @@ $config['form']['tabs'] = [
             'default' => 0,
             'comment' => 'lang:igniter.coupons::default.help_customer_redemption',
         ],
+        'customers' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
+            'label' => 'lang:igniter.coupons::default.label_customer',
+            'type' => 'relation',
+            'span' => 'left',
+            'nameFrom' => 'full_name',
+            'comment' => 'lang:igniter.coupons::default.help_customer',
+        ],
+        'customer_groups' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
+            'label' => 'lang:igniter.coupons::default.label_customer_group',
+            'type' => 'relation',
+            'span' => 'right',
+            'nameFrom' => 'group_name',
+            'comment' => 'lang:igniter.coupons::default.help_customer_group',
+        ],
         'locations' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:admin::lang.label_location',
@@ -326,11 +342,15 @@ $config['form']['tabs'] = [
             'nameFrom' => 'location_name',
             'comment' => 'lang:igniter.coupons::default.help_locations',
         ],
-        'is_limited_to_cart_item' => [
+        'apply_coupon_on' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:igniter.coupons::default.label_cart_restriction',
-            'type' => 'switch',
-            'default' => 0,
+            'type' => 'select',
+            'options' => [
+                'whole_cart' => 'lang:igniter.coupons::default.text_cart_restriction_whole_cart',
+                'menu_items' => 'lang:igniter.coupons::default.text_cart_restriction_menu_items',
+                'delivery_fee' => 'lang:igniter.coupons::default.text_cart_restriction_delivery_fee',
+            ],
         ],
         'categories' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
@@ -339,8 +359,8 @@ $config['form']['tabs'] = [
             'comment' => 'lang:igniter.coupons::default.help_categories',
             'trigger' => [
                 'action' => 'show',
-                'field' => 'is_limited_to_cart_item',
-                'condition' => 'checked',
+                'field' => 'apply_coupon_on',
+                'condition' => 'value[menu_items]',
             ],
         ],
         'menus' => [
@@ -351,8 +371,8 @@ $config['form']['tabs'] = [
             'nameFrom' => 'menu_name',
             'trigger' => [
                 'action' => 'show',
-                'field' => 'is_limited_to_cart_item',
-                'condition' => 'checked',
+                'field' => 'apply_coupon_on',
+                'condition' => 'value[menu_items]',
             ],
         ],
         'history' => [
