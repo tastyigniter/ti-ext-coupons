@@ -1,65 +1,65 @@
 {
-    "name": "tastyigniter/ti-ext-coupons",
-    "type": "tastyigniter-package",
-    "description": "Extend the checkout experience with coupons and discount codes.",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Sam Poyigi",
-            "email": "sam@sampoyigi.com"
-        }
-    ],
-    "keywords": [
-        "tastyigniter",
-        "coupons",
-        "discounts"
-    ],
-    "require": {
-        "tastyigniter/core": "dev-master",
-        "tastyigniter/ti-ext-api": "*",
-        "tastyigniter/ti-ext-cart": "*"
+  "name": "tastyigniter/ti-ext-coupons",
+  "type": "tastyigniter-package",
+  "description": "Extend the checkout experience with coupons and discount codes.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sam Poyigi",
+      "email": "sam@sampoyigi.com"
+    }
+  ],
+  "keywords": [
+    "tastyigniter",
+    "coupons",
+    "discounts"
+  ],
+  "require": {
+    "tastyigniter/core": "dev-master",
+    "tastyigniter/ti-ext-api": "v4.x-dev as 4.0",
+    "tastyigniter/ti-ext-cart": "v4.x-dev as 4.0"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.2",
+    "nunomaduro/larastan": "^2.4.0",
+    "orchestra/testbench": "^8.5",
+    "pestphp/pest-plugin-laravel": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Igniter\\Coupons\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Igniter\\Coupons\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "tastyigniter-extension": {
+      "code": "igniter.coupons",
+      "name": "Coupons",
+      "icon": {
+        "class": "fa fa-percent",
+        "color": "#FFF",
+        "backgroundColor": "#ED561A"
+      },
+      "homepage": "https://tastyigniter.com/marketplace/item/igniter-coupons"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/pest",
+    "test-coverage": "vendor/bin/pest --coverage",
+    "format": "vendor/bin/pint",
+    "static": "vendor/bin/phpstan analyse --ansi --memory-limit 1056M"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true,
+      "composer/installers": true
     },
-    "require-dev": {
-        "laravel/pint": "^1.2",
-        "nunomaduro/larastan": "^2.4.0",
-        "orchestra/testbench": "^8.5",
-        "pestphp/pest-plugin-laravel": "^2.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Igniter\\Coupons\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Igniter\\Coupons\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "tastyigniter-extension": {
-            "code": "igniter.coupons",
-            "name": "Coupons",
-            "icon": {
-                "class": "fa fa-percent",
-                "color": "#FFF",
-                "backgroundColor": "#ED561A"
-            },
-            "homepage": "https://tastyigniter.com/marketplace/item/igniter-coupons"
-        }
-    },
-    "scripts": {
-        "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint",
-        "static": "vendor/bin/phpstan analyse --ansi --memory-limit 1056M"
-    },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true,
-            "composer/installers": true
-        },
-        "sort-packages": true
-    },
-    "minimum-stability": "dev"
+    "sort-packages": true
+  },
+  "minimum-stability": "dev"
 }
