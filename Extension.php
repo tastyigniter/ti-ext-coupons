@@ -37,26 +37,8 @@ class Extension extends BaseExtension
         });
 
         Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
-            $couponConditions = [];
-
-            // We assume that either item-wise coupon or coupon-on-whole-cart would apply.
-            // Added this code to fetch item wise applied coupons.
-            Cart::getConditions()->get('coupon')->getTarget()->map(function ($item) use (&$couponConditions) {
-                if($item->conditions->get('coupon')) {
-                    $couponConditions[] = $item->conditions->get('coupon');
-                }
-            });
-
-            // If item wise coupon not found, then check for coupon-applied-on-whole-cart.
-            if(count($couponConditions) === 0) {
-                $couponConditions[] = Cart::conditions()->get('coupon');
-            }
-
-            // Only go for history if any of the above coupons applied.
-            if (count($couponConditions)) {
-                foreach($couponConditions as $couponCondition) {
-                    $order->logCouponHistory($couponCondition);
-                }
+            if ($couponCondition = Cart::conditions()->get('coupon')) {
+                $order->logCouponHistory($couponCondition);
             }
         });
 

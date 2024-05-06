@@ -86,11 +86,18 @@ class Coupon extends CartCondition
     public function beforeApply()
     {
         $couponModel = $this->getModel();
-        if (!$couponModel || $couponModel->appliesOnMenuItems() || self::$hasErrors)
+        // if (!$couponModel || $couponModel->appliesOnMenuItems() || self::$hasErrors)
+        if (!$couponModel || self::$hasErrors) {
             return false;
+        }
 
-        if ($couponModel->appliesOnDelivery() && !Location::orderTypeIsDelivery())
+        if ($couponModel->appliesOnMenuItems()) {
+            return !($this->getValidTarget()->count() === 0);
+        }
+
+        if ($couponModel->appliesOnDelivery() && !Location::orderTypeIsDelivery()) {
             return false;
+        }
     }
 
     public function getActions()
@@ -123,6 +130,15 @@ class Coupon extends CartCondition
         }
 
         $this->removeMetaData('code');
+    }
+
+    public function getValidTarget()
+    {
+        $validItemIds = $this->getApplicableItems($this->getModel())->toArray();
+
+        return $this->target->filter(function ($content) use ($validItemIds) {
+            return in_array($content->id, $validItemIds);
+        });
     }
 
     protected function calculateApportionment($value)
