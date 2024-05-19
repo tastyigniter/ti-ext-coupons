@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('igniter_coupons_history', function (Blueprint $table) {
+        Schema::table('igniter_coupons_history', function(Blueprint $table) {
             $table->unsignedBigInteger('coupon_id')->change();
             $table->unsignedBigInteger('order_id')->nullable()->change();
             $table->unsignedBigInteger('customer_id')->nullable()->change();

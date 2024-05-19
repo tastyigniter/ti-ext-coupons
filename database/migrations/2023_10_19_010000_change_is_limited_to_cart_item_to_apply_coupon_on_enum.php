@@ -11,14 +11,14 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('igniter_coupons', function (Blueprint $table) {
+        Schema::table('igniter_coupons', function(Blueprint $table) {
             $table->enum(
                 'apply_coupon_on',
                 ['whole_cart', 'menu_items', 'delivery_fee']
             )->default('whole_cart')->after('order_restriction');
         });
         $this->updateApplyCouponOnEnum();
-        Schema::table('igniter_coupons', function (Blueprint $table) {
+        Schema::table('igniter_coupons', function(Blueprint $table) {
             $table->dropColumn('is_limited_to_cart_item');
         });
     }
@@ -28,7 +28,7 @@ return new class extends Migration
     {
         DB::table('igniter_coupons')
             ->where('is_limited_to_cart_item', 1)->get()->each(
-                function ($model) {
+                function($model) {
                     DB::table('igniter_coupons')
                         ->where('coupon_id', $model->coupon_id)
                         ->update([
