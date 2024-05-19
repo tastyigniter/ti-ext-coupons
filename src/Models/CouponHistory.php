@@ -62,7 +62,7 @@ class CouponHistory extends Model
         self::query()
             ->where('order_id', $orderId)
             ->get()
-            ->each(function ($couponHistory) {
+            ->each(function($couponHistory) {
                 $couponHistory->update([
                     'status' => 1,
                     'created_at' => now(),

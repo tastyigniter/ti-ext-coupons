@@ -22,16 +22,16 @@ class Extension extends BaseExtension
 
     public function boot()
     {
-        Order::extend(function ($model) {
+        Order::extend(function($model) {
             $model->relation['hasMany']['coupon_history'] = [\Igniter\Coupons\Models\CouponHistory::class, 'delete' => true];
             $model->implement[] = 'Igniter.Coupons.Actions.RedeemsCoupon';
         });
 
-        Event::listen('cart.added', function () {
+        Event::listen('cart.added', function() {
             Coupon::query()->isEnabled()
                 ->isAutoApplicable()
                 ->whereHasOrDoesntHaveLocation(Location::getId())
-                ->each(function ($coupon) {
+                ->each(function($coupon) {
                     $orderDateTime = Location::orderDateTime();
                     if ($coupon->isExpired($orderDateTime)) {
                         return;
@@ -41,7 +41,7 @@ class Extension extends BaseExtension
                 });
         });
 
-        Event::listen('payregister.paypalexpress.extendFields', function ($payment, &$fields, $order, $data) {
+        Event::listen('payregister.paypalexpress.extendFields', function($payment, &$fields, $order, $data) {
             if ($coupon = $order->getOrderTotals()->firstWhere('code', 'coupon')) {
                 $fields['purchase_units'][0]['amount']['breakdown']['discount'] = [
                     'currency_code' => $fields['purchase_units'][0]['amount']['currency_code'],
@@ -50,19 +50,19 @@ class Extension extends BaseExtension
             }
         });
 
-        Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
+        Event::listen('igniter.checkout.afterSaveOrder', function($order) {
             if ($couponCondition = Cart::conditions()->get('coupon')) {
                 $order->logCouponHistory($couponCondition);
             }
         });
 
-        Event::listen('admin.order.paymentProcessed', function ($order) {
+        Event::listen('admin.order.paymentProcessed', function($order) {
             $order->redeemCoupon();
         });
 
-        Customer::created(function ($customer) {
+        Customer::created(function($customer) {
             Order::where('email', $customer->email)
-                ->chunk(100, function ($orders) use ($customer) {
+                ->chunk(100, function($orders) use ($customer) {
                     foreach ($orders as $order) {
                         CouponHistory::where('order_id', $order->order_id)
                             ->update(['customer_id' => $customer->customer_id]);

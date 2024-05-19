@@ -8,12 +8,12 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('igniter_coupon_customers', function (Blueprint $table) {
+        Schema::create('igniter_coupon_customers', function(Blueprint $table) {
             $table->unsignedBigInteger('coupon_id');
             $table->unsignedBigInteger('customer_id');
         });
 
-        Schema::create('igniter_coupon_customer_groups', function (Blueprint $table) {
+        Schema::create('igniter_coupon_customer_groups', function(Blueprint $table) {
             $table->unsignedBigInteger('coupon_id');
             $table->unsignedBigInteger('customer_group_id');
         });

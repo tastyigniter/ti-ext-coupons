@@ -21,7 +21,7 @@ return new class extends Migration
             return;
         }
 
-        Schema::create('igniter_coupons', function (Blueprint $table) {
+        Schema::create('igniter_coupons', function(Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('coupon_id');
             $table->string('name');
@@ -46,7 +46,7 @@ return new class extends Migration
             $table->boolean('order_restriction');
         });
 
-        Schema::create('igniter_coupons_history', function (Blueprint $table) {
+        Schema::create('igniter_coupons_history', function(Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('coupon_history_id');
             $table->integer('coupon_id');
@@ -74,7 +74,7 @@ return new class extends Migration
             return;
         }
 
-        DB::table('igniter_coupons')->insert(array_map(function ($record) {
+        DB::table('igniter_coupons')->insert(array_map(function($record) {
             $record['order_restriction'] = 0;
             $record['date_added'] = now();
 

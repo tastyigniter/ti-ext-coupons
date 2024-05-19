@@ -89,7 +89,7 @@ $config['list']['columns'] = [
         'label' => 'lang:igniter.coupons::default.column_discount',
         'type' => 'text',
         'sortable' => false,
-        'formatter' => function ($record, $column, $value) {
+        'formatter' => function($record, $column, $value) {
             return $record->isFixed() ? currency_format($value) : $value;
         },
     ],
@@ -97,7 +97,7 @@ $config['list']['columns'] = [
         'label' => 'lang:igniter.coupons::default.column_validity',
         'type' => 'text',
         'searchable' => true,
-        'formatter' => function ($record, $column, $value) {
+        'formatter' => function($record, $column, $value) {
             return $value ? ucwords($value) : null;
         },
     ],

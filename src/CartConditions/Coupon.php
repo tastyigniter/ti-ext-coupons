@@ -56,7 +56,7 @@ class Coupon extends CartCondition
     {
         $applicableItems = $couponModel->menus->pluck('menu_id');
         $couponModel->categories->pluck('category_id')
-            ->each(function ($category) use (&$applicableItems) {
+            ->each(function($category) use (&$applicableItems) {
                 $applicableItems = $applicableItems
                     ->merge(Menu::whereHasCategory($category)->pluck('menu_id'));
             });
@@ -135,7 +135,7 @@ class Coupon extends CartCondition
     {
         $applicableItems = self::$applicableItems;
         if ($applicableItems && count($applicableItems)) {
-            $applicableItemsTotal = Cart::content()->sum(function ($cartItem) use ($applicableItems) {
+            $applicableItemsTotal = Cart::content()->sum(function($cartItem) use ($applicableItems) {
                 if (!$applicableItems->contains($cartItem->id)) {
                     return 0;
                 }

@@ -9,15 +9,15 @@ class CouponScope extends Scope
 {
     public function addIsAutoApplicable()
     {
-        return function (Builder $builder) {
+        return function(Builder $builder) {
             return $builder->where('auto_apply', '1');
         };
     }
 
     public function addWhereHasCategory()
     {
-        return function (Builder $builder, $categoryId) {
-            return $builder->whereHas('categories', function ($q) use ($categoryId) {
+        return function(Builder $builder, $categoryId) {
+            return $builder->whereHas('categories', function($q) use ($categoryId) {
                 $q->where('categories.category_id', $categoryId);
             });
         };
@@ -25,8 +25,8 @@ class CouponScope extends Scope
 
     public function addWhereHasMenu()
     {
-        return function (Builder $builder, $menuId) {
-            return $builder->whereHas('menus', function ($q) use ($menuId) {
+        return function(Builder $builder, $menuId) {
+            return $builder->whereHas('menus', function($q) use ($menuId) {
                 $q->where('menus.menu_id', $menuId);
             });
         };
@@ -34,7 +34,7 @@ class CouponScope extends Scope
 
     public function addWhereCodeAndLocation()
     {
-        return function (Builder $builder, $code, $locationId) {
+        return function(Builder $builder, $code, $locationId) {
             return $builder->whereHasOrDoesntHaveLocation($locationId)->whereCode($code);
         };
     }

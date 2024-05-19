@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('igniter_coupons', function (Blueprint $table) {
+        Schema::table('igniter_coupons', function(Blueprint $table) {
             $table->boolean('is_limited_to_cart_item')->default(false);
         });
     }

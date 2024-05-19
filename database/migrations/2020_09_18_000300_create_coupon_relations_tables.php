@@ -12,14 +12,14 @@ return new class extends Migration
             return;
         }
 
-        Schema::create('igniter_coupon_categories', function (Blueprint $table) {
+        Schema::create('igniter_coupon_categories', function(Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->integer('coupon_id')->unsigned()->index();
             $table->integer('category_id')->unsigned()->index();
             $table->unique(['coupon_id', 'category_id']);
         });
 
-        Schema::create('igniter_coupon_menus', function (Blueprint $table) {
+        Schema::create('igniter_coupon_menus', function(Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->integer('coupon_id')->unsigned()->index();
             $table->integer('menu_id')->unsigned()->index();
