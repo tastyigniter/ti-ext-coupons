@@ -27,7 +27,7 @@ php artisan igniter:up
 
 This extension provides a cart condition that allows you apply coupons to the cart. To enable the coupon condition:
 
-- Navigate to the _System > Settings > Cart Settings_ admin settings page
+- Navigate to the _Manage > Settings > Cart Settings_ admin settings page
 - Switch to enable the `coupon` cart condition
 - Navigate to the _Marketing > Coupons_ admin page to manage coupons
 
