@@ -121,13 +121,17 @@ class Coupons_history_model extends Model
     }
 
     /**
-     * @param \Igniter\Flame\Cart\CartCondition $couponCondition
+     * @param object $couponTotal
      * @param \Admin\Models\Orders_model $order
      * @return \Admin\Models\Coupons_history_model|bool
      */
-    public static function createHistory($couponCondition, $order)
+    public static function createHistory($couponTotal, $order)
     {
-        if (!$coupon = $couponCondition->getModel())
+        if ($couponTotal->code === 'coupon' && $couponTotal->title) {
+            $couponTotal->code = str_after(str_before($couponTotal->title, ']'), '[');
+        }
+
+        if (!$coupon = Coupons_model::firstWhere('code', $couponTotal->code))
             return false;
 
         $model = new static;
@@ -135,10 +139,10 @@ class Coupons_history_model extends Model
         $model->customer_id = $order->customer ? $order->customer->getKey() : null;
         $model->coupon_id = $coupon->coupon_id;
         $model->code = $coupon->code;
-        $model->amount = $couponCondition->getValue();
+        $model->amount = $couponTotal->value;
         $model->min_total = $coupon->min_total;
 
-        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$model, $couponCondition, $order->customer, $coupon], true) === false)
+        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$model, $couponTotal, $order->customer, $coupon], true) === false)
             return false;
 
         $model->save();

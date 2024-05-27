@@ -187,9 +187,7 @@ class Coupon extends CartCondition
         if ($couponModel->hasReachedMaxRedemption())
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
 
-        if (($couponModel->customer_redemptions
-                || optional($couponModel->customers)->isNotEmpty()
-                || optional($couponModel->customer_groups)->isNotEmpty()) && !$user
+        if ((optional($couponModel->customers)->isNotEmpty() || optional($couponModel->customer_groups)->isNotEmpty()) && !$user
         ) throw new ApplicationException(lang('igniter.coupons::default.alert_coupon_login_required'));
 
         if ($user && $couponModel->customerHasMaxRedemption($user))

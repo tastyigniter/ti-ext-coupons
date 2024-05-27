@@ -36,8 +36,8 @@ class Extension extends BaseExtension
         });
 
         Event::listen('igniter.checkout.afterSaveOrder', function ($order) {
-            if ($couponCondition = Cart::conditions()->get('coupon')) {
-                $order->logCouponHistory($couponCondition);
+            if ($couponTotal = $order->getOrderTotals()->firstWhere('code', 'coupon')) {
+                $order->logCouponHistory($couponTotal);
             }
         });
 

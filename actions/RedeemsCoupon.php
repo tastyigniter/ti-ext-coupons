@@ -26,25 +26,16 @@ class RedeemsCoupon extends ModelAction
     /**
      * Add cart coupon to order by order_id
      *
-     * @param \Admin\Models\Orders_model $order
-     * @param \Igniter\Flame\Cart\CartCondition $couponCondition
-     * @param \Admin\Models\Customers_model $customer
+     * @param object $couponTotal
      *
      * @return int|bool
      */
-    public function logCouponHistory($couponCondition)
+    public function logCouponHistory($couponTotal)
     {
-        if (!$couponCondition instanceof CartCondition) {
-            throw new \InvalidArgumentException(sprintf(
-                'Invalid argument, expected %s, got %s',
-                CartCondition::class, get_class($couponCondition)
-            ));
-        }
-
         // Make sure order model exists
         if (!$this->model->exists)
             return false;
 
-        return Coupons_history_model::createHistory($couponCondition, $this->model);
+        return Coupons_history_model::createHistory($couponTotal, $this->model);
     }
 }
