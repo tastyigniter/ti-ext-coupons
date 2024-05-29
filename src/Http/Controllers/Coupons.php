@@ -29,7 +29,7 @@ class Coupons extends \Igniter\Admin\Classes\AdminController
     public array $formConfig = [
         'name' => 'igniter.coupons::default.text_form_name',
         'model' => \Igniter\Coupons\Models\Coupon::class,
-        'request' => \Igniter\Coupons\Requests\CouponRequest::class,
+        'request' => \Igniter\Coupons\Http\Requests\CouponRequest::class,
         'create' => [
             'title' => 'lang:admin::lang.form.create_title',
             'redirect' => 'igniter/coupons/coupons/edit/{coupon_id}',

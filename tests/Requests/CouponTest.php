@@ -2,7 +2,7 @@
 
 namespace Tests\Requests;
 
-use Igniter\Coupons\Requests\CouponRequest;
+use Igniter\Coupons\Http\Requests\CouponRequest;
 use Illuminate\Validation\Rule;
 
 it('has required rule for inputs:
