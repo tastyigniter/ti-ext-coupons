@@ -3,7 +3,7 @@
 namespace Igniter\Coupons\ApiResources;
 
 use Igniter\Api\Classes\ApiController;
-use Igniter\Coupons\Requests\CouponRequest;
+use Igniter\Coupons\Http\Requests\CouponRequest;
 
 /**
  * Coupons API Controller

@@ -1,6 +1,6 @@
 <?php
 
-namespace Igniter\Coupons\Requests;
+namespace Igniter\Coupons\Http\Requests;
 
 use Igniter\System\Classes\FormRequest;
 use Illuminate\Validation\Rule;
