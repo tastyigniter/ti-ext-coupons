@@ -329,8 +329,3 @@ parameters:
 			message: "#^Call to an undefined method Igniter\\\\Flame\\\\Database\\\\Builder\\:\\:whereHasOrDoesntHaveLocation\\(\\)\\.$#"
 			count: 1
 			path: src/Models/Scopes/CouponScope.php
-
-		-
-			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Requests\\\\CouponRequest\\:\\:inputWith\\(\\)\\.$#"
-			count: 1
-			path: src/Requests/CouponRequest.php
