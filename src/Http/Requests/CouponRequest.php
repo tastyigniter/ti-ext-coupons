@@ -63,13 +63,4 @@ class CouponRequest extends FormRequest
             'locations.*' => ['integer'],
         ];
     }
-
-    protected function prepareMaxRule($parameters, $field)
-    {
-        if ($field === 'discount' && $this->inputWith('type') != 'P') {
-            return '';
-        }
-
-        return 'max:'.implode(',', $parameters);
-    }
 }
