@@ -3,6 +3,7 @@
 namespace Igniter\Coupons\Models;
 
 use Carbon\Carbon;
+use Igniter\Flame\Database\Factories\HasFactory;
 use Igniter\Flame\Database\Model;
 use Igniter\Local\Models\Concerns\Locationable;
 use Igniter\System\Models\Concerns\Switchable;
@@ -14,6 +15,7 @@ use Igniter\User\Models\CustomerGroup;
  */
 class Coupon extends Model
 {
+    use HasFactory;
     use Locationable;
     use Switchable;
 
