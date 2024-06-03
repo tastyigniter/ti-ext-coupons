@@ -193,6 +193,10 @@ class Coupon extends Model
                 $start = $this->fixed_date->copy()->setTimeFromTimeString($this->fixed_from_time);
                 $end = $this->fixed_date->copy()->setTimeFromTimeString($this->fixed_to_time);
 
+                if ($start->gt($end)) {
+                    $end->addDay();
+                }
+
                 return !$orderDateTime->between($start, $end);
             case 'period':
                 return !$orderDateTime->between($this->period_start_date, $this->period_end_date);
@@ -203,6 +207,10 @@ class Coupon extends Model
 
                 $start = $orderDateTime->copy()->setTimeFromTimeString($this->recurring_from_time);
                 $end = $orderDateTime->copy()->setTimeFromTimeString($this->recurring_to_time);
+
+                if ($start->gt($end)) {
+                    $end->addDay();
+                }
 
                 return !$orderDateTime->between($start, $end);
         }

@@ -1,44 +1,35 @@
 <?php
 
-namespace Tests\Requests;
+namespace Igniter\Coupons\Tests\Http\Requests;
 
 use Igniter\Coupons\Http\Requests\CouponRequest;
 use Illuminate\Validation\Rule;
 
-it('has required rule for inputs:
-    name, code, type, discount, customer_redemptions, redemptions and validity',
-    function() {
-        $rules = (new CouponRequest)->rules();
-        $inputNames = ['name', 'code', 'type', 'discount', 'customer_redemptions', 'redemptions', 'validity'];
-        $testExpectation = null;
+it('has required rule for inputs', function() {
+    $rules = (new CouponRequest)->rules();
 
-        foreach ($inputNames as $key => $inputName) {
-            if ($key == 0) {
-                $testExpectation = expect('required')->toBeIn(array_get($rules, $inputName));
-            }
-            $testExpectation = $testExpectation->and('required')->toBeIn(array_get($rules, $inputName));
-        }
+    expect('required')->toBeIn(array_get($rules, 'name'))
+        ->and('required')->toBeIn(array_get($rules, 'code'))
+        ->and('required')->toBeIn(array_get($rules, 'type'))
+        ->and('required')->toBeIn(array_get($rules, 'discount'))
+        ->and('required')->toBeIn(array_get($rules, 'customer_redemptions'))
+        ->and('required')->toBeIn(array_get($rules, 'redemptions'))
+        ->and('required')->toBeIn(array_get($rules, 'validity'));
+});
 
-    }
-);
+it('has nullable rule for inputs', function() {
+    $rules = (new CouponRequest)->rules();
 
-it(
-    'has nullable rule for inputs: fixed_date, fixed_from_time, fixed_to_time, period_start_date,
-    period_end_date, recurring_every, recurring_from_time, recurring_to_time, order_restriction.*',
-    function() {
-        $rules = (new CouponRequest)->rules();
-        $inputNames = ['fixed_date', 'fixed_from_time', 'fixed_to_time', 'period_start_date', 'period_end_date',
-            'recurring_every', 'recurring_from_time', 'recurring_to_time', 'order_restriction.*'];
-        $testExpectation = null;
-        foreach ($inputNames as $key => $inputName) {
-            if ($key == 0) {
-                $testExpectation = expect('nullable')->toBeIn(array_get($rules, $inputName));
-            }
-            $testExpectation = $testExpectation->and('nullable')->toBeIn(array_get($rules, $inputName));
-        }
-
-    }
-);
+    expect('nullable')->toBeIn(array_get($rules, 'fixed_date'))
+        ->and('nullable')->toBeIn(array_get($rules, 'fixed_from_time'))
+        ->and('nullable')->toBeIn(array_get($rules, 'fixed_to_time'))
+        ->and('nullable')->toBeIn(array_get($rules, 'period_start_date'))
+        ->and('nullable')->toBeIn(array_get($rules, 'period_end_date'))
+        ->and('nullable')->toBeIn(array_get($rules, 'recurring_every'))
+        ->and('nullable')->toBeIn(array_get($rules, 'recurring_from_time'))
+        ->and('nullable')->toBeIn(array_get($rules, 'recurring_to_time'))
+        ->and('nullable')->toBeIn(array_get($rules, 'order_restriction.*'));
+});
 
 it('has string rule for inputs: type and order_restriction.*', function() {
     $rules = (new CouponRequest)->rules();
@@ -91,6 +82,7 @@ it('has boolean rule for inputs: status and auto_apply', function() {
         $testExpectation = $testExpectation->and('boolean')->toBeIn(array_get($rules, $inputName));
     }
 });
+
 it('has unique rule for code input', function() {
     expect((string)(Rule::unique('igniter_coupons')->ignore(null, 'coupon_id')))
         ->toBeIn(

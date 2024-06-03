@@ -233,4 +233,11 @@ class Coupon extends CartCondition
 
         return $applicableItems->contains($cartItem->id);
     }
+
+    public function __destruct()
+    {
+        self::$couponModel = null;
+        self::$applicableItems = null;
+        self::$hasErrors = false;
+    }
 }
