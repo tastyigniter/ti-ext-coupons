@@ -11,7 +11,7 @@ use Igniter\User\Models\CustomerGroup;
 
 it('gets recurring every attribute correctly', function() {
     $coupon = Coupon::factory()->create([
-        'recurring_every' => [0, 1, 2, 3, 4, 5, 6]
+        'recurring_every' => [0, 1, 2, 3, 4, 5, 6],
     ]);
 
     expect($coupon->recurring_every)->toBe(['0', '1', '2', '3', '4', '5', '6']);
@@ -19,7 +19,7 @@ it('gets recurring every attribute correctly', function() {
 
 it('sets recurring every attribute correctly', function() {
     $coupon = Coupon::factory()->create([
-        'recurring_every' => [0, 1, 2, 3, 4, 5, 6]
+        'recurring_every' => [0, 1, 2, 3, 4, 5, 6],
     ]);
 
     expect($coupon->getAttributes()['recurring_every'])->toBe('0, 1, 2, 3, 4, 5, 6');
@@ -70,7 +70,7 @@ it('checks if coupon is valid', function($attributes) {
     fn() => [
         'validity' => 'period',
         'period_start_date' => now()->subDays(2),
-        'period_end_date' => now()->addDay()
+        'period_end_date' => now()->addDay(),
     ],
     fn() => [
         'validity' => 'recurring',
@@ -94,7 +94,7 @@ it('checks if coupon is expired', function($attributes) {
     fn() => [
         'validity' => 'period',
         'period_start_date' => now()->subDays(2),
-        'period_end_date' => now()->subDay()
+        'period_end_date' => now()->subDay(),
     ],
     fn() => [
         'validity' => 'recurring',

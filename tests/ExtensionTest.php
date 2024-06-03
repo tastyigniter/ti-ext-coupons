@@ -30,7 +30,7 @@ it('logs coupon history after order save', function() {
     $couponCondition = new Coupon([
         'name' => 'coupon',
         'label' => 'Coupon',
-        'metaData' => ['code' => $coupon->code]
+        'metaData' => ['code' => $coupon->code],
     ]);
 
     Cart::shouldReceive('conditions->get')->with('coupon')->andReturn($couponCondition);

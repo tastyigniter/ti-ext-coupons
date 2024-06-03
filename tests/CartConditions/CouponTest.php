@@ -18,7 +18,7 @@ beforeEach(function() {
     $this->couponCondition = new Coupon([
         'name' => 'Coupon',
         'label' => 'Coupon: %s',
-        'metaData' => ['code' => $this->coupon->code]
+        'metaData' => ['code' => $this->coupon->code],
     ]);
 });
 

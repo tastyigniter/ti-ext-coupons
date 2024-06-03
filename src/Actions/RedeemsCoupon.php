@@ -28,7 +28,6 @@ class RedeemsCoupon extends ModelAction
      * Add cart coupon to order by order_id
      *
      * @param float $couponValue
-     * @param \Igniter\Coupons\Models\Coupon $coupon
      *
      * @return bool
      */
