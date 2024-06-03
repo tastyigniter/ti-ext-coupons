@@ -2,8 +2,8 @@
 
 namespace Igniter\Coupons\Actions;
 
-use Igniter\Cart\CartCondition;
 use Igniter\Cart\Models\Order;
+use Igniter\Coupons\Models\Coupon;
 use Igniter\Coupons\Models\CouponHistory;
 use Igniter\Flame\Traits\ExtensionTrait;
 use Igniter\System\Actions\ModelAction;
@@ -27,27 +27,19 @@ class RedeemsCoupon extends ModelAction
     /**
      * Add cart coupon to order by order_id
      *
-     * @param \Igniter\Cart\Models\Order $order
-     * @param \Igniter\Cart\CartCondition $couponCondition
-     * @param \Igniter\User\Models\Customer $customer
+     * @param float $couponValue
+     * @param \Igniter\Coupons\Models\Coupon $coupon
      *
-     * @return int|bool
+     * @return bool
      */
-    public function logCouponHistory($couponCondition)
+    public function logCouponHistory($couponValue, Coupon $coupon)
     {
-        if (!$couponCondition instanceof CartCondition) {
-            throw new \InvalidArgumentException(sprintf(
-                'Invalid argument, expected %s, got %s',
-                CartCondition::class, get_class($couponCondition)
-            ));
-        }
-
         // Make sure order model exists
         if (!$this->model->exists) {
             return false;
         }
 
         /** @var Order $this */
-        return CouponHistory::createHistory($couponCondition, $this->model);
+        return CouponHistory::createHistory($coupon, $couponValue, $this->model);
     }
 }

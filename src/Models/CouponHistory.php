@@ -3,6 +3,7 @@
 namespace Igniter\Coupons\Models;
 
 use Igniter\Flame\Database\Model;
+use Igniter\System\Models\Concerns\Switchable;
 use Igniter\User\Models\Concerns\HasCustomer;
 use Illuminate\Support\Facades\Event;
 
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Event;
 class CouponHistory extends Model
 {
     use HasCustomer;
+    use Switchable;
 
     /**
      * @var string The database table name
@@ -68,7 +70,7 @@ class CouponHistory extends Model
                     'created_at' => now(),
                 ]);
 
-                Event::fire('admin.order.couponRedeemed', [$couponHistory]);
+                Event::dispatch('admin.order.couponRedeemed', [$couponHistory]);
             });
     }
 
@@ -90,25 +92,22 @@ class CouponHistory extends Model
     }
 
     /**
-     * @param \Igniter\Cart\CartCondition $couponCondition
+     * @param \Igniter\Coupons\Models\Coupon $coupon
+     * @param float $couponValue
      * @param \Igniter\Cart\Models\Order $order
      * @return \Igniter\Coupons\Models\CouponHistory|bool
      */
-    public static function createHistory($couponCondition, $order)
+    public static function createHistory($coupon, $couponValue, $order)
     {
-        if (!$coupon = $couponCondition->getModel()) {
-            return false;
-        }
-
         $model = new static;
         $model->order_id = $order->getKey();
         $model->customer_id = $order->customer ? $order->customer->getKey() : null;
         $model->coupon_id = $coupon->coupon_id;
         $model->code = $coupon->code;
-        $model->amount = $couponCondition->getValue();
+        $model->amount = $couponValue;
         $model->min_total = $coupon->min_total;
 
-        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$couponCondition, $order->customer, $coupon], true) === false) {
+        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$couponValue, $order->customer, $coupon]) === false) {
             return false;
         }
 
