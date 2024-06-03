@@ -35,7 +35,7 @@ it('returns all coupons with menus, categories and history', function() {
 
     $this
         ->get(route('igniter.api.coupons.index', ['include' => [
-            'menus', 'categories', 'history'
+            'menus', 'categories', 'history',
         ]]))
         ->assertOk()
         ->assertJsonPath('data.0.attributes.name', $coupon->name)
