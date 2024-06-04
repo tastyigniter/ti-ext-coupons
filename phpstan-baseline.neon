@@ -31,16 +31,6 @@ parameters:
 			path: src/Actions/RedeemsCoupon.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$customer$#"
-			count: 1
-			path: src/Actions/RedeemsCoupon.php
-
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$order$#"
-			count: 1
-			path: src/Actions/RedeemsCoupon.php
-
-		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$categories\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/CouponsTransformer.php
@@ -271,6 +261,21 @@ parameters:
 			path: src/Models/CouponHistory.php
 
 		-
+			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$code\\.$#"
+			count: 1
+			path: src/Models/CouponHistory.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$coupon_id\\.$#"
+			count: 1
+			path: src/Models/CouponHistory.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$min_total\\.$#"
+			count: 1
+			path: src/Models/CouponHistory.php
+
+		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:\\$amount\\.$#"
 			count: 1
 			path: src/Models/CouponHistory.php
@@ -307,16 +312,6 @@ parameters:
 
 		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:\\$status\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Call to an undefined method Igniter\\\\Cart\\\\CartCondition\\:\\:getModel\\(\\)\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
-			message: "#^Call to an undefined static method Illuminate\\\\Support\\\\Facades\\\\Event\\:\\:fire\\(\\)\\.$#"
 			count: 1
 			path: src/Models/CouponHistory.php
 
