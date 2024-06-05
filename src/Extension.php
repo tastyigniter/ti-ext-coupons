@@ -5,7 +5,7 @@ namespace Igniter\Coupons;
 use Igniter\Cart\Classes\CartManager;
 use Igniter\Cart\Facades\Cart;
 use Igniter\Cart\Models\Order;
-use Igniter\Coupons\Actions\RedeemsCoupon;
+use Igniter\Coupons\Models\Actions\RedeemsCoupon;
 use Igniter\Coupons\Models\Coupon;
 use Igniter\Coupons\Models\CouponHistory;
 use Igniter\Coupons\Models\Scopes\CouponScope;

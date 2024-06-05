@@ -1,17 +1,14 @@
 <?php
 
-namespace Igniter\Coupons\Actions;
+namespace Igniter\Coupons\Models\Actions;
 
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\Models\Coupon;
 use Igniter\Coupons\Models\CouponHistory;
-use Igniter\Flame\Traits\ExtensionTrait;
 use Igniter\System\Actions\ModelAction;
 
 class RedeemsCoupon extends ModelAction
 {
-    use ExtensionTrait;
-
     /**
      * Redeem coupon by order
      */
