@@ -4,9 +4,9 @@ namespace Igniter\Coupons\Tests;
 
 use Igniter\Cart\Facades\Cart;
 use Igniter\Cart\Models\Order;
-use Igniter\Coupons\Actions\RedeemsCoupon;
 use Igniter\Coupons\CartConditions\Coupon;
 use Igniter\Coupons\Extension;
+use Igniter\Coupons\Models\Actions\RedeemsCoupon;
 use Igniter\Coupons\Models\Coupon as CouponModel;
 use Igniter\Coupons\Models\CouponHistory;
 use Igniter\User\Models\Customer;

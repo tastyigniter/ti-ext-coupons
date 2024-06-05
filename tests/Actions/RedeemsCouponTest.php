@@ -3,7 +3,7 @@
 namespace Igniter\Cart\Tests\Actions;
 
 use Igniter\Cart\Models\Order;
-use Igniter\Coupons\Actions\RedeemsCoupon;
+use Igniter\Coupons\Models\Actions\RedeemsCoupon;
 use Igniter\Coupons\Models\Coupon as CouponModel;
 use Igniter\Coupons\Models\CouponHistory;
 use Illuminate\Support\Facades\Event;
