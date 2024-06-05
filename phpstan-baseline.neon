@@ -16,21 +16,6 @@ parameters:
 			path: database/migrations/2022_06_30_010000_drop_foreign_key_constraints.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$model\\.$#"
-			count: 1
-			path: src/Actions/RedeemsCoupon.php
-
-		-
-			message: "#^Access to an undefined property Igniter\\\\Flame\\\\Database\\\\Model\\:\\:\\$order_id\\.$#"
-			count: 1
-			path: src/Actions/RedeemsCoupon.php
-
-		-
-			message: "#^Call to an undefined method Igniter\\\\Flame\\\\Database\\\\Model\\:\\:getOrderTotals\\(\\)\\.$#"
-			count: 1
-			path: src/Actions/RedeemsCoupon.php
-
-		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$categories\\.$#"
 			count: 1
 			path: src/ApiResources/Transformers/CouponsTransformer.php
@@ -129,6 +114,21 @@ parameters:
 			message: "#^Call to an undefined static method Igniter\\\\Admin\\\\Facades\\\\AdminMenu\\:\\:setContext\\(\\)\\.$#"
 			count: 1
 			path: src/Http/Controllers/Coupons.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$model\\.$#"
+			count: 1
+			path: src/Models/Actions/RedeemsCoupon.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Flame\\\\Database\\\\Model\\:\\:\\$order_id\\.$#"
+			count: 1
+			path: src/Models/Actions/RedeemsCoupon.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Flame\\\\Database\\\\Model\\:\\:getOrderTotals\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Actions/RedeemsCoupon.php
 
 		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$apply_coupon_on\\.$#"
