@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,6 +14,10 @@ return new class extends Migration
             $table->renameColumn('date_added', 'created_at');
             $table->timestamp('updated_at');
         });
+
+        DB::table('igniter_coupons')->update([
+            'updated_at' => DB::raw('created_at'),
+        ]);
 
         Schema::table('igniter_coupons_history', function(Blueprint $table) {
             $table->timestamp('date_used')->change();
