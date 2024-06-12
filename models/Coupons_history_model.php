@@ -50,17 +50,20 @@ class Coupons_history_model extends Model
 
     public static function redeem($orderId)
     {
-        Coupons_history_model::query()
-            ->where('order_id', $orderId)
-            ->get()
-            ->each(function ($couponHistory) {
-                $couponHistory->update([
-                    'status' => 1,
-                    'created_at' => now(),
-                ]);
+        if (!$couponHistory = static::query()->orderBy('created_at', 'desc')->firstWhere('order_id', $orderId)) {
+            return false;
+        }
 
-                Event::fire('admin.order.couponRedeemed', [$couponHistory]);
-            });
+        $couponHistory->update([
+            'status' => 1,
+            'created_at' => now(),
+        ]);
+
+        static::query()->where('order_id', $orderId)
+            ->where('coupon_history_id', '<>', $couponHistory->coupon_history_id)
+            ->delete();
+
+        Event::fire('admin.order.couponRedeemed', [$couponHistory]);
     }
 
     public function getCustomerNameAttribute($value)
