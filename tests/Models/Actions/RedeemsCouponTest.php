@@ -1,6 +1,6 @@
 <?php
 
-namespace Igniter\Cart\Tests\Actions;
+namespace Igniter\Cart\Tests\Models\Actions;
 
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\Models\Actions\RedeemsCoupon;
@@ -38,10 +38,19 @@ it('logs coupon history correctly', function() {
     Event::fake();
 
     $order = Order::factory()->create();
-    $coupon = CouponModel::factory()->create();
-    $redeemsCoupon = new RedeemsCoupon($order);
+    $couponTotal = $order->totals()->create([
+        'code' => 'coupon',
+        'title' => 'Coupon [test-coupon]',
+        'value' => 10,
+        'priority' => 1,
+    ]);
+    CouponModel::factory()->create([
+        'code' => 'test-coupon',
+        'name' => 'coupon',
+    ]);
 
-    expect($redeemsCoupon->logCouponHistory(10, $coupon))->toBeInstanceOf(CouponHistory::class);
+    $redeemsCoupon = new RedeemsCoupon($order);
+    expect($redeemsCoupon->logCouponHistory($couponTotal))->toBeInstanceOf(CouponHistory::class);
 
     Event::assertDispatched('couponHistory.beforeAddHistory');
 });

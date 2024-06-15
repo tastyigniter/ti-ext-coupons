@@ -5,7 +5,6 @@ namespace Igniter\Coupons\Models;
 use Igniter\Flame\Database\Model;
 use Igniter\System\Models\Concerns\Switchable;
 use Igniter\User\Models\Concerns\HasCustomer;
-use Illuminate\Support\Facades\Event;
 
 /**
  * Coupons History Model Class
@@ -61,17 +60,20 @@ class CouponHistory extends Model
 
     public static function redeem($orderId)
     {
-        self::query()
-            ->where('order_id', $orderId)
-            ->get()
-            ->each(function($couponHistory) {
-                $couponHistory->update([
-                    'status' => 1,
-                    'created_at' => now(),
-                ]);
+        if (!$couponHistory = static::query()->orderBy('created_at', 'desc')->firstWhere('order_id', $orderId)) {
+            return false;
+        }
 
-                Event::dispatch('admin.order.couponRedeemed', [$couponHistory]);
-            });
+        $couponHistory->update([
+            'status' => 1,
+            'created_at' => now(),
+        ]);
+
+        static::query()->where('order_id', $orderId)
+            ->where('coupon_history_id', '<>', $couponHistory->coupon_history_id)
+            ->delete();
+
+        $couponHistory->fireSystemEvent('admin.order.couponRedeemed');
     }
 
     public function getCustomerNameAttribute($value)
@@ -92,22 +94,29 @@ class CouponHistory extends Model
     }
 
     /**
-     * @param \Igniter\Coupons\Models\Coupon $coupon
-     * @param float $couponValue
+     * @param object $couponTotal
      * @param \Igniter\Cart\Models\Order $order
      * @return \Igniter\Coupons\Models\CouponHistory|bool
      */
-    public static function createHistory($coupon, $couponValue, $order)
+    public static function createHistory($couponTotal, $order)
     {
+        if ($couponTotal->code === 'coupon' && str_contains($couponTotal->title, '[')) {
+            $couponTotal->code = str_after(str_before($couponTotal->title, ']'), '[');
+        }
+
+        if (!$coupon = Coupon::firstWhere('code', $couponTotal->code)) {
+            return false;
+        }
+
         $model = new static;
         $model->order_id = $order->getKey();
         $model->customer_id = $order->customer ? $order->customer->getKey() : null;
         $model->coupon_id = $coupon->coupon_id;
         $model->code = $coupon->code;
-        $model->amount = $couponValue;
+        $model->amount = $couponTotal->value;
         $model->min_total = $coupon->min_total;
 
-        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$couponValue, $order->customer, $coupon]) === false) {
+        if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$couponTotal, $order->customer, $coupon]) === false) {
             return false;
         }
 
