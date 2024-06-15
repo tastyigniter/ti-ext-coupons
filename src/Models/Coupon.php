@@ -215,6 +215,10 @@ class Coupon extends Model
                 return !$orderDateTime->between($start, $end);
         }
 
+        if ($result = $this->fireSystemEvent('igniter.coupon.isExpired', [$orderDateTime])) {
+            return $result;
+        }
+
         return false;
     }
 

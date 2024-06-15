@@ -2,9 +2,7 @@
 
 namespace Igniter\Coupons\Tests;
 
-use Igniter\Cart\Facades\Cart;
 use Igniter\Cart\Models\Order;
-use Igniter\Coupons\CartConditions\Coupon;
 use Igniter\Coupons\Extension;
 use Igniter\Coupons\Models\Actions\RedeemsCoupon;
 use Igniter\Coupons\Models\Coupon as CouponModel;
@@ -27,13 +25,11 @@ it('logs coupon history after order save', function() {
         'name' => 'coupon',
     ]);
 
-    $couponCondition = new Coupon([
-        'name' => 'coupon',
-        'label' => 'Coupon',
-        'metaData' => ['code' => $coupon->code],
+    $order->totals()->create([
+        'code' => 'coupon',
+        'title' => 'Coupon [test-coupon]',
+        'value' => 10,
     ]);
-
-    Cart::shouldReceive('conditions->get')->with('coupon')->andReturn($couponCondition);
 
     event('igniter.checkout.afterSaveOrder', [$order]);
 

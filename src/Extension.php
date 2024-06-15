@@ -3,7 +3,6 @@
 namespace Igniter\Coupons;
 
 use Igniter\Cart\Classes\CartManager;
-use Igniter\Cart\Facades\Cart;
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\Models\Actions\RedeemsCoupon;
 use Igniter\Coupons\Models\Coupon;
@@ -52,9 +51,8 @@ class Extension extends BaseExtension
         });
 
         Event::listen('igniter.checkout.afterSaveOrder', function($order) {
-            $couponCondition = Cart::conditions()->get('coupon');
-            if ($couponCondition && $coupon = $couponCondition->getModel()) {
-                $order->logCouponHistory($couponCondition->getValue(), $coupon);
+            if ($couponTotal = $order->getOrderTotals()->firstWhere('code', 'coupon')) {
+                $order->logCouponHistory($couponTotal);
             }
         });
 

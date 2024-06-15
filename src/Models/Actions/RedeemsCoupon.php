@@ -3,7 +3,6 @@
 namespace Igniter\Coupons\Models\Actions;
 
 use Igniter\Cart\Models\Order;
-use Igniter\Coupons\Models\Coupon;
 use Igniter\Coupons\Models\CouponHistory;
 use Igniter\System\Actions\ModelAction;
 
@@ -24,11 +23,11 @@ class RedeemsCoupon extends ModelAction
     /**
      * Add cart coupon to order by order_id
      *
-     * @param float $couponValue
+     * @param object $couponTotal
      *
      * @return bool
      */
-    public function logCouponHistory($couponValue, Coupon $coupon)
+    public function logCouponHistory($couponTotal)
     {
         // Make sure order model exists
         if (!$this->model->exists) {
@@ -36,6 +35,6 @@ class RedeemsCoupon extends ModelAction
         }
 
         /** @var Order $this */
-        return CouponHistory::createHistory($coupon, $couponValue, $this->model);
+        return CouponHistory::createHistory($couponTotal, $this->model);
     }
 }
