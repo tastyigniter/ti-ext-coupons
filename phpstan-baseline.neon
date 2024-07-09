@@ -36,6 +36,36 @@ parameters:
 			path: src/CartConditions/Coupon.php
 
 		-
+			message: "#^Access to an undefined property Illuminate\\\\Support\\\\Optional\\:\\:\\$discount\\.$#"
+			count: 2
+			path: src/CartConditions/Coupon.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Support\\\\Optional\\:\\:\\$group\\.$#"
+			count: 1
+			path: src/CartConditions/Coupon.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Support\\\\Optional\\:\\:appliesOnDelivery\\(\\)\\.$#"
+			count: 1
+			path: src/CartConditions/Coupon.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Support\\\\Optional\\:\\:appliesOnMenuItems\\(\\)\\.$#"
+			count: 1
+			path: src/CartConditions/Coupon.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Support\\\\Optional\\:\\:discountWithOperand\\(\\)\\.$#"
+			count: 1
+			path: src/CartConditions/Coupon.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Support\\\\Optional\\:\\:isFixed\\(\\)\\.$#"
+			count: 1
+			path: src/CartConditions/Coupon.php
+
+		-
 			message: "#^Call to an undefined static method Igniter\\\\Cart\\\\Facades\\\\Cart\\:\\:content\\(\\)\\.$#"
 			count: 1
 			path: src/CartConditions/Coupon.php
@@ -81,7 +111,7 @@ parameters:
 			path: src/CartConditions/Coupon.php
 
 		-
-			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\:\\:isEnabled\\(\\)\\.$#"
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\<Igniter\\\\Coupons\\\\Models\\\\Coupon\\>\\:\\:isEnabled\\(\\)\\.$#"
 			count: 1
 			path: src/Extension.php
 

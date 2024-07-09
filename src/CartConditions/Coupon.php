@@ -41,7 +41,7 @@ class Coupon extends CartCondition
 
     public function getModel()
     {
-        if (!strlen($couponCode = $this->getMetaData('code'))) {
+        if (!strlen($couponCode = $this->getMetaData('code', ''))) {
             return null;
         }
 
@@ -68,7 +68,7 @@ class Coupon extends CartCondition
 
     public function onLoad()
     {
-        if (!strlen($this->getMetaData('code')) || self::$hasErrors) {
+        if (!strlen($this->getMetaData('code', '')) || self::$hasErrors) {
             return;
         }
 
