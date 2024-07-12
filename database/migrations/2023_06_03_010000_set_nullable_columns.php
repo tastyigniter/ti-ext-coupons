@@ -15,7 +15,5 @@ return new class extends Migration
         });
     }
 
-    public function down()
-    {
-    }
+    public function down() {}
 };
