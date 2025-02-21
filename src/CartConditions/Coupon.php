@@ -16,9 +16,9 @@ class Coupon extends CartCondition
 {
     use ActsAsItemable;
 
-    public $removeable = true;
+    public bool $removeable = true;
 
-    public $priority = 200;
+    public ?int $priority = 200;
 
     /**
      * @var CouponModel
