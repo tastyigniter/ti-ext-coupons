@@ -18,7 +18,7 @@ it('deletes coupon history when order is deleted', function(): void {
 
     expect($order->coupon_history()->count())->toBe(1);
 
-    (new OrderObserver())->deleting($order);
+    (new OrderObserver)->deleting($order);
 
     expect($order->coupon_history()->count())->toBe(0);
 });

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons\ApiResources;
 
+use Igniter\Api\Classes\ApiController;
 use Igniter\Api\Http\Actions\RestController;
 use Igniter\Coupons\ApiResources\Repositories\CouponsRepository;
 use Igniter\Coupons\ApiResources\Transformers\CouponsTransformer;
-use Igniter\Api\Classes\ApiController;
 use Igniter\Coupons\Http\Requests\CouponRequest;
 
 /**

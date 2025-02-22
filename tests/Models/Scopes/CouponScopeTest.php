@@ -9,7 +9,7 @@ use Igniter\Flame\Database\Builder;
 use Mockery;
 
 beforeEach(function(): void {
-    $this->couponScope = new CouponScope();
+    $this->couponScope = new CouponScope;
     $this->builder = Mockery::mock(Builder::class);
 });
 
@@ -32,6 +32,7 @@ it('adds where has category scope', function(): void {
                 ->with('categories.category_id', $categoryId)
                 ->andReturnSelf();
             $callback($query);
+
             return true;
         }))
         ->andReturnSelf();
@@ -50,6 +51,7 @@ it('adds where has menu scope', function(): void {
                 ->with('menus.menu_id', $menuId)
                 ->andReturnSelf();
             $callback($query);
+
             return true;
         }))
         ->andReturnSelf();

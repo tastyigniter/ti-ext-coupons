@@ -7,7 +7,7 @@ namespace Igniter\Coupons\Tests\Http\Requests;
 use Igniter\Coupons\Http\Requests\CouponRequest;
 
 it('returns correct attribute labels', function(): void {
-    $request = new CouponRequest();
+    $request = new CouponRequest;
 
     $attributes = $request->attributes();
 
@@ -34,7 +34,7 @@ it('returns correct attribute labels', function(): void {
 });
 
 it('returns correct validation rules', function(): void {
-    $request = new CouponRequest();
+    $request = new CouponRequest;
 
     $request->setRouteResolver(fn(): object => new class
     {

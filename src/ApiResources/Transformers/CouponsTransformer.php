@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons\ApiResources\Transformers;
 
-use League\Fractal\Resource\Collection;
 use Igniter\Api\ApiResources\Transformers\CategoryTransformer;
 use Igniter\Api\ApiResources\Transformers\MenuTransformer;
 use Igniter\Api\Traits\MergesIdAttribute;
 use Igniter\Coupons\Models\Coupon;
+use League\Fractal\Resource\Collection;
 use League\Fractal\TransformerAbstract;
 
 class CouponsTransformer extends TransformerAbstract

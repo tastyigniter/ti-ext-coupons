@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons\Tests;
 
-use stdClass;
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\Extension;
 use Igniter\Coupons\Models\Actions\RedeemsCoupon;
@@ -19,6 +18,7 @@ use Igniter\Local\Models\Location as LocationModel;
 use Igniter\User\Models\Customer;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
+use stdClass;
 
 it('registers model observers correctly', function(): void {
     $extension = new class(app()) extends Extension
@@ -81,7 +81,7 @@ it('extends paypal express fields', function(): void {
         'value' => 10,
     ]);
 
-    event('payregister.paypalexpress.extendFields', [new stdClass(), &$fields, $order, []]);
+    event('payregister.paypalexpress.extendFields', [new stdClass, &$fields, $order, []]);
 
     expect($fields['purchase_units'][0]['amount']['breakdown']['discount'])->toHaveCount(2)
         ->and($fields['purchase_units'][0]['amount']['breakdown']['discount']['value'])->toBe('10.00');

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Igniter\Coupons\Http\Controllers;
 
 use Igniter\Admin\Classes\AdminController;
-use Igniter\Admin\Http\Actions\ListController;
-use Igniter\Admin\Http\Actions\FormController;
-use Igniter\Local\Http\Actions\LocationAwareController;
-use Igniter\Coupons\Models\Coupon;
-use Igniter\Coupons\Http\Requests\CouponRequest;
 use Igniter\Admin\Facades\AdminMenu;
+use Igniter\Admin\Http\Actions\FormController;
+use Igniter\Admin\Http\Actions\ListController;
+use Igniter\Coupons\Http\Requests\CouponRequest;
+use Igniter\Coupons\Models\Coupon;
+use Igniter\Local\Http\Actions\LocationAwareController;
 
 class Coupons extends AdminController
 {

@@ -121,7 +121,7 @@ it('applies filters to query builder', function(): void {
 });
 
 it('configures coupon history model correctly', function(): void {
-    $couponHistory = new CouponHistory();
+    $couponHistory = new CouponHistory;
 
     expect(class_uses_recursive($couponHistory))
         ->toContain(HasCustomer::class)

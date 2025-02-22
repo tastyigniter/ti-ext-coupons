@@ -17,7 +17,7 @@ it('detaches menus & categories when coupon is deleted', function(): void {
     expect($coupon->menus()->count())->toBe(1)
         ->and($coupon->categories()->count())->toBe(1);
 
-    (new CouponObserver())->deleting($coupon);
+    (new CouponObserver)->deleting($coupon);
 
     expect($coupon->categories()->count())->toBe(0)
         ->and($coupon->menus()->count())->toBe(0);
