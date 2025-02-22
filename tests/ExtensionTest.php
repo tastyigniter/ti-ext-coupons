@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Tests;
 
+use stdClass;
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\Extension;
 use Igniter\Coupons\Models\Actions\RedeemsCoupon;
@@ -17,7 +20,7 @@ use Igniter\User\Models\Customer;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 
-it('registers model observers correctly', function() {
+it('registers model observers correctly', function(): void {
     $extension = new class(app()) extends Extension
     {
         public function testObservers()
@@ -32,18 +35,18 @@ it('registers model observers correctly', function() {
     ]);
 });
 
-it('adds model scopes correctly', function() {
+it('adds model scopes correctly', function(): void {
     expect((new Coupon)->getGlobalScopes())->toHaveKey(CouponScope::class);
 });
 
-it('adds RedeemsCoupon trait to order model', function() {
+it('adds RedeemsCoupon trait to order model', function(): void {
     $order = new Order;
 
     expect($order->implement)->toContain(RedeemsCoupon::class)
         ->and($order->relation['hasMany']['coupon_history'])->toBe([CouponHistory::class]);
 });
 
-it('applies coupon condition on add cart item', function() {
+it('applies coupon condition on add cart item', function(): void {
     CouponModel::factory()->create([
         'code' => 'test-coupon',
         'name' => 'coupon',
@@ -60,7 +63,7 @@ it('applies coupon condition on add cart item', function() {
         ->and(resolve('cart')->conditions()->first()->getMetaData('code'))->toBe('test-coupon');
 });
 
-it('extends paypal express fields', function() {
+it('extends paypal express fields', function(): void {
     $fields = [
         'purchase_units' => [
             0 => [
@@ -78,13 +81,13 @@ it('extends paypal express fields', function() {
         'value' => 10,
     ]);
 
-    event('payregister.paypalexpress.extendFields', [new \stdClass(), &$fields, $order, []]);
+    event('payregister.paypalexpress.extendFields', [new stdClass(), &$fields, $order, []]);
 
     expect($fields['purchase_units'][0]['amount']['breakdown']['discount'])->toHaveCount(2)
         ->and($fields['purchase_units'][0]['amount']['breakdown']['discount']['value'])->toBe('10.00');
 });
 
-it('logs coupon history after order save', function() {
+it('logs coupon history after order save', function(): void {
     $order = Order::factory()->create();
 
     $coupon = CouponModel::factory()->create([
@@ -103,7 +106,7 @@ it('logs coupon history after order save', function() {
     expect($order->coupon_history()->count())->toBe(1);
 });
 
-it('redeems coupon after payment processed', function() {
+it('redeems coupon after payment processed', function(): void {
     Mail::fake();
     Queue::fake();
 
@@ -123,7 +126,7 @@ it('redeems coupon after payment processed', function() {
     expect($history->fresh()->status)->toBeTrue();
 });
 
-it('updates coupon history after customer created', function() {
+it('updates coupon history after customer created', function(): void {
     $order = Order::factory()->create();
     $history = CouponHistory::create([
         'order_id' => $order->getKey(),
@@ -137,7 +140,7 @@ it('updates coupon history after customer created', function() {
     expect($history->fresh()->customer_id)->toBe($customer->getKey());
 });
 
-it('registers api resources correctly', function() {
+it('registers api resources correctly', function(): void {
     $extension = new Extension(app());
 
     $resources = $extension->registerApiResources();
@@ -148,7 +151,7 @@ it('registers api resources correctly', function() {
         ->and($resources['coupons'])->toHaveKeys(['controller', 'name', 'description', 'actions']);
 });
 
-it('registers cart conditions correctly', function() {
+it('registers cart conditions correctly', function(): void {
     $extension = new Extension(app());
 
     $conditions = $extension->registerCartConditions();
@@ -159,7 +162,7 @@ it('registers cart conditions correctly', function() {
         ->and($conditions[\Igniter\Coupons\CartConditions\Coupon::class])->toHaveKeys(['name', 'label', 'description']);
 });
 
-it('registers permissions correctly', function() {
+it('registers permissions correctly', function(): void {
     $extension = new Extension(app());
 
     $permissions = $extension->registerPermissions();
@@ -170,7 +173,7 @@ it('registers permissions correctly', function() {
         ->and($permissions['Admin.Coupons'])->toHaveKeys(['label', 'group']);
 });
 
-it('registers navigation correctly', function() {
+it('registers navigation correctly', function(): void {
     $extension = new Extension(app());
 
     $navigation = $extension->registerNavigation();

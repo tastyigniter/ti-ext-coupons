@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Cart\Tests\ApiResources;
 
 use Igniter\Cart\Models\Category;
@@ -10,7 +12,7 @@ use Igniter\User\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 
-it('returns all coupons', function() {
+it('returns all coupons', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['coupons:*']);
 
     $this
@@ -19,7 +21,7 @@ it('returns all coupons', function() {
         ->assertJsonPath('data.0.attributes.name', Coupon::first()->name);
 });
 
-it('returns all coupons with menus, categories and history', function() {
+it('returns all coupons with menus, categories and history', function(): void {
     $coupon = Coupon::first();
     $coupon->menus()->save(Menu::factory()->create());
     $coupon->categories()->save(Category::factory()->create());
@@ -44,15 +46,15 @@ it('returns all coupons with menus, categories and history', function() {
         ->assertJsonPath('data.0.relationships.history.data.0.id', (string)$coupon->history->first()->getKey());
 });
 
-it('shows a coupon', function() {
+it('shows a coupon', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['coupons:*']);
     $coupon = Coupon::first();
 
     $this
         ->get(route('igniter.api.coupons.show', [$coupon->getKey()]))
         ->assertOk()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('name', $coupon->name)
                 ->where('code', $coupon->code)
                 ->etc()
@@ -60,7 +62,7 @@ it('shows a coupon', function() {
         );
 });
 
-it('creates a coupon', function() {
+it('creates a coupon', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['coupons:*']);
 
     $this
@@ -74,8 +76,8 @@ it('creates a coupon', function() {
             'validity' => 'forever',
         ])
         ->assertCreated()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data.attributes', fn(AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json): AssertableJson => $json
+            ->has('data.attributes', fn(AssertableJson $json): AssertableJson => $json
                 ->where('name', 'Test coupon')
                 ->where('code', 'TESTCOUPON')
                 ->where('type', 'P')
@@ -86,7 +88,7 @@ it('creates a coupon', function() {
             ));
 });
 
-it('updates a coupon', function() {
+it('updates a coupon', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['coupons:*']);
     $coupon = Coupon::first();
 
@@ -111,7 +113,7 @@ it('updates a coupon', function() {
         ->validity->toBe('forever');
 });
 
-it('deletes a coupon', function() {
+it('deletes a coupon', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['coupons:*']);
     $coupon = Coupon::first();
 

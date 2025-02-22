@@ -1,11 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Models;
 
 use Carbon\Carbon;
+use Igniter\Cart\Models\Category;
+use Igniter\Cart\Models\Menu;
+use Igniter\Flame\Database\Builder;
 use Igniter\Flame\Database\Factories\HasFactory;
 use Igniter\Flame\Database\Model;
 use Igniter\Local\Models\Concerns\Locationable;
+use Igniter\Local\Models\Location;
 use Igniter\System\Models\Concerns\Switchable;
 use Igniter\User\Models\Customer;
 use Igniter\User\Models\CustomerGroup;
@@ -30,7 +36,7 @@ use Igniter\User\Models\CustomerGroup;
  * @property mixed|null $fixed_to_time
  * @property \Illuminate\Support\Carbon|null $period_start_date
  * @property \Illuminate\Support\Carbon|null $period_end_date
- * @property string|null $recurring_every
+ * @property array|string|null $recurring_every
  * @property mixed|null $recurring_from_time
  * @property mixed|null $recurring_to_time
  * @property array|null $order_restriction
@@ -39,7 +45,10 @@ use Igniter\User\Models\CustomerGroup;
  * @property \Illuminate\Support\Carbon $updated_at
  * @property-read mixed $formatted_discount
  * @property-read mixed $type_name
- * @mixin \Igniter\Flame\Database\Model
+ * @method static Builder<static>|Coupon isAutoApplicable()
+ * @method static Builder<static>|Coupon whereHasOrDoesntHaveLocation(null|int $locationId = null)
+ * @mixin Model
+ * @mixin Builder
  */
 class Coupon extends Model
 {
@@ -82,16 +91,16 @@ class Coupon extends Model
 
     public $relation = [
         'belongsToMany' => [
-            'categories' => [\Igniter\Cart\Models\Category::class, 'table' => 'igniter_coupon_categories'],
-            'menus' => [\Igniter\Cart\Models\Menu::class, 'table' => 'igniter_coupon_menus'],
-            'customers' => [\Igniter\User\Models\Customer::class, 'table' => 'igniter_coupon_customers'],
-            'customer_groups' => [\Igniter\User\Models\CustomerGroup::class, 'table' => 'igniter_coupon_customer_groups'],
+            'categories' => [Category::class, 'table' => 'igniter_coupon_categories'],
+            'menus' => [Menu::class, 'table' => 'igniter_coupon_menus'],
+            'customers' => [Customer::class, 'table' => 'igniter_coupon_customers'],
+            'customer_groups' => [CustomerGroup::class, 'table' => 'igniter_coupon_customer_groups'],
         ],
         'hasMany' => [
-            'history' => \Igniter\Coupons\Models\CouponHistory::class,
+            'history' => CouponHistory::class,
         ],
         'morphToMany' => [
-            'locations' => [\Igniter\Local\Models\Location::class, 'name' => 'locationable'],
+            'locations' => [Location::class, 'name' => 'locationable'],
         ],
     ];
 
@@ -105,7 +114,7 @@ class Coupon extends Model
         'code desc', 'code asc',
     ];
 
-    public function getRecurringEveryOptions()
+    public function getRecurringEveryOptions(): array
     {
         return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     }
@@ -124,18 +133,18 @@ class Coupon extends Model
         return empty($value) ? [0, 1, 2, 3, 4, 5, 6] : explode(', ', $value);
     }
 
-    public function setRecurringEveryAttribute($value)
+    public function setRecurringEveryAttribute($value): void
     {
         $this->attributes['recurring_every'] = empty($value)
             ? null : implode(', ', $value);
     }
 
-    public function getTypeNameAttribute($value)
+    public function getTypeNameAttribute($value): string
     {
         return ($this->type == 'P') ? lang('igniter.coupons::default.text_percentage') : lang('igniter.coupons::default.text_fixed_amount');
     }
 
-    public function getFormattedDiscountAttribute($value)
+    public function getFormattedDiscountAttribute($value): string
     {
         return ($this->type == 'P') ? round($this->discount).'%' : number_format($this->discount, 2);
     }
@@ -143,15 +152,12 @@ class Coupon extends Model
     //
     // Events
     //
-
     /**
      * Create new or update existing menu categories
      *
      * @param array $categoryIds if empty all existing records will be deleted
-     *
-     * @return bool
      */
-    public function addMenuCategories(array $categoryIds = [])
+    public function addMenuCategories(array $categoryIds = []): void
     {
         $this->categories()->sync($categoryIds);
     }
@@ -160,10 +166,8 @@ class Coupon extends Model
      * Create new or update existing menus
      *
      * @param array $menuIds if empty all existing records will be deleted
-     *
-     * @return bool
      */
-    public function addMenus(array $menuIds = [])
+    public function addMenus(array $menuIds = []): void
     {
         $this->menus()->sync($menuIds);
     }
@@ -172,12 +176,12 @@ class Coupon extends Model
     // Helpers
     //
 
-    public function isFixed()
+    public function isFixed(): bool
     {
         return $this->type == 'F';
     }
 
-    public function discountWithOperand()
+    public function discountWithOperand(): string
     {
         return ($this->isFixed() ? '-' : '-%').$this->discount;
     }
@@ -190,7 +194,7 @@ class Coupon extends Model
     /**
      * Check if a coupone is expired
      *
-     * @param \Carbon\Carbon $orderDateTime orderDateTime
+     * @param Carbon $orderDateTime orderDateTime
      *
      * @return bool
      */
@@ -256,12 +260,12 @@ class Coupon extends Model
         return !$this->locations()->where($locationKeyColumn, $locationId)->exists();
     }
 
-    public function hasReachedMaxRedemption()
+    public function hasReachedMaxRedemption(): bool
     {
         return $this->redemptions && $this->redemptions <= $this->countRedemptions();
     }
 
-    public function customerHasMaxRedemption(Customer $customer)
+    public function customerHasMaxRedemption(Customer $customer): bool
     {
         return $this->customer_redemptions && $this->customer_redemptions <= $this->countCustomerRedemptions($customer->getKey());
     }
@@ -295,17 +299,17 @@ class Coupon extends Model
             ->where('customer_id', $id)->count();
     }
 
-    public function appliesOnWholeCart()
+    public function appliesOnWholeCart(): bool
     {
         return $this->apply_coupon_on == 'whole_cart';
     }
 
-    public function appliesOnMenuItems()
+    public function appliesOnMenuItems(): bool
     {
         return $this->apply_coupon_on == 'menu_items';
     }
 
-    public function appliesOnDelivery()
+    public function appliesOnDelivery(): bool
     {
         return $this->apply_coupon_on == 'delivery_fee';
     }

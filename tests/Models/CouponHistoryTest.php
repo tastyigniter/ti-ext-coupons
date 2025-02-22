@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Cart\Tests\Models;
 
 use Igniter\Cart\Models\Order;
@@ -11,11 +13,11 @@ use Igniter\User\Models\Concerns\HasCustomer;
 use Igniter\User\Models\Customer;
 use Illuminate\Support\Facades\Event;
 
-it('redeem returns false when coupon history is not found', function() {
+it('redeem returns false when coupon history is not found', function(): void {
     expect(CouponHistory::redeem(123))->toBeFalse();
 });
 
-it('redeems coupon history successfully', function() {
+it('redeems coupon history successfully', function(): void {
     $order = Order::factory()->create();
     $coupon = Coupon::factory()->create(['code' => 'TESTCODE']);
     $couponHistory = CouponHistory::factory()->create([
@@ -26,12 +28,11 @@ it('redeems coupon history successfully', function() {
         'min_total' => 0.0,
     ]);
 
-    CouponHistory::redeem($order->order_id);
-
-    expect($couponHistory->fresh()->status)->toBeTrue();
+    expect(CouponHistory::redeem($order->order_id))->toBeTrue()
+        ->and($couponHistory->fresh()->status)->toBeTrue();
 });
 
-it('gets customer name attribute correctly', function() {
+it('gets customer name attribute correctly', function(): void {
     $customer = Customer::factory()->create(['first_name' => 'Jane', 'last_name' => 'Doe']);
     $couponHistory = CouponHistory::factory()->create([
         'customer_id' => $customer->getKey(),
@@ -40,29 +41,30 @@ it('gets customer name attribute correctly', function() {
     expect($couponHistory->customer_name)->toBe('Jane Doe');
 });
 
-it('returns null if customer does not exist', function() {
+it('returns null if customer does not exist', function(): void {
     $couponHistory = CouponHistory::factory()->create(['customer_id' => 0]);
 
     expect($couponHistory->customer_name)->toBeNull();
 });
 
-it('applies redeemed scope', function() {
+it('applies redeemed scope', function(): void {
     $query = CouponHistory::query()->applyRedeemed();
 
     expect($query->toRawSql())->toContain('where `status` >= 1');
 });
 
-it('touches status correctly', function() {
+it('touches status correctly', function(): void {
     $couponHistory = CouponHistory::factory()->create(['status' => 0]);
 
     $couponHistory->touchStatus();
+
     expect($couponHistory->status)->toBeTrue();
 
     $couponHistory->touchStatus();
     expect($couponHistory->status)->toBeFalse();
 });
 
-it('creates coupon history correctly', function() {
+it('creates coupon history correctly', function(): void {
     $order = Order::factory()->create();
     $coupon = Coupon::factory()->create(['code' => 'TESTCODE']);
     $couponTotal = (object)['code' => 'TESTCODE', 'title' => '[TESTCODE] Test Coupon', 'value' => 10.0];
@@ -78,16 +80,16 @@ it('creates coupon history correctly', function() {
         ->and($couponHistory->min_total)->toBe($coupon->min_total);
 });
 
-it('does not create coupon history if coupon does not exist', function() {
+it('does not create coupon history if coupon does not exist', function(): void {
     $order = Order::factory()->create();
     $couponTotal = (object)['code' => 'TESTCODE', 'title' => '[TESTCODE] Test Coupon', 'value' => 10];
 
     $couponHistory = CouponHistory::createHistory($couponTotal, $order);
 
-    expect($couponHistory)->toBeFalse();
+    expect($couponHistory)->toBeNull();
 });
 
-it('does not create coupon history if beforeAddHistory event fails', function() {
+it('does not create coupon history if beforeAddHistory event fails', function(): void {
     $order = Order::factory()->create();
     $expectedCoupon = Coupon::factory()->create(['code' => 'TESTCODE']);
     $couponTotal = (object)[
@@ -95,16 +97,16 @@ it('does not create coupon history if beforeAddHistory event fails', function() 
         'title' => '[TESTCODE] Test Coupon',
         'value' => 10.0,
     ];
-    Event::listen('couponHistory.beforeAddHistory', function($couponHistory, $couponTotal, $customer, $coupon) use ($expectedCoupon) {
+    Event::listen('couponHistory.beforeAddHistory', function($couponHistory, $couponTotal, $customer, $coupon) use ($expectedCoupon): bool {
         return $expectedCoupon->getKey() !== $coupon->getKey();
     });
 
     $couponHistory = CouponHistory::createHistory($couponTotal, $order);
 
-    expect($couponHistory)->toBeFalse();
+    expect($couponHistory)->toBeNull();
 });
 
-it('applies filters to query builder', function() {
+it('applies filters to query builder', function(): void {
     $query = CouponHistory::query()->applyFilters([
         'redeemed' => 1,
         'customer' => 1,
@@ -118,7 +120,7 @@ it('applies filters to query builder', function() {
         ->toContain('and `order_id` = 2');
 });
 
-it('configures coupon history model correctly', function() {
+it('configures coupon history model correctly', function(): void {
     $couponHistory = new CouponHistory();
 
     expect(class_uses_recursive($couponHistory))
@@ -140,8 +142,8 @@ it('configures coupon history model correctly', function() {
             'status' => 'boolean',
         ])
         ->and($couponHistory->relation['belongsTo'])->toBe([
-            'customer' => \Igniter\User\Models\Customer::class,
-            'order' => \Igniter\Cart\Models\Order::class,
-            'coupon' => \Igniter\Coupons\Models\Coupon::class,
+            'customer' => Customer::class,
+            'order' => Order::class,
+            'coupon' => Coupon::class,
         ]);
 });

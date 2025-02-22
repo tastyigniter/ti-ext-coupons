@@ -1,7 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\ApiResources;
 
+use Igniter\Api\Http\Actions\RestController;
+use Igniter\Coupons\ApiResources\Repositories\CouponsRepository;
+use Igniter\Coupons\ApiResources\Transformers\CouponsTransformer;
 use Igniter\Api\Classes\ApiController;
 use Igniter\Coupons\Http\Requests\CouponRequest;
 
@@ -10,7 +15,7 @@ use Igniter\Coupons\Http\Requests\CouponRequest;
  */
 class Coupons extends ApiController
 {
-    public array $implement = [\Igniter\Api\Http\Actions\RestController::class];
+    public array $implement = [RestController::class];
 
     public $restConfig = [
         'actions' => [
@@ -23,8 +28,8 @@ class Coupons extends ApiController
             'destroy' => [],
         ],
         'request' => CouponRequest::class,
-        'repository' => Repositories\CouponsRepository::class,
-        'transformer' => Transformers\CouponsTransformer::class,
+        'repository' => CouponsRepository::class,
+        'transformer' => CouponsTransformer::class,
     ];
 
     protected string|array $requiredAbilities = ['coupons:*'];

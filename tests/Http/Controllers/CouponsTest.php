@@ -1,23 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Tests\Http\Controllers;
 
 use Igniter\Coupons\Models\Coupon;
 use Igniter\User\Models\User;
 
-it('loads coupons page', function() {
+it('loads coupons page', function(): void {
     actingAsSuperUser()
         ->get(route('igniter.coupons.coupons'))
         ->assertOk();
 });
 
-it('loads create coupon page', function() {
+it('loads create coupon page', function(): void {
     actingAsSuperUser()
         ->get(route('igniter.coupons.coupons', ['slug' => 'create']))
         ->assertOk();
 });
 
-it('loads edit coupon page', function() {
+it('loads edit coupon page', function(): void {
     $coupon = Coupon::factory()->create();
 
     actingAsSuperUser()
@@ -25,7 +27,7 @@ it('loads edit coupon page', function() {
         ->assertOk();
 });
 
-it('loads coupon preview page', function() {
+it('loads coupon preview page', function(): void {
     $coupon = Coupon::factory()->create();
 
     actingAsSuperUser()
@@ -33,7 +35,7 @@ it('loads coupon preview page', function() {
         ->assertOk();
 });
 
-it('creates coupon', function() {
+it('creates coupon', function(): void {
     actingAsSuperUser()
         ->post(route('igniter.coupons.coupons', ['slug' => 'create']), [
             'Coupon' => [
@@ -53,7 +55,7 @@ it('creates coupon', function() {
     expect(Coupon::where('name', 'Created Coupon')->exists())->toBeTrue();
 });
 
-it('updates coupon', function() {
+it('updates coupon', function(): void {
     $coupon = Coupon::factory()->create();
 
     actingAsSuperUser()
@@ -75,7 +77,7 @@ it('updates coupon', function() {
     expect(Coupon::where('name', 'Updated Coupon')->exists())->toBeTrue();
 });
 
-it('deletes coupon', function() {
+it('deletes coupon', function(): void {
     $coupon = Coupon::factory()->create();
 
     actingAsSuperUser()

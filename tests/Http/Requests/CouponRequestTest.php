@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Tests\Http\Requests;
 
 use Igniter\Coupons\Http\Requests\CouponRequest;
 
-it('returns correct attribute labels', function() {
+it('returns correct attribute labels', function(): void {
     $request = new CouponRequest();
 
     $attributes = $request->attributes();
@@ -31,12 +33,12 @@ it('returns correct attribute labels', function() {
         ->and($attributes)->toHaveKey('locations.*', lang('admin::lang.column_location'));
 });
 
-it('returns correct validation rules', function() {
+it('returns correct validation rules', function(): void {
     $request = new CouponRequest();
 
-    $request->setRouteResolver(fn() => new class
+    $request->setRouteResolver(fn(): object => new class
     {
-        public function parameter($key, $default = null)
+        public function parameter($key, $default = null): string
         {
             return 'coupon';
         }

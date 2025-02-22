@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Http\Requests;
 
 use Igniter\System\Classes\FormRequest;
@@ -32,7 +34,7 @@ class CouponRequest extends FormRequest
         ];
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => ['required', 'between:2,128'],

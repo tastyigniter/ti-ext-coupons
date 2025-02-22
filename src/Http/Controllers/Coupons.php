@@ -1,15 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Http\Controllers;
 
+use Igniter\Admin\Classes\AdminController;
+use Igniter\Admin\Http\Actions\ListController;
+use Igniter\Admin\Http\Actions\FormController;
+use Igniter\Local\Http\Actions\LocationAwareController;
+use Igniter\Coupons\Models\Coupon;
+use Igniter\Coupons\Http\Requests\CouponRequest;
 use Igniter\Admin\Facades\AdminMenu;
 
-class Coupons extends \Igniter\Admin\Classes\AdminController
+class Coupons extends AdminController
 {
     public array $implement = [
-        \Igniter\Admin\Http\Actions\ListController::class,
-        \Igniter\Admin\Http\Actions\FormController::class,
-        \Igniter\Local\Http\Actions\LocationAwareController::class,
+        ListController::class,
+        FormController::class,
+        LocationAwareController::class,
     ];
 
     public $locationConfig = [
@@ -18,7 +26,7 @@ class Coupons extends \Igniter\Admin\Classes\AdminController
 
     public array $listConfig = [
         'list' => [
-            'model' => \Igniter\Coupons\Models\Coupon::class,
+            'model' => Coupon::class,
             'title' => 'igniter.coupons::default.text_title',
             'emptyMessage' => 'igniter.coupons::default.text_empty',
             'defaultSort' => ['coupon_id', 'DESC'],
@@ -28,8 +36,8 @@ class Coupons extends \Igniter\Admin\Classes\AdminController
 
     public array $formConfig = [
         'name' => 'igniter.coupons::default.text_form_name',
-        'model' => \Igniter\Coupons\Models\Coupon::class,
-        'request' => \Igniter\Coupons\Http\Requests\CouponRequest::class,
+        'model' => Coupon::class,
+        'request' => CouponRequest::class,
         'create' => [
             'title' => 'lang:admin::lang.form.create_title',
             'redirect' => 'igniter/coupons/coupons/edit/{coupon_id}',
@@ -61,10 +69,8 @@ class Coupons extends \Igniter\Admin\Classes\AdminController
         AdminMenu::setContext('coupons', 'marketing');
     }
 
-    public function listOverrideColumnValue($record, $column, $alias = null)
+    public function listOverrideColumnValue($record, $column, $alias = null): ?string
     {
-        if ($column->columnName == 'validity') {
-            return ucwords($record->validity);
-        }
+        return $column->columnName == 'validity' ? ucwords($record->validity) : null;
     }
 }

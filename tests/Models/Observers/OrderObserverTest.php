@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Tests\Models\Observers;
 
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\Models\Observers\OrderObserver;
 
-it('deletes coupon history when order is deleted', function() {
+it('deletes coupon history when order is deleted', function(): void {
     $order = Order::factory()->create();
     $order->coupon_history()->create([
         'coupon_id' => 1,

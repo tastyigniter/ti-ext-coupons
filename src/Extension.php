@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons;
 
 use Igniter\Cart\Classes\CartManager;
 use Igniter\Cart\Models\Order;
+use Igniter\Coupons\ApiResources\Coupons;
 use Igniter\Coupons\Models\Actions\RedeemsCoupon;
 use Igniter\Coupons\Models\Coupon;
 use Igniter\Coupons\Models\CouponHistory;
@@ -27,18 +30,20 @@ class Extension extends BaseExtension
         Coupon::class => CouponScope::class,
     ];
 
-    public function boot()
+    public function boot(): void
     {
-        Order::extend(function($model) {
-            $model->relation['hasMany']['coupon_history'] = [\Igniter\Coupons\Models\CouponHistory::class];
+        Order::extend(function($model): void {
+            $model->relation['hasMany']['coupon_history'] = [CouponHistory::class];
             $model->implement[] = RedeemsCoupon::class;
         });
 
-        Event::listen('cart.added', function() {
-            Coupon::query()->isEnabled()
+        Event::listen('cart.added', function(): void {
+            // @phpstan-ignore method.notFound
+            Coupon::query()
+                ->whereIsEnabled()
                 ->isAutoApplicable()
                 ->whereHasOrDoesntHaveLocation(Location::getId())
-                ->each(function($coupon) {
+                ->each(function($coupon): void {
                     $orderDateTime = Location::orderDateTime();
                     if (!$coupon->isExpired($orderDateTime)) {
                         resolve(CartManager::class)->applyCouponCondition($coupon->code);
@@ -46,7 +51,7 @@ class Extension extends BaseExtension
                 });
         });
 
-        Event::listen('payregister.paypalexpress.extendFields', function($payment, &$fields, $order, $data) {
+        Event::listen('payregister.paypalexpress.extendFields', function($payment, array &$fields, $order, $data): void {
             if ($coupon = $order->getOrderTotals()->firstWhere('code', 'coupon')) {
                 $fields['purchase_units'][0]['amount']['breakdown']['discount'] = [
                     'currency_code' => $fields['purchase_units'][0]['amount']['currency_code'],
@@ -55,19 +60,20 @@ class Extension extends BaseExtension
             }
         });
 
-        Event::listen('igniter.checkout.afterSaveOrder', function($order) {
+        Event::listen('igniter.checkout.afterSaveOrder', function($order): void {
             if ($couponTotal = $order->getOrderTotals()->firstWhere('code', 'coupon')) {
                 $order->logCouponHistory($couponTotal);
             }
         });
 
-        Event::listen('admin.order.paymentProcessed', function($order) {
+        Event::listen('admin.order.paymentProcessed', function($order): void {
             $order->redeemCoupon();
         });
 
-        Customer::created(function($customer) {
+        Customer::created(function($customer): void {
             Order::where('email', $customer->email)
-                ->chunk(100, function($orders) use ($customer) {
+                ->chunk(100, function($orders) use ($customer): void {
+                    /** @var Order[] $orders */
                     foreach ($orders as $order) {
                         CouponHistory::where('order_id', $order->order_id)
                             ->update(['customer_id' => $customer->customer_id]);
@@ -76,16 +82,16 @@ class Extension extends BaseExtension
         });
 
         Relation::morphMap([
-            'coupon_history' => \Igniter\Coupons\Models\CouponHistory::class,
-            'coupons' => \Igniter\Coupons\Models\Coupon::class,
+            'coupon_history' => CouponHistory::class,
+            'coupons' => Coupon::class,
         ]);
     }
 
-    public function registerApiResources()
+    public function registerApiResources(): array
     {
         return [
             'coupons' => [
-                'controller' => \Igniter\Coupons\ApiResources\Coupons::class,
+                'controller' => Coupons::class,
                 'name' => 'Coupons',
                 'description' => 'An API resource for coupons',
                 'actions' => [
@@ -95,7 +101,7 @@ class Extension extends BaseExtension
         ];
     }
 
-    public function registerCartConditions()
+    public function registerCartConditions(): array
     {
         return [
             \Igniter\Coupons\CartConditions\Coupon::class => [

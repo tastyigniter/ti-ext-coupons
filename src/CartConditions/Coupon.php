@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\CartConditions;
 
 use Exception;
@@ -20,10 +22,7 @@ class Coupon extends CartCondition
 
     public ?int $priority = 200;
 
-    /**
-     * @var CouponModel
-     */
-    protected static $couponModel;
+    protected static ?CouponModel $couponModel;
 
     protected static $applicableItems;
 
@@ -41,11 +40,11 @@ class Coupon extends CartCondition
 
     public function getModel()
     {
-        if (!strlen($couponCode = $this->getMetaData('code', ''))) {
+        if ((string)($couponCode = $this->getMetaData('code', '')) === '') {
             return null;
         }
 
-        if (is_null(self::$couponModel) || (self::$couponModel && strtolower(self::$couponModel->code) !== strtolower($couponCode))) {
+        if (is_null(self::$couponModel) || strtolower(self::$couponModel->code) !== strtolower($couponCode)) {
             self::$couponModel = CouponModel::getByCode($couponCode);
         }
 
@@ -56,7 +55,7 @@ class Coupon extends CartCondition
     {
         $applicableItems = $couponModel->menus->pluck('menu_id');
         $couponModel->categories->pluck('category_id')
-            ->each(function($category) use (&$applicableItems) {
+            ->each(function($category) use (&$applicableItems): void {
                 $applicableItems = $applicableItems
                     ->merge(Menu::whereHasCategory($category)->pluck('menu_id'));
             });
@@ -66,7 +65,7 @@ class Coupon extends CartCondition
         return self::$applicableItems;
     }
 
-    public function onLoad()
+    public function onLoad(): void
     {
         if (!strlen($this->getMetaData('code', '')) || self::$hasErrors) {
             return;
@@ -80,8 +79,8 @@ class Coupon extends CartCondition
             $this->validateCoupon($couponModel);
 
             $this->getApplicableItems($couponModel);
-        } catch (Exception $ex) {
-            flash()->alert($ex->getMessage())->now();
+        } catch (Exception $exception) {
+            flash()->alert($exception->getMessage())->now();
 
             $this->removeMetaData('code');
         }
@@ -94,9 +93,7 @@ class Coupon extends CartCondition
             return false;
         }
 
-        if ($couponModel->appliesOnDelivery() && !Location::orderTypeIsDelivery()) {
-            return false;
-        }
+        return !($couponModel->appliesOnDelivery() && !Location::orderTypeIsDelivery());
     }
 
     public function getActions()
@@ -117,7 +114,7 @@ class Coupon extends CartCondition
         return [$actions];
     }
 
-    public function whenInvalid()
+    public function whenInvalid(): void
     {
         if (!$this->getModel()->auto_apply) {
             $minimumOrder = $this->getModel()->minimumOrderTotal();
@@ -149,17 +146,13 @@ class Coupon extends CartCondition
         return $value;
     }
 
-    protected function calculateDeliveryDiscount()
+    protected function calculateDeliveryDiscount(): string
     {
         $cartSubtotal = Cart::subtotal();
         $deliveryCharge = Location::coveredArea()->deliveryAmount($cartSubtotal);
         $couponModel = optional($this->getModel());
         if ($couponModel->isFixed()) {
-            if ($couponModel->discount > $deliveryCharge) {
-                $value = $deliveryCharge;
-            } else {
-                $value = $couponModel->discount;
-            }
+            $value = $couponModel->discount > $deliveryCharge ? $deliveryCharge : $couponModel->discount;
         } else {
             $value = $deliveryCharge * ($couponModel->discount * 0.01);
         }

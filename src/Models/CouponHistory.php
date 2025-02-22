@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Models;
 
+use Igniter\Cart\Models\Order;
 use Igniter\Flame\Database\Factories\HasFactory;
 use Igniter\Flame\Database\Model;
 use Igniter\System\Models\Concerns\Switchable;
 use Igniter\User\Models\Concerns\HasCustomer;
+use Igniter\User\Models\Customer;
+use Illuminate\Support\Carbon;
 
 /**
  * Coupons History Model Class
@@ -17,11 +22,11 @@ use Igniter\User\Models\Concerns\HasCustomer;
  * @property string $code
  * @property float|null $min_total
  * @property float|null $amount
- * @property \Illuminate\Support\Carbon $created_at
+ * @property Carbon $created_at
  * @property bool $status
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property Carbon $updated_at
  * @property-read mixed $customer_name
- * @mixin \Igniter\Flame\Database\Model
+ * @mixin Model
  */
 class CouponHistory extends Model
 {
@@ -57,9 +62,9 @@ class CouponHistory extends Model
 
     public $relation = [
         'belongsTo' => [
-            'customer' => \Igniter\User\Models\Customer::class,
-            'order' => \Igniter\Cart\Models\Order::class,
-            'coupon' => \Igniter\Coupons\Models\Coupon::class,
+            'customer' => Customer::class,
+            'order' => Order::class,
+            'coupon' => Coupon::class,
         ],
     ];
 
@@ -73,9 +78,11 @@ class CouponHistory extends Model
         'created_at desc' => true, 'created_at asc',
     ];
 
-    public static function redeem($orderId)
+    public static function redeem($orderId): bool
     {
-        if (!$couponHistory = static::query()->orderBy('created_at', 'desc')->firstWhere('order_id', $orderId)) {
+        /** @var null|CouponHistory $couponHistory */
+        $couponHistory = static::query()->orderBy('created_at', 'desc')->firstWhere('order_id', $orderId);
+        if (is_null($couponHistory)) {
             return false;
         }
 
@@ -84,11 +91,14 @@ class CouponHistory extends Model
             'created_at' => now(),
         ]);
 
-        static::query()->where('order_id', $orderId)
+        static::query()
+            ->where('order_id', $orderId)
             ->where('coupon_history_id', '<>', $couponHistory->coupon_history_id)
             ->delete();
 
         $couponHistory->fireSystemEvent('admin.order.couponRedeemed');
+
+        return true;
     }
 
     public function getCustomerNameAttribute($value)
@@ -103,24 +113,25 @@ class CouponHistory extends Model
 
     public function touchStatus()
     {
-        $this->status = ($this->status < 1) ? 1 : 0;
+        $this->status = $this->status < 1;
 
         return $this->save();
     }
 
     /**
      * @param object $couponTotal
-     * @param \Igniter\Cart\Models\Order $order
-     * @return \Igniter\Coupons\Models\CouponHistory|bool
+     * @param Order $order
      */
-    public static function createHistory($couponTotal, $order)
+    public static function createHistory($couponTotal, $order): ?self
     {
         if ($couponTotal->code === 'coupon' && str_contains($couponTotal->title, '[')) {
             $couponTotal->code = str_after(str_before($couponTotal->title, ']'), '[');
         }
 
-        if (!$coupon = Coupon::firstWhere('code', $couponTotal->code)) {
-            return false;
+        /** @var null|Coupon $coupon */
+        $coupon = Coupon::firstWhere('code', $couponTotal->code);
+        if (is_null($coupon)) {
+            return null;
         }
 
         $model = new static;
@@ -132,7 +143,7 @@ class CouponHistory extends Model
         $model->min_total = $coupon->min_total;
 
         if ($model->fireSystemEvent('couponHistory.beforeAddHistory', [$couponTotal, $order->customer, $coupon]) === false) {
-            return false;
+            return null;
         }
 
         $model->save();

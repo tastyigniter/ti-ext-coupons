@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\ApiResources\Transformers;
 
 use Igniter\Api\Traits\MergesIdAttribute;
@@ -10,7 +12,7 @@ class CouponHistoryTransformer extends TransformerAbstract
 {
     use MergesIdAttribute;
 
-    public function transform(CouponHistory $history)
+    public function transform(CouponHistory $history): array
     {
         return $this->mergesIdAttribute($history);
     }

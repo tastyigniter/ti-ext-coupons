@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Models\Actions;
 
 use Igniter\Cart\Models\Order;
@@ -11,7 +13,7 @@ class RedeemsCoupon extends ModelAction
     /**
      * Redeem coupon by order
      */
-    public function redeemCoupon()
+    public function redeemCoupon(): void
     {
         if ($this->model->getOrderTotals()->keyBy('code')->get('coupon')) {
             CouponHistory::redeem($this->model->order_id);
@@ -22,10 +24,8 @@ class RedeemsCoupon extends ModelAction
      * Add cart coupon to order by order_id
      *
      * @param object $couponTotal
-     *
-     * @return bool
      */
-    public function logCouponHistory($couponTotal)
+    public function logCouponHistory($couponTotal): null|false|CouponHistory
     {
         // Make sure order model exists
         if (!$this->model->exists) {

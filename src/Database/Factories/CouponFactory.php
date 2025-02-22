@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Database\Factories;
 
+use Igniter\Coupons\Models\Coupon;
 use Igniter\Flame\Database\Factories\Factory;
 
 class CouponFactory extends Factory
 {
-    protected $model = \Igniter\Coupons\Models\Coupon::class;
+    protected $model = Coupon::class;
 
     public function definition(): array
     {
