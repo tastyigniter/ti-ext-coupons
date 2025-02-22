@@ -22,7 +22,7 @@ class Coupon extends CartCondition
 
     public ?int $priority = 200;
 
-    protected static ?CouponModel $couponModel;
+    protected static ?CouponModel $couponModel = null;
 
     protected static $applicableItems;
 
