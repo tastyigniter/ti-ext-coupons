@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Igniter\Coupons\Database\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
@@ -9,11 +11,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::table('igniter_coupons_history', function(Blueprint $table) {
+        Schema::table('igniter_coupons_history', function(Blueprint $table): void {
             $table->dropForeignKeyIfExists('coupon_id');
             $table->dropForeignKeyIfExists('order_id');
             $table->dropForeignKeyIfExists('customer_id');
@@ -22,12 +24,12 @@ return new class extends Migration
             $table->dropIndexIfExists(sprintf('%s%s_%s_foreign', DB::getTablePrefix(), 'igniter_coupons_history', 'customer_id'));
         });
 
-        Schema::table('igniter_coupon_categories', function(Blueprint $table) {
+        Schema::table('igniter_coupon_categories', function(Blueprint $table): void {
             $table->dropForeignKeyIfExists('coupon_id');
             $table->dropForeignKeyIfExists('category_id');
         });
 
-        Schema::table('igniter_coupon_menus', function(Blueprint $table) {
+        Schema::table('igniter_coupon_menus', function(Blueprint $table): void {
             $table->dropForeignKeyIfExists('coupon_id');
             $table->dropForeignKeyIfExists('menu_id');
         });
@@ -35,5 +37,5 @@ return new class extends Migration
         Schema::enableForeignKeyConstraints();
     }
 
-    public function down() {}
+    public function down(): void {}
 };

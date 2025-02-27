@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons;
 
+use Override;
 use Igniter\Cart\Classes\CartManager;
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\ApiResources\Coupons;
@@ -30,6 +31,7 @@ class Extension extends BaseExtension
         Coupon::class => CouponScope::class,
     ];
 
+    #[Override]
     public function boot(): void
     {
         Order::extend(function($model): void {
@@ -112,6 +114,7 @@ class Extension extends BaseExtension
         ];
     }
 
+    #[Override]
     public function registerPermissions(): array
     {
         return [
@@ -122,6 +125,7 @@ class Extension extends BaseExtension
         ];
     }
 
+    #[Override]
     public function registerNavigation(): array
     {
         return [

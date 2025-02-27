@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons\CartConditions;
 
+use Override;
 use Exception;
 use Igniter\Cart\CartCondition;
 use Igniter\Cart\Concerns\ActsAsItemable;
@@ -28,11 +29,13 @@ class Coupon extends CartCondition
 
     protected static $hasErrors = false;
 
+    #[Override]
     public function getLabel()
     {
         return sprintf(lang($this->label), $this->getMetaData('code'));
     }
 
+    #[Override]
     public function getValue()
     {
         return 0 - $this->calculatedValue;
@@ -44,7 +47,7 @@ class Coupon extends CartCondition
             return null;
         }
 
-        if (is_null(self::$couponModel) || strtolower(self::$couponModel->code) !== strtolower($couponCode)) {
+        if (is_null(self::$couponModel) || strtolower(self::$couponModel->code) !== strtolower((string) $couponCode)) {
             self::$couponModel = CouponModel::getByCode($couponCode);
         }
 
@@ -65,9 +68,10 @@ class Coupon extends CartCondition
         return self::$applicableItems;
     }
 
+    #[Override]
     public function onLoad(): void
     {
-        if (!strlen($this->getMetaData('code', '')) || self::$hasErrors) {
+        if (!strlen((string) $this->getMetaData('code', '')) || self::$hasErrors) {
             return;
         }
 
@@ -86,6 +90,7 @@ class Coupon extends CartCondition
         }
     }
 
+    #[Override]
     public function beforeApply()
     {
         $couponModel = $this->getModel();
@@ -96,6 +101,7 @@ class Coupon extends CartCondition
         return !($couponModel->appliesOnDelivery() && !Location::orderTypeIsDelivery());
     }
 
+    #[Override]
     public function getActions()
     {
         $value = optional($this->getModel())->discountWithOperand();
@@ -103,7 +109,7 @@ class Coupon extends CartCondition
         if (optional($this->getModel())->appliesOnDelivery()) {
             $value = $this->calculateDeliveryDiscount();
         }// if we are item limited and not a % we need to apportion
-        elseif (!str_contains($value, '%') && optional($this->getModel())->appliesOnMenuItems()) {
+        elseif (!str_contains((string) $value, '%') && optional($this->getModel())->appliesOnMenuItems()) {
             $value = $this->calculateApportionment($value);
         }
 
@@ -114,6 +120,7 @@ class Coupon extends CartCondition
         return [$actions];
     }
 
+    #[Override]
     public function whenInvalid(): void
     {
         if (!$this->getModel()->auto_apply) {

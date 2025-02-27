@@ -11,33 +11,25 @@ class CouponScope extends Scope
 {
     public function addIsAutoApplicable()
     {
-        return function(Builder $builder) {
-            return $builder->where('auto_apply', '1');
-        };
+        return fn(Builder $builder) => $builder->where('auto_apply', '1');
     }
 
     public function addWhereHasCategory()
     {
-        return function(Builder $builder, $categoryId) {
-            return $builder->whereHas('categories', function($q) use ($categoryId): void {
-                $q->where('categories.category_id', $categoryId);
-            });
-        };
+        return fn(Builder $builder, $categoryId) => $builder->whereHas('categories', function($q) use ($categoryId): void {
+            $q->where('categories.category_id', $categoryId);
+        });
     }
 
     public function addWhereHasMenu()
     {
-        return function(Builder $builder, $menuId) {
-            return $builder->whereHas('menus', function($q) use ($menuId): void {
-                $q->where('menus.menu_id', $menuId);
-            });
-        };
+        return fn(Builder $builder, $menuId) => $builder->whereHas('menus', function($q) use ($menuId): void {
+            $q->where('menus.menu_id', $menuId);
+        });
     }
 
     public function addWhereCodeAndLocation()
     {
-        return function(Builder $builder, $code, $locationId) {
-            return $builder->whereHasOrDoesntHaveLocation($locationId)->whereCode($code);
-        };
+        return fn(Builder $builder, $code, $locationId) => $builder->whereHasOrDoesntHaveLocation($locationId)->whereCode($code);
     }
 }

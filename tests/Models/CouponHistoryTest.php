@@ -97,9 +97,7 @@ it('does not create coupon history if beforeAddHistory event fails', function():
         'title' => '[TESTCODE] Test Coupon',
         'value' => 10.0,
     ];
-    Event::listen('couponHistory.beforeAddHistory', function($couponHistory, $couponTotal, $customer, $coupon) use ($expectedCoupon): bool {
-        return $expectedCoupon->getKey() !== $coupon->getKey();
-    });
+    Event::listen('couponHistory.beforeAddHistory', fn($couponHistory, $couponTotal, $customer, $coupon): bool => $expectedCoupon->getKey() !== $coupon->getKey());
 
     $couponHistory = CouponHistory::createHistory($couponTotal, $order);
 

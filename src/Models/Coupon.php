@@ -56,7 +56,7 @@ class Coupon extends Model
     use Locationable;
     use Switchable;
 
-    const LOCATIONABLE_RELATION = 'locations';
+    public const string LOCATIONABLE_RELATION = 'locations';
 
     /**
      * @var string The database table name
@@ -130,7 +130,7 @@ class Coupon extends Model
 
     public function getRecurringEveryAttribute($value)
     {
-        return empty($value) ? [0, 1, 2, 3, 4, 5, 6] : explode(', ', $value);
+        return empty($value) ? [0, 1, 2, 3, 4, 5, 6] : explode(', ', (string)$value);
     }
 
     public function setRecurringEveryAttribute($value): void
@@ -192,7 +192,7 @@ class Coupon extends Model
     }
 
     /**
-     * Check if a coupone is expired
+     * Check if a coupon is expired
      *
      * @param Carbon $orderDateTime orderDateTime
      *

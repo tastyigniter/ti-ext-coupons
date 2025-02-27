@@ -89,21 +89,23 @@ it('gets discount with operand', function(): void {
 });
 
 it('checks if coupon is valid', function($attributes): void {
+    $this->travelTo('2021-01-05 12:00:00');
     $coupon = Coupon::factory()->create($attributes);
 
     expect($coupon->isExpired())->toBeFalse();
+    $this->travelBack();
 })->with([
     fn(): array => ['validity' => 'forever'],
     fn(): array => [
         'validity' => 'fixed',
-        'fixed_date' => now(),
+        'fixed_date' => '2021-01-05',
         'fixed_from_time' => '00:00:00',
         'fixed_to_time' => '23:59:59',
     ],
     fn(): array => [
         'validity' => 'period',
-        'period_start_date' => now()->subDays(2),
-        'period_end_date' => now()->addDay(),
+        'period_start_date' => '2021-01-01',
+        'period_end_date' => '2021-01-31',
     ],
     fn(): array => [
         'validity' => 'recurring',
@@ -114,48 +116,46 @@ it('checks if coupon is valid', function($attributes): void {
     fn(): array => [
         'validity' => 'recurring',
         'recurring_every' => [0, 1, 2, 3, 4, 5, 6],
-        'recurring_from_time' => now()->subHours(3)->toTimeString(),
-        'recurring_to_time' => now()->subHours(6)->toTimeString(),
+        'recurring_from_time' => '09:00:00',
+        'recurring_to_time' => '06:00:00',
     ],
 ]);
 
 it('checks if coupon is expired', function($attributes): void {
-    $this->travelTo(now()->setHour(12)->weekday(3));
-
+    $this->travelTo('2025-01-02 12:00:00');
     $coupon = Coupon::factory()->create($attributes);
 
     expect($coupon->isExpired())->toBeTrue();
-
     $this->travelBack();
 })->with([
     fn(): array => [
         'validity' => 'fixed',
-        'fixed_date' => now()->subDay(),
-        'fixed_from_time' => now()->setHour(12)->subHours(3)->toTimeString(),
-        'fixed_to_time' => now()->setHour(12)->subHour()->toTimeString(),
+        'fixed_date' => '2025-01-01',
+        'fixed_from_time' => '09:00:00',
+        'fixed_to_time' => '11:00:00',
     ],
     fn(): array => [
         'validity' => 'fixed',
-        'fixed_date' => now()->subDay(),
-        'fixed_from_time' => now()->setHour(12)->subHours(3)->toTimeString(),
-        'fixed_to_time' => now()->setHour(12)->subHours(6)->toTimeString(),
+        'fixed_date' => '2025-01-01',
+        'fixed_from_time' => '09:00:00',
+        'fixed_to_time' => '06:00:00',
     ],
     fn(): array => [
         'validity' => 'period',
-        'period_start_date' => now()->subDays(2),
-        'period_end_date' => now()->subDay(),
+        'period_start_date' => '2025-02-01',
+        'period_end_date' => '2025-02-31',
     ],
     fn(): array => [
         'validity' => 'recurring',
         'recurring_every' => [0, 1, 2, 3, 4, 5, 6],
-        'recurring_from_time' => now()->setHour(12)->subHours(3)->toTimeString(),
-        'recurring_to_time' => now()->setHour(12)->subHour()->toTimeString(),
+        'recurring_from_time' => '09:00:00',
+        'recurring_to_time' => '11:00:00',
     ],
     fn(): array => [
         'validity' => 'recurring',
         'recurring_every' => [0, 1, 5, 6],
-        'recurring_from_time' => now()->setHour(12)->subHours(3)->toTimeString(),
-        'recurring_to_time' => now()->setHour(12)->subHour()->toTimeString(),
+        'recurring_from_time' => '09:00:00',
+        'recurring_to_time' => '11:00:00',
     ],
 ]);
 
@@ -163,9 +163,7 @@ it('checks if coupon is expired with custom validity', function(): void {
     $dateTime = now()->subDay();
     $coupon = Coupon::factory()->create(['validity' => 'custom']);
 
-    Event::listen('igniter.coupon.isExpired', function($coupon, $orderDateTime) use ($dateTime) {
-        return $orderDateTime->eq($dateTime);
-    });
+    Event::listen('igniter.coupon.isExpired', fn($coupon, $orderDateTime) => $orderDateTime->eq($dateTime));
 
     expect($coupon->isExpired($dateTime))->toBeTrue();
 });

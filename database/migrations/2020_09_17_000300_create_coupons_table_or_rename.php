@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -7,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         if (Schema::hasTable('coupons')) {
             Schema::rename('coupons', 'igniter_coupons');
@@ -21,7 +23,7 @@ return new class extends Migration
             return;
         }
 
-        Schema::create('igniter_coupons', function(Blueprint $table) {
+        Schema::create('igniter_coupons', function(Blueprint $table): void {
             $table->engine = 'InnoDB';
             $table->increments('coupon_id');
             $table->string('name');
@@ -46,7 +48,7 @@ return new class extends Migration
             $table->boolean('order_restriction');
         });
 
-        Schema::create('igniter_coupons_history', function(Blueprint $table) {
+        Schema::create('igniter_coupons_history', function(Blueprint $table): void {
             $table->engine = 'InnoDB';
             $table->increments('coupon_history_id');
             $table->integer('coupon_id');
@@ -62,19 +64,19 @@ return new class extends Migration
         $this->seedCoupons();
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('igniter_coupons_history');
         Schema::dropIfExists('igniter_coupons');
     }
 
-    protected function seedCoupons()
+    protected function seedCoupons(): void
     {
         if (DB::table('igniter_coupons')->count()) {
             return;
         }
 
-        DB::table('igniter_coupons')->insert(array_map(function($record) {
+        DB::table('igniter_coupons')->insert(array_map(function(array $record) {
             $record['order_restriction'] = 0;
             $record['date_added'] = now();
 
@@ -82,7 +84,7 @@ return new class extends Migration
         }, $this->getSeedRecords('coupons')));
     }
 
-    protected function getSeedRecords($name)
+    protected function getSeedRecords(string $name): mixed
     {
         return json_decode(file_get_contents(__DIR__.'/../../database/records/'.$name.'.json'), true);
     }

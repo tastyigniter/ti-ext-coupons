@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons\Database\Factories;
 
+use Override;
 use Igniter\Coupons\Models\CouponHistory;
 use Igniter\Flame\Database\Factories\Factory;
 
@@ -11,6 +12,7 @@ class CouponHistoryFactory extends Factory
 {
     protected $model = CouponHistory::class;
 
+    #[Override]
     public function definition(): array
     {
         return [
