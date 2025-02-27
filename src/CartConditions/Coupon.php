@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons\CartConditions;
 
-use Override;
 use Exception;
 use Igniter\Cart\CartCondition;
 use Igniter\Cart\Concerns\ActsAsItemable;
@@ -14,6 +13,7 @@ use Igniter\Coupons\Models\Coupon as CouponModel;
 use Igniter\Flame\Exception\ApplicationException;
 use Igniter\Local\Facades\Location;
 use Igniter\User\Facades\Auth;
+use Override;
 
 class Coupon extends CartCondition
 {

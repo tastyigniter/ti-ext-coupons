@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons\Http\Requests;
 
-use Override;
 use Igniter\System\Classes\FormRequest;
+use Override;
 
 class CouponRequest extends FormRequest
 {

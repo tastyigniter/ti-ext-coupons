@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons;
 
-use Override;
 use Igniter\Cart\Classes\CartManager;
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\ApiResources\Coupons;
@@ -19,6 +18,7 @@ use Igniter\System\Classes\BaseExtension;
 use Igniter\User\Models\Customer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
+use Override;
 
 class Extension extends BaseExtension
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons\Database\Factories;
 
-use Override;
 use Igniter\Coupons\Models\Coupon;
 use Igniter\Flame\Database\Factories\Factory;
+use Override;
 
 class CouponFactory extends Factory
 {
