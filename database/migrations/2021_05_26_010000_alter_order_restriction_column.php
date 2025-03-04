@@ -1,30 +1,28 @@
 <?php
 
-namespace Igniter\Coupons\Database\Migrations;
+declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class AlterOrderRestrictionColumn extends Migration
+return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::table('igniter_coupons', function (Blueprint $table) {
+        Schema::table('igniter_coupons', function(Blueprint $table): void {
             $table->text('order_restriction')->nullable()->change();
         });
 
         $this->updateOrderRestrictionColumn();
     }
 
-    public function down()
-    {
-    }
+    public function down(): void {}
 
-    protected function updateOrderRestrictionColumn()
+    protected function updateOrderRestrictionColumn(): void
     {
-        DB::table('igniter_coupons')->get()->each(function ($model) {
+        DB::table('igniter_coupons')->get()->each(function($model): void {
             $restriction = null;
             if ($model->order_restriction) {
                 $restriction[] = array_get([
@@ -40,4 +38,4 @@ class AlterOrderRestrictionColumn extends Migration
                 ->update(['order_restriction' => $restriction]);
         });
     }
-}
+};

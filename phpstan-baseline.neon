@@ -1,0 +1,96 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$categories\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CouponsTransformer.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$history\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CouponsTransformer.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$menus\\.$#"
+			count: 1
+			path: src/ApiResources/Transformers/CouponsTransformer.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$model\\.$#"
+			count: 1
+			path: src/Models/Actions/RedeemsCoupon.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Flame\\\\Database\\\\Model\\:\\:\\$order_id\\.$#"
+			count: 1
+			path: src/Models/Actions/RedeemsCoupon.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Flame\\\\Database\\\\Model\\:\\:getOrderTotals\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Actions/RedeemsCoupon.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$customer_groups\\.$#"
+			count: 1
+			path: src/Models/Coupon.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$customers\\.$#"
+			count: 1
+			path: src/Models/Coupon.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:\\$locations\\.$#"
+			count: 1
+			path: src/Models/Coupon.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:categories\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Coupon.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:history\\(\\)\\.$#"
+			count: 2
+			path: src/Models/Coupon.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:locations\\(\\)\\.$#"
+			count: 2
+			path: src/Models/Coupon.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:menus\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Coupon.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$customer\\.$#"
+			count: 1
+			path: src/Models/CouponHistory.php
+
+		-
+			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:\\$customer\\.$#"
+			count: 1
+			path: src/Models/CouponHistory.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: src/Models/CouponHistory.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:categories\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Observers/CouponObserver.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Coupons\\\\Models\\\\Coupon\\:\\:menus\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Observers/CouponObserver.php
+
+		-
+			message: "#^Call to an undefined method Igniter\\\\Cart\\\\Models\\\\Order\\:\\:coupon_history\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Observers/OrderObserver.php
