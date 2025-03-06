@@ -66,11 +66,6 @@ parameters:
 			path: src/Models/Coupon.php
 
 		-
-			message: "#^Access to an undefined property Igniter\\\\Cart\\\\Models\\\\Order\\:\\:\\$customer\\.$#"
-			count: 1
-			path: src/Models/CouponHistory.php
-
-		-
 			message: "#^Access to an undefined property Igniter\\\\Coupons\\\\Models\\\\CouponHistory\\:\\:\\$customer\\.$#"
 			count: 1
 			path: src/Models/CouponHistory.php
