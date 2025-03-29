@@ -6,7 +6,6 @@ namespace Igniter\Coupons\Database\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -19,9 +18,9 @@ return new class extends Migration
             $table->dropForeignKeyIfExists('coupon_id');
             $table->dropForeignKeyIfExists('order_id');
             $table->dropForeignKeyIfExists('customer_id');
-            $table->dropIndexIfExists(sprintf('%s%s_%s_foreign', DB::getTablePrefix(), 'igniter_coupons_history', 'coupon_id'));
-            $table->dropIndexIfExists(sprintf('%s%s_%s_foreign', DB::getTablePrefix(), 'igniter_coupons_history', 'order_id'));
-            $table->dropIndexIfExists(sprintf('%s%s_%s_foreign', DB::getTablePrefix(), 'igniter_coupons_history', 'customer_id'));
+            $table->dropIndexIfExists(sprintf('%s_%s_foreign', 'igniter_coupons_history', 'coupon_id'));
+            $table->dropIndexIfExists(sprintf('%s_%s_foreign', 'igniter_coupons_history', 'order_id'));
+            $table->dropIndexIfExists(sprintf('%s_%s_foreign', 'igniter_coupons_history', 'customer_id'));
         });
 
         Schema::table('igniter_coupon_categories', function(Blueprint $table): void {
