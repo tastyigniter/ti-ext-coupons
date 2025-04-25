@@ -124,7 +124,7 @@ class CouponHistory extends Model
      */
     public static function createHistory($couponTotal, $order): ?self
     {
-        if ($couponTotal->code === 'coupon' && str_contains($couponTotal->title, '[')) {
+        if ($couponTotal->code === 'coupon' && str_contains((string) $couponTotal->title, '[')) {
             $couponTotal->code = str_after(str_before($couponTotal->title, ']'), '[');
         }
 

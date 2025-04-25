@@ -41,7 +41,7 @@ class Coupon extends CartCondition
         return 0 - $this->calculatedValue;
     }
 
-    public function getModel()
+    public function getModel(): ?CouponModel
     {
         if ((string)($couponCode = $this->getMetaData('code', '')) === '') {
             return null;
@@ -76,7 +76,7 @@ class Coupon extends CartCondition
         }
 
         try {
-            if (!$couponModel = $this->getModel()) {
+            if (!($couponModel = $this->getModel()) instanceof CouponModel) {
                 throw new ApplicationException(lang('igniter.cart::default.alert_coupon_invalid'));
             }
 
