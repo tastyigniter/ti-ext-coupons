@@ -20,17 +20,17 @@ php artisan igniter:up
 
 ## Getting started
 
-This extension provides a cart condition that allows you apply coupons to the cart. To enable the coupon condition:
+This extension provides a cart condition that allows you apply coupons to the cart.
 
-- Navigate to the _Manage > Settings > Cart Settings_ admin settings page
-- Switch to enable the `coupon` cart condition
-- Navigate to the _Marketing > Coupons_ admin page to manage coupons
-
-## Usage
+To enable the coupon condition, go to _Manage > Settings > Cart Settings_, toggle on the coupon cart condition.
 
 To create a new coupon, navigate to _Marketing > Coupons_ and click the `New Coupon` button. You can configure the coupon details, such as the discount type, amount, and usage restrictions.
 
 Once you have created a coupon, customers can apply it during checkout by entering the coupon code in the cart.
+
+## Usage
+
+This section explains how to integrate the Coupons extension into your own extension if you need to apply your custom coupons to the cart or redeem them on orders. The Coupons extension provides a simple API for managing coupons, applying them to the cart, and redeeming them on orders.
 
 ### Applying coupons to the cart
 
@@ -93,7 +93,7 @@ The Coupons extension registers the following permission:
 
 - `Admin.Coupons`: Control who can manage coupons in the admin area.
 
-For more on restricting access to the admin area, see the [TastyIgniter Permissions](https://tastyigniter.com/docs/extend/permissions) documentation.
+For more on restricting access to the admin area, see the [TastyIgniter Permissions](https://tastyigniter.com/docs/customize/permissions) documentation.
 
 ### Events
 
