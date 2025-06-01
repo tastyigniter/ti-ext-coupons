@@ -30,7 +30,7 @@ Once you have created a coupon, customers can apply it during checkout by enteri
 
 ## Usage
 
-This section explains how to integrate the Coupons extension into your own extension if you need to apply your custom coupons to the cart or redeem them on orders. The Coupons extension provides a simple API for managing coupons, applying them to the cart, and redeeming them on orders.
+This section covers how to integrate the Coupons extension into your own extension if you need to apply your custom coupons to the cart or redeem them on orders. The Coupons extension provides a simple API for managing coupons, applying them to the cart, and redeeming them on orders.
 
 ### Applying coupons to the cart
 
