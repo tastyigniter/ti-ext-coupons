@@ -16,16 +16,16 @@ return new class extends Migration
 
         Schema::create('igniter_coupon_categories', function(Blueprint $table): void {
             $table->engine = 'InnoDB';
-            $table->integer('coupon_id')->unsigned()->index('igniter_coupon_id_index');
-            $table->integer('category_id')->unsigned()->index('igniter_category_id_index');
-            $table->unique(['coupon_id', 'category_id'], 'igniter_coupon_category_unique');
+            $table->integer('coupon_id')->unsigned()->index('coupon_id_index');
+            $table->integer('category_id')->unsigned()->index('category_id_index');
+            $table->unique(['coupon_id', 'category_id'], 'coupon_category_unique');
         });
 
         Schema::create('igniter_coupon_menus', function(Blueprint $table): void {
             $table->engine = 'InnoDB';
-            $table->integer('coupon_id')->unsigned()->index('igniter_coupon_id_index');
-            $table->integer('menu_id')->unsigned()->index('igniter_menu_id_index');
-            $table->unique(['coupon_id', 'menu_id'], 'igniter_coupon_menu_unique');
+            $table->integer('coupon_id')->unsigned()->index('coupon_id_index');
+            $table->integer('menu_id')->unsigned()->index('menu_id_index');
+            $table->unique(['coupon_id', 'menu_id'], 'coupon_menu_unique');
         });
     }
 
