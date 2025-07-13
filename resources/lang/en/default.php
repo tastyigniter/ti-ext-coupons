@@ -58,7 +58,7 @@ return [
     'label_fixed_to_time' => 'Fixed to time',
     'label_period_start_date' => 'Period start date',
     'label_period_end_date' => 'Period end date',
-    'label_recurring_every' => 'Recurring every',
+    'label_recurring_every' => 'Recurring Days',
     'label_recurring_from_time' => 'Recurring from time',
     'label_recurring_to_time' => 'Recurring to time',
     'label_auto_apply' => 'Apply automatically',
