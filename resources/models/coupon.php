@@ -30,6 +30,11 @@ $config['list']['toolbar'] = [
             'class' => 'btn btn-primary',
             'href' => admin_url('igniter/coupons/coupons/create'),
         ],
+        'coupon_histories' => [
+            'label' => 'lang:igniter.coupons::default.button_histories',
+            'class' => 'btn btn-default',
+            'href' => admin_url('igniter/coupons/histories'),
+        ],
     ],
 ];
 
