@@ -37,7 +37,7 @@ $config['list']['columns'] = [
     ],
     'coupon_history_id' => [
         'label' => 'lang:admin::lang.column_id',
-        'invisible' => true,
+        'invisible' => true
     ],
 ];
 
