@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Igniter\Coupons\Tests\Http\Controllers;
 
 use Igniter\Coupons\Models\Coupon;
-use Igniter\User\Models\User;
 
 it('loads coupons page', function(): void {
     actingAsSuperUser()
@@ -90,8 +89,3 @@ it('deletes coupon', function(): void {
 
     expect(Coupon::find($coupon->coupon_id))->toBeNull();
 });
-
-function actingAsSuperUser()
-{
-    return test()->actingAs(User::factory()->superUser()->create(), 'igniter-admin');
-}

@@ -48,7 +48,7 @@ class CouponHistory extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['customer_name'];
+    protected $appends = ['customer_name', 'order_total', 'date_used'];
 
     protected $casts = [
         'coupon_history_id' => 'integer',
@@ -106,6 +106,16 @@ class CouponHistory extends Model
         return ($this->customer && $this->customer->exists) ? $this->customer->full_name : $value;
     }
 
+    public function getOrderTotalAttribute($value)
+    {
+        return $this->order?->order_total;
+    }
+
+    public function getDateUsedAttribute($value)
+    {
+        return day_elapsed($this->created_at);
+    }
+
     public function scopeApplyRedeemed($query)
     {
         return $query->where('status', '>=', 1);
@@ -124,7 +134,7 @@ class CouponHistory extends Model
      */
     public static function createHistory($couponTotal, $order): ?self
     {
-        if ($couponTotal->code === 'coupon' && str_contains((string) $couponTotal->title, '[')) {
+        if ($couponTotal->code === 'coupon' && str_contains((string)$couponTotal->title, '[')) {
             $couponTotal->code = str_after(str_before($couponTotal->title, ']'), '[');
         }
 

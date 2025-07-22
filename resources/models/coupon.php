@@ -30,10 +30,10 @@ $config['list']['toolbar'] = [
             'class' => 'btn btn-primary',
             'href' => admin_url('igniter/coupons/coupons/create'),
         ],
-        'coupon_histories' => [
-            'label' => 'lang:igniter.coupons::default.button_histories',
+        'redemptions' => [
+            'label' => 'lang:igniter.coupons::default.button_redemptions',
             'class' => 'btn btn-default',
-            'href' => admin_url('igniter/coupons/histories'),
+            'href' => admin_url('igniter/coupons/redemptions'),
         ],
     ],
 ];
@@ -386,6 +386,9 @@ $config['form']['tabs'] = [
             'useAjax' => true,
             'defaultSort' => ['coupon_history_id', 'desc'],
             'columns' => [
+                'date_used' => [
+                    'title' => 'lang:igniter.coupons::default.column_date_used',
+                ],
                 'order_id' => [
                     'title' => 'lang:igniter.coupons::default.column_order_id',
                 ],
@@ -398,8 +401,8 @@ $config['form']['tabs'] = [
                 'amount' => [
                     'title' => 'lang:igniter.coupons::default.column_amount',
                 ],
-                'created_at' => [
-                    'title' => 'lang:igniter.coupons::default.column_date_used',
+                'order_total' => [
+                    'title' => 'lang:igniter.coupons::default.column_total',
                 ],
             ],
         ],
