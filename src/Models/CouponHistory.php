@@ -26,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @property bool $status
  * @property Carbon $updated_at
  * @property-read mixed $customer_name
+ * @property  Order|null $order
+ * @property  Customer|null $customer
  * @mixin Model
  */
 class CouponHistory extends Model
@@ -101,17 +103,17 @@ class CouponHistory extends Model
         return true;
     }
 
-    public function getCustomerNameAttribute($value)
+    public function getCustomerNameAttribute($value): ?string
     {
         return ($this->customer && $this->customer->exists) ? $this->customer->full_name : $value;
     }
 
-    public function getOrderTotalAttribute($value)
+    public function getOrderTotalAttribute($value): ?float
     {
         return $this->order?->order_total;
     }
 
-    public function getDateUsedAttribute($value)
+    public function getDateUsedAttribute($value): string
     {
         return day_elapsed($this->created_at);
     }
@@ -121,7 +123,7 @@ class CouponHistory extends Model
         return $query->where('status', '>=', 1);
     }
 
-    public function touchStatus()
+    public function touchStatus(): bool
     {
         $this->status = $this->status < 1;
 
