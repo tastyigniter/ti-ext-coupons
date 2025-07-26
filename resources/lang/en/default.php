@@ -6,13 +6,15 @@ return [
     'permissions' => 'Create, edit and delete coupons',
 
     'text_title' => 'Coupons',
+    'text_title_redemptions' => 'Redemptions',
     'text_form_name' => 'Coupon',
     'text_tab_general' => 'General',
     'text_tab_restrictions' => 'Restrictions',
-    'text_tab_history' => 'History',
-    'text_filter_search' => 'Search by name, code or validity.',
+    'text_tab_history' => 'Redemptions',
+    'text_filter_search' => 'Search by name, code, order ID or customer name.',
     'text_filter_type' => 'View all types',
     'text_empty' => 'There are no coupons available.',
+    'text_redemptions_empty' => 'There are no coupon redemptions available.',
     'text_fixed_amount' => 'Fixed Amount',
     'text_percentage' => 'Percentage',
     'text_forever' => 'Forever',
@@ -37,6 +39,7 @@ return [
     'column_customer' => 'Customer',
     'column_amount' => 'Total Amount',
     'column_min_total' => 'Min Order Total',
+    'column_total' => 'Order Total',
     'column_date_used' => 'Date Used',
     'column_count' => 'Redemption Count',
 
@@ -58,7 +61,7 @@ return [
     'label_fixed_to_time' => 'Fixed to time',
     'label_period_start_date' => 'Period start date',
     'label_period_end_date' => 'Period end date',
-    'label_recurring_every' => 'Recurring every',
+    'label_recurring_every' => 'Recurring Days',
     'label_recurring_from_time' => 'Recurring from time',
     'label_recurring_to_time' => 'Recurring to time',
     'label_auto_apply' => 'Apply automatically',
@@ -76,4 +79,6 @@ return [
 
     'alert_customer_cannot_redeem' => 'Coupon cannot be redeemed by this customer',
     'alert_customer_group_cannot_redeem' => 'Coupon cannot be redeemed by this customer group',
+
+    'button_redemptions' => 'Redemptions',
 ];

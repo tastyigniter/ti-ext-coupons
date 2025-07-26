@@ -26,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @property bool $status
  * @property Carbon $updated_at
  * @property-read mixed $customer_name
+ * @property  Order|null $order
+ * @property  Customer|null $customer
  * @mixin Model
  */
 class CouponHistory extends Model
@@ -48,7 +50,7 @@ class CouponHistory extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['customer_name'];
+    protected $appends = ['customer_name', 'order_total', 'date_used'];
 
     protected $casts = [
         'coupon_history_id' => 'integer',
@@ -101,9 +103,19 @@ class CouponHistory extends Model
         return true;
     }
 
-    public function getCustomerNameAttribute($value)
+    public function getCustomerNameAttribute($value): ?string
     {
         return ($this->customer && $this->customer->exists) ? $this->customer->full_name : $value;
+    }
+
+    public function getOrderTotalAttribute($value): ?float
+    {
+        return $this->order?->order_total;
+    }
+
+    public function getDateUsedAttribute($value): string
+    {
+        return day_elapsed($this->created_at);
     }
 
     public function scopeApplyRedeemed($query)
@@ -111,7 +123,7 @@ class CouponHistory extends Model
         return $query->where('status', '>=', 1);
     }
 
-    public function touchStatus()
+    public function touchStatus(): bool
     {
         $this->status = $this->status < 1;
 
@@ -124,7 +136,7 @@ class CouponHistory extends Model
      */
     public static function createHistory($couponTotal, $order): ?self
     {
-        if ($couponTotal->code === 'coupon' && str_contains((string) $couponTotal->title, '[')) {
+        if ($couponTotal->code === 'coupon' && str_contains((string)$couponTotal->title, '[')) {
             $couponTotal->code = str_after(str_before($couponTotal->title, ']'), '[');
         }
 
