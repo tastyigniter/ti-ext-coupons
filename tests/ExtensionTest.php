@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Igniter\Coupons\Tests;
 
+use Igniter\Cart\Cart;
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\Extension;
 use Igniter\Coupons\Models\Actions\RedeemsCoupon;
@@ -54,10 +55,11 @@ it('applies coupon condition on add cart item', function(): void {
         'validity' => 'forever',
     ]);
     Location::shouldReceive('getId')->andReturn(1);
+    Location::shouldReceive('current')->andReturn(new LocationModel(['id' => 1]));
     Location::shouldReceive('orderDateTime')->andReturn(now());
     Location::shouldReceive('orderType')->andReturn(LocationModel::COLLECTION);
 
-    event('cart.added');
+    event('cart.added', [resolve(Cart::class)]);
 
     expect(resolve('cart')->conditions())->toHaveCount(1)
         ->and(resolve('cart')->conditions()->first()->getMetaData('code'))->toBe('test-coupon');
