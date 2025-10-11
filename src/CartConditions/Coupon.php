@@ -188,7 +188,7 @@ class Coupon extends CartCondition
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_location_restricted'));
         }
 
-        if (Cart::subtotal() < $couponModel->minimumOrderTotal()) {
+        if (Cart::content()->subtotalWithoutConditions() < $couponModel->minimumOrderTotal()) {
             throw new ApplicationException(sprintf(
                 lang('igniter.cart::default.alert_coupon_not_applied'),
                 currency_format($couponModel->minimumOrderTotal()),
