@@ -30,7 +30,10 @@ it('returns correct attribute labels', function(): void {
         ->and($attributes)->toHaveKey('recurring_to_time', lang('igniter.coupons::default.label_recurring_to_time'))
         ->and($attributes)->toHaveKey('order_restriction.*', lang('igniter.coupons::default.label_order_restriction'))
         ->and($attributes)->toHaveKey('status', lang('admin::lang.label_status'))
-        ->and($attributes)->toHaveKey('locations.*', lang('admin::lang.column_location'));
+        ->and($attributes)->toHaveKey('locations.*', lang('admin::lang.column_location'))
+        ->and($attributes)->toHaveKey('apply_coupon_on', lang('admin::lang.label_cart_restriction'))
+        ->and($attributes)->toHaveKey('categories', lang('admin::lang.label_categories'))
+        ->and($attributes)->toHaveKey('menus', lang('admin::lang.label_menus'));
 });
 
 it('returns correct validation rules', function(): void {
@@ -92,5 +95,8 @@ it('returns correct validation rules', function(): void {
         ->and($rules['order_restriction.*'])->toContain('nullable', 'string')
         ->and($rules['status'])->toContain('boolean')
         ->and($rules['auto_apply'])->toContain('boolean')
-        ->and($rules['locations.*'])->toContain('integer');
+        ->and($rules['locations.*'])->toContain('integer')
+        ->and($rules['apply_coupon_on'])->toContain('required', 'in:whole_cart,menu_items,delivery_fee')
+        ->and($rules['categories'])->toContain('nullable', 'array')
+        ->and($rules['menus'])->toContain('nullable', 'array');
 });

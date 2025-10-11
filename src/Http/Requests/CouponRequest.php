@@ -33,6 +33,9 @@ class CouponRequest extends FormRequest
             'order_restriction.*' => lang('igniter.coupons::default.label_order_restriction'),
             'status' => lang('admin::lang.label_status'),
             'locations.*' => lang('admin::lang.column_location'),
+            'apply_coupon_on' => lang('igniter.coupons::default.label_cart_restriction'),
+            'categories' => lang('igniter.coupons::default.label_categories'),
+            'menus' => lang('igniter.coupons::default.label_menus'),
         ];
     }
 
@@ -64,6 +67,9 @@ class CouponRequest extends FormRequest
             'status' => ['boolean'],
             'auto_apply' => ['boolean'],
             'locations.*' => ['integer'],
+            'apply_coupon_on' => ['required', 'in:whole_cart,menu_items,delivery_fee'],
+            'categories' => ['nullable', 'array'],
+            'menus' => ['nullable', 'array'],
         ];
     }
 }
