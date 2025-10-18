@@ -30,13 +30,13 @@ class Coupon extends CartCondition
     protected static $hasErrors = false;
 
     #[Override]
-    public function getLabel()
+    public function getLabel(): string
     {
         return sprintf(lang($this->label), $this->getMetaData('code'));
     }
 
     #[Override]
-    public function getValue()
+    public function getValue(): int|float
     {
         return 0 - $this->calculatedValue;
     }
@@ -47,7 +47,7 @@ class Coupon extends CartCondition
             return null;
         }
 
-        if (is_null(self::$couponModel) || strtolower(self::$couponModel->code) !== strtolower((string) $couponCode)) {
+        if (is_null(self::$couponModel) || strtolower(self::$couponModel->code) !== strtolower((string)$couponCode)) {
             self::$couponModel = CouponModel::getByCode($couponCode);
         }
 
@@ -71,7 +71,7 @@ class Coupon extends CartCondition
     #[Override]
     public function onLoad(): void
     {
-        if (!strlen((string) $this->getMetaData('code', '')) || self::$hasErrors) {
+        if (!strlen((string)$this->getMetaData('code', '')) || self::$hasErrors) {
             return;
         }
 
@@ -102,14 +102,14 @@ class Coupon extends CartCondition
     }
 
     #[Override]
-    public function getActions()
+    public function getActions(): array
     {
         $value = optional($this->getModel())->discountWithOperand();
 
         if (optional($this->getModel())->appliesOnDelivery()) {
             $value = $this->calculateDeliveryDiscount();
         }// if we are item limited and not a % we need to apportion
-        elseif (!str_contains((string) $value, '%') && optional($this->getModel())->appliesOnMenuItems()) {
+        elseif (!str_contains((string)$value, '%') && optional($this->getModel())->appliesOnMenuItems()) {
             $value = $this->calculateApportionment($value);
         }
 
@@ -188,7 +188,7 @@ class Coupon extends CartCondition
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_location_restricted'));
         }
 
-        if (Cart::subtotal() < $couponModel->minimumOrderTotal()) {
+        if (Cart::content()->subtotalWithoutConditions() < $couponModel->minimumOrderTotal()) {
             throw new ApplicationException(sprintf(
                 lang('igniter.cart::default.alert_coupon_not_applied'),
                 currency_format($couponModel->minimumOrderTotal()),
@@ -236,10 +236,5 @@ class Coupon extends CartCondition
         self::$couponModel = null;
         self::$applicableItems = null;
         self::$hasErrors = false;
-    }
-
-    public function __destruct()
-    {
-        static::clearInternalCache();
     }
 }

@@ -76,7 +76,7 @@ return new class extends Migration
             return;
         }
 
-        DB::table('igniter_coupons')->insert(array_map(function(array $record) {
+        DB::table('igniter_coupons')->insert(array_map(function(array $record): array {
             $record['order_restriction'] = 0;
             $record['date_added'] = now();
 

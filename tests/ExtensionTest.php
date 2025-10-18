@@ -8,7 +8,6 @@ use Igniter\Cart\Cart;
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\Extension;
 use Igniter\Coupons\Models\Actions\RedeemsCoupon;
-use Igniter\Coupons\Models\Coupon;
 use Igniter\Coupons\Models\Coupon as CouponModel;
 use Igniter\Coupons\Models\CouponHistory;
 use Igniter\Coupons\Models\Observers\CouponObserver;
@@ -31,13 +30,13 @@ it('registers model observers correctly', function(): void {
     };
 
     expect($extension->testObservers())->toBe([
-        Coupon::class => CouponObserver::class,
+        CouponModel::class => CouponObserver::class,
         Order::class => OrderObserver::class,
     ]);
 });
 
 it('adds model scopes correctly', function(): void {
-    expect((new Coupon)->getGlobalScopes())->toHaveKey(CouponScope::class);
+    expect((new CouponModel)->getGlobalScopes())->toHaveKey(CouponScope::class);
 });
 
 it('adds RedeemsCoupon trait to order model', function(): void {
