@@ -71,6 +71,6 @@ class Coupons extends AdminController
 
     public function listOverrideColumnValue($record, $column, $alias = null): ?string
     {
-        return $column->columnName == 'validity' ? ucwords((string) $record->validity) : null;
+        return $column->columnName == 'validity' ? ucwords((string)$record->validity) : null;
     }
 }
