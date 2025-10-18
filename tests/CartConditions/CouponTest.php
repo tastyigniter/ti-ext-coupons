@@ -129,7 +129,9 @@ it('flashes error if cart subtotal is less than minimum order total', function()
     Location::shouldReceive('getId')->andReturn(1);
     Location::shouldReceive('orderType')->andReturn('collection');
     Location::shouldReceive('orderDateTime')->andReturn(now());
-    Cart::shouldReceive('subtotal')->andReturn(5);
+    Cart::shouldReceive('content')->andReturn(mock(CartContent::class, function($mockedCartContent): void {
+        $mockedCartContent->shouldReceive('subtotalWithoutConditions')->andReturn(5);
+    }));
 
     $this->couponCondition->onLoad();
 
@@ -145,7 +147,9 @@ it('flashes error if coupon has reached max redemption', function(): void {
     Location::shouldReceive('getId')->andReturn(1);
     Location::shouldReceive('orderType')->andReturn('collection');
     Location::shouldReceive('orderDateTime')->andReturn(now());
-    Cart::shouldReceive('subtotal')->andReturn(10);
+    Cart::shouldReceive('content')->andReturn(mock(CartContent::class, function($mockedCartContent): void {
+        $mockedCartContent->shouldReceive('subtotalWithoutConditions')->andReturn(10);
+    }));
 
     $this->couponCondition->onLoad();
 
@@ -160,7 +164,9 @@ it('flashes error if customer is not logged in and coupon requires login', funct
     Location::shouldReceive('getId')->andReturn(1);
     Location::shouldReceive('orderType')->andReturn('collection');
     Location::shouldReceive('orderDateTime')->andReturn(now());
-    Cart::shouldReceive('subtotal')->andReturn(10);
+    Cart::shouldReceive('content')->andReturn(mock(CartContent::class, function($mockedCartContent): void {
+        $mockedCartContent->shouldReceive('subtotalWithoutConditions')->andReturn(10);
+    }));
 
     $this->couponCondition->onLoad();
 
@@ -178,7 +184,9 @@ it('flashes error if customer has reached max redemption for coupon', function()
     Location::shouldReceive('getId')->andReturn(1);
     Location::shouldReceive('orderType')->andReturn('collection');
     Location::shouldReceive('orderDateTime')->andReturn(now());
-    Cart::shouldReceive('subtotal')->andReturn(10);
+    Cart::shouldReceive('content')->andReturn(mock(CartContent::class, function($mockedCartContent): void {
+        $mockedCartContent->shouldReceive('subtotalWithoutConditions')->andReturn(10);
+    }));
 
     $this->couponCondition->onLoad();
 
@@ -196,7 +204,9 @@ it('flashes error if coupon has customer restriction', function(): void {
     Location::shouldReceive('getId')->andReturn(1);
     Location::shouldReceive('orderType')->andReturn('collection');
     Location::shouldReceive('orderDateTime')->andReturn(now());
-    Cart::shouldReceive('subtotal')->andReturn(10);
+    Cart::shouldReceive('content')->andReturn(mock(CartContent::class, function($mockedCartContent): void {
+        $mockedCartContent->shouldReceive('subtotalWithoutConditions')->andReturn(10);
+    }));
 
     $this->couponCondition->onLoad();
 
@@ -216,7 +226,9 @@ it('flashes error if coupon has customer group restriction', function(): void {
     Location::shouldReceive('getId')->andReturn(1);
     Location::shouldReceive('orderType')->andReturn('collection');
     Location::shouldReceive('orderDateTime')->andReturn(now());
-    Cart::shouldReceive('subtotal')->andReturn(10);
+    Cart::shouldReceive('content')->andReturn(mock(CartContent::class, function($mockedCartContent): void {
+        $mockedCartContent->shouldReceive('subtotalWithoutConditions')->andReturn(10);
+    }));
 
     $this->couponCondition->onLoad();
 
@@ -230,7 +242,9 @@ it('loads coupon condition successfully', function(): void {
     Location::shouldReceive('getId')->andReturn(1);
     Location::shouldReceive('orderType')->andReturn('collection');
     Location::shouldReceive('orderDateTime')->andReturn(now());
-    Cart::shouldReceive('subtotal')->andReturn(10);
+    Cart::shouldReceive('content')->andReturn(mock(CartContent::class, function($mockedCartContent): void {
+        $mockedCartContent->shouldReceive('subtotalWithoutConditions')->andReturn(10);
+    }));
 
     $this->couponCondition->onLoad();
 
