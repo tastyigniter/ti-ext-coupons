@@ -10,7 +10,7 @@ use Override;
 class CouponRequest extends FormRequest
 {
     #[Override]
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'name' => lang('admin::lang.label_name'),
@@ -67,7 +67,7 @@ class CouponRequest extends FormRequest
             'status' => ['boolean'],
             'auto_apply' => ['boolean'],
             'locations.*' => ['integer'],
-            'apply_coupon_on' => ['required', 'in:whole_cart,menu_items,delivery_fee'],
+            'apply_coupon_on' => ['nullable', 'in:whole_cart,menu_items,delivery_fee'],
             'categories' => ['nullable', 'array'],
             'menus' => ['nullable', 'array'],
         ];
