@@ -339,7 +339,7 @@ class Coupon extends Model
             $content,
             $user,
             $locationId,
-        ) {
+        ): true {
             $this->validateCoupon($orderType, $orderDateTime, $content, $user, $locationId);
 
             return true;
