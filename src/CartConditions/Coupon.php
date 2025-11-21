@@ -80,7 +80,12 @@ class Coupon extends CartCondition
                 throw new ApplicationException(lang('igniter.cart::default.alert_coupon_invalid'));
             }
 
-            $this->validateCoupon($couponModel);
+            $user = Auth::getUser();
+            $locationId = Location::getId();
+            $orderType = Location::orderType();
+            $orderDateTime = Location::orderDateTime();
+
+            $couponModel->validateCoupon($orderType, $orderDateTime, Cart::content(), $user, $locationId);
 
             $this->getApplicableItems($couponModel);
         } catch (Exception $exception) {
@@ -165,53 +170,6 @@ class Coupon extends CartCondition
         }
 
         return '-'.$value;
-    }
-
-    protected function validateCoupon($couponModel)
-    {
-        $user = Auth::getUser();
-        $locationId = Location::getId();
-        $orderType = Location::orderType();
-        $orderDateTime = Location::orderDateTime();
-
-        if ($couponModel->isExpired($orderDateTime)) {
-            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_expired'));
-        }
-
-        if ($couponModel->hasRestriction($orderType)) {
-            throw new ApplicationException(sprintf(
-                lang('igniter.cart::default.alert_coupon_order_restriction'), $orderType,
-            ));
-        }
-
-        if ($couponModel->hasLocationRestriction($locationId)) {
-            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_location_restricted'));
-        }
-
-        if (Cart::content()->subtotalWithoutConditions() < $couponModel->minimumOrderTotal()) {
-            throw new ApplicationException(sprintf(
-                lang('igniter.cart::default.alert_coupon_not_applied'),
-                currency_format($couponModel->minimumOrderTotal()),
-            ));
-        }
-
-        if ($couponModel->hasReachedMaxRedemption()) {
-            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
-        }
-
-        if (($couponModel->customers?->isNotEmpty() || $couponModel->customer_groups?->isNotEmpty()) && !$user) {
-            throw new ApplicationException(lang('igniter.coupons::default.alert_coupon_login_required'));
-        }
-
-        if ($user && $couponModel->customerHasMaxRedemption($user)) {
-            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
-        }
-
-        throw_unless($couponModel->customerCanRedeem($user),
-            new ApplicationException(lang('igniter.coupons::default.alert_customer_cannot_redeem')));
-
-        throw_unless($couponModel->customerGroupCanRedeem(optional($user)->group),
-            new ApplicationException(lang('igniter.coupons::default.alert_customer_group_cannot_redeem')));
     }
 
     public static function isApplicableTo($cartItem)

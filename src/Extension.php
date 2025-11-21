@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Igniter\Coupons;
 
 use Igniter\Cart\Classes\CartManager;
+use Igniter\Cart\Facades\Cart;
 use Igniter\Cart\Models\Order;
 use Igniter\Coupons\ApiResources\Coupons;
 use Igniter\Coupons\Models\Actions\RedeemsCoupon;
@@ -15,6 +16,7 @@ use Igniter\Coupons\Models\Observers\OrderObserver;
 use Igniter\Coupons\Models\Scopes\CouponScope;
 use Igniter\Local\Facades\Location;
 use Igniter\System\Classes\BaseExtension;
+use Igniter\User\Facades\Auth;
 use Igniter\User\Models\Customer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
@@ -45,9 +47,13 @@ class Extension extends BaseExtension
                 ->whereIsEnabled()
                 ->isAutoApplicable()
                 ->whereHasOrDoesntHaveLocation(Location::getId())
-                ->each(function($coupon): void {
+                ->each(function(Coupon $coupon): void {
+                    $user = Auth::getUser();
+                    $locationId = Location::getId();
+                    $orderType = Location::orderType();
                     $orderDateTime = Location::orderDateTime();
-                    if (!$coupon->isExpired($orderDateTime)) {
+
+                    if ($coupon->isValid($orderType, $orderDateTime, Cart::content(), $user, $locationId)) {
                         resolve(CartManager::class)->applyCouponCondition($coupon->code);
                     }
                 });

@@ -39,13 +39,13 @@ parameters:
 		-
 			message: '#^Access to an undefined property Igniter\\Coupons\\Models\\Coupon\:\:\$customer_groups\.$#'
 			identifier: property.notFound
-			count: 1
+			count: 2
 			path: src/Models/Coupon.php
 
 		-
 			message: '#^Access to an undefined property Igniter\\Coupons\\Models\\Coupon\:\:\$customers\.$#'
 			identifier: property.notFound
-			count: 1
+			count: 2
 			path: src/Models/Coupon.php
 
 		-

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Igniter\Coupons\Models;
 
 use Carbon\Carbon;
+use Igniter\Cart\CartContent;
 use Igniter\Cart\Models\Category;
 use Igniter\Cart\Models\Menu;
 use Igniter\Flame\Database\Builder;
 use Igniter\Flame\Database\Factories\HasFactory;
 use Igniter\Flame\Database\Model;
+use Igniter\Flame\Exception\ApplicationException;
 use Igniter\Local\Models\Concerns\Locationable;
 use Igniter\Local\Models\Location;
 use Igniter\System\Models\Concerns\Switchable;
@@ -322,5 +324,73 @@ class Coupon extends Model
     public static function getByCodeAndLocation($code, $locationId)
     {
         return self::whereIsEnabled()->whereCodeAndLocation($code, $locationId)->first();
+    }
+
+    public function isValid(
+        string $orderType,
+        Carbon $orderDateTime,
+        CartContent $content,
+        ?Customer $user,
+        ?int $locationId,
+    ): bool {
+        return rescue(function() use (
+            $orderType,
+            $orderDateTime,
+            $content,
+            $user,
+            $locationId,
+        ) {
+            $this->validateCoupon($orderType, $orderDateTime, $content, $user, $locationId);
+
+            return true;
+        }, false);
+    }
+
+    public function validateCoupon(
+        string $orderType,
+        Carbon $orderDateTime,
+        CartContent $content,
+        ?Customer $user,
+        ?int $locationId,
+    ): void {
+        if ($this->isExpired($orderDateTime)) {
+            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_expired'));
+        }
+
+        if ($this->hasRestriction($orderType)) {
+            throw new ApplicationException(sprintf(
+                lang('igniter.cart::default.alert_coupon_order_restriction'), $orderType,
+            ));
+        }
+
+        if ($this->hasLocationRestriction($locationId)) {
+            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_location_restricted'));
+        }
+
+        if ($content->subtotalWithoutConditions() < $this->minimumOrderTotal()) {
+            throw new ApplicationException(sprintf(
+                lang('igniter.cart::default.alert_coupon_not_applied'),
+                currency_format($this->minimumOrderTotal()),
+            ));
+        }
+
+        if ($this->hasReachedMaxRedemption()) {
+            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
+        }
+
+        if (($this->customers?->isNotEmpty() || $this->customer_groups?->isNotEmpty()) && !$user) {
+            throw new ApplicationException(lang('igniter.coupons::default.alert_coupon_login_required'));
+        }
+
+        if ($user && $this->customerHasMaxRedemption($user)) {
+            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
+        }
+
+        throw_unless($this->customerCanRedeem($user),
+            new ApplicationException(lang('igniter.coupons::default.alert_customer_cannot_redeem')));
+
+        throw_unless($this->customerGroupCanRedeem($user?->group),
+            new ApplicationException(lang('igniter.coupons::default.alert_customer_group_cannot_redeem')));
+
     }
 }
