@@ -6,6 +6,7 @@ namespace Igniter\Coupons\CartConditions;
 
 use Exception;
 use Igniter\Cart\CartCondition;
+use Igniter\Cart\CartItem;
 use Igniter\Cart\Concerns\ActsAsItemable;
 use Igniter\Cart\Facades\Cart;
 use Igniter\Cart\Models\Menu;
@@ -144,8 +145,8 @@ class Coupon extends CartCondition
     {
         $applicableItems = self::$applicableItems;
         if ($applicableItems && count($applicableItems)) {
-            $applicableItemsTotal = Cart::content()->sum(function($cartItem) use ($applicableItems) {
-                if (!$applicableItems->contains($cartItem->id)) {
+            $applicableItemsTotal = Cart::content()->sum(function(CartItem $cartItem) use ($applicableItems): float|int {
+                if (!$applicableItems->contains($cartItem->id) || !self::$couponModel->canRedeemOnMenuItemQuantity($cartItem->qty)) {
                     return 0;
                 }
 
@@ -186,7 +187,7 @@ class Coupon extends CartCondition
             return false;
         }
 
-        return $applicableItems->contains($cartItem->id);
+        return $applicableItems->contains($cartItem->id) && self::$couponModel->canRedeemOnMenuItemQuantity($cartItem->qty);
     }
 
     public static function clearInternalCache(): void

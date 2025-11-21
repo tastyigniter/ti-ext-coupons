@@ -65,6 +65,7 @@ return [
     'label_recurring_from_time' => 'Recurring from time',
     'label_recurring_to_time' => 'Recurring to time',
     'label_auto_apply' => 'Apply automatically',
+    'label_min_menu_quantity' => 'Minimum menu item quantity',
 
     'help_type' => 'Whether to subtract a fixed amount or percentage from order total.',
     'help_redemption' => 'The total number of times this coupon can be redeemed. Set to 0 to allow any number of redemptions.',
@@ -76,6 +77,7 @@ return [
     'help_categories' => 'Apply this coupon ONLY on menu items in the order that appear in this/these categories. Leave blank to make coupon available across all items',
     'help_menus' => 'Apply this coupon ONLY on these menu items in the order. Leave blank to make coupon available across all items',
     'help_coupon_condition' => 'Applies coupon to cart.',
+    'help_min_menu_quantity' => 'The minimum quantity of applicable menu items in the order required to apply this coupon.',
 
     'alert_customer_cannot_redeem' => 'Coupon cannot be redeemed by this customer',
     'alert_customer_group_cannot_redeem' => 'Coupon cannot be redeemed by this customer group',

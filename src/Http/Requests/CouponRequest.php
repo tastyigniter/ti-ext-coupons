@@ -36,6 +36,7 @@ class CouponRequest extends FormRequest
             'apply_coupon_on' => lang('igniter.coupons::default.label_cart_restriction'),
             'categories' => lang('igniter.coupons::default.label_categories'),
             'menus' => lang('igniter.coupons::default.label_menus'),
+            'min_menu_quantity' => lang('igniter.coupons::default.label_min_menu_quantity'),
         ];
     }
 
@@ -70,6 +71,7 @@ class CouponRequest extends FormRequest
             'apply_coupon_on' => ['nullable', 'in:whole_cart,menu_items,delivery_fee'],
             'categories' => ['nullable', 'array'],
             'menus' => ['nullable', 'array'],
+            'min_menu_quantity' => ['nullable', 'integer'],
         ];
     }
 }

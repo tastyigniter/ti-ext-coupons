@@ -373,8 +373,22 @@ $config['form']['tabs'] = [
             'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
             'label' => 'lang:igniter.coupons::default.label_menus',
             'type' => 'relation',
+            'span' => 'left',
             'comment' => 'lang:igniter.coupons::default.help_menus',
             'nameFrom' => 'menu_name',
+            'trigger' => [
+                'action' => 'show',
+                'field' => 'apply_coupon_on',
+                'condition' => 'value[menu_items]',
+            ],
+        ],
+        'min_menu_quantity' => [
+            'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',
+            'label' => 'lang:igniter.coupons::default.label_min_menu_quantity',
+            'type' => 'number',
+            'span' => 'left',
+            'default' => 0,
+            'comment' => 'lang:igniter.coupons::default.help_min_menu_quantity',
             'trigger' => [
                 'action' => 'show',
                 'field' => 'apply_coupon_on',

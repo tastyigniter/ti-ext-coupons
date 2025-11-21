@@ -316,6 +316,15 @@ class Coupon extends Model
         return $this->apply_coupon_on == 'delivery_fee';
     }
 
+    public function canRedeemOnMenuItemQuantity(int $quantity): bool
+    {
+        if (empty($this->min_menu_quantity)) {
+            return true;
+        }
+
+        return $quantity >= $this->min_menu_quantity;
+    }
+
     public static function getByCode($code)
     {
         return self::whereIsEnabled()->whereCode($code)->first();
