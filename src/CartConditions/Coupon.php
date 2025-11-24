@@ -81,7 +81,7 @@ class Coupon extends CartCondition
                 throw new ApplicationException(lang('igniter.cart::default.alert_coupon_invalid'));
             }
 
-            $user = Auth::getUser();
+            $user = Auth::user();
             $locationId = Location::getId();
             $orderType = Location::orderType();
             $orderDateTime = Location::orderDateTime();
