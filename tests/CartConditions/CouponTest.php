@@ -180,7 +180,7 @@ it('flashes error if customer has reached max redemption for coupon', function()
     $this->coupon->customer_redemptions = 1;
     $this->coupon->save();
     $this->coupon->history()->create(['customer_id' => $customer->getKey(), 'order_id' => 1, 'status' => 1]);
-    Auth::shouldReceive('getUser')->andReturn($customer);
+    Auth::shouldReceive('user')->andReturn($customer);
     Location::shouldReceive('getId')->andReturn(1);
     Location::shouldReceive('orderType')->andReturn('collection');
     Location::shouldReceive('orderDateTime')->andReturn(now());
@@ -200,7 +200,7 @@ it('flashes error if coupon has customer restriction', function(): void {
     $this->coupon->validity = 'forever';
     $this->coupon->save();
     $this->coupon->customers()->save($customer1);
-    Auth::shouldReceive('getUser')->andReturn($customer2);
+    Auth::shouldReceive('user')->andReturn($customer2);
     Location::shouldReceive('getId')->andReturn(1);
     Location::shouldReceive('orderType')->andReturn('collection');
     Location::shouldReceive('orderDateTime')->andReturn(now());
@@ -222,7 +222,7 @@ it('flashes error if coupon has customer group restriction', function(): void {
     $this->coupon->validity = 'forever';
     $this->coupon->save();
     $this->coupon->customer_groups()->save($customerGroup1);
-    Auth::shouldReceive('getUser')->andReturn($customer);
+    Auth::shouldReceive('user')->andReturn($customer);
     Location::shouldReceive('getId')->andReturn(1);
     Location::shouldReceive('orderType')->andReturn('collection');
     Location::shouldReceive('orderDateTime')->andReturn(now());
