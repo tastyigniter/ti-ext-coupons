@@ -333,15 +333,18 @@ it('returns apportioned discount value for menu items', function(): void {
     ]);
     Cart::shouldReceive('content')->andReturn($cartContent);
     $cartItem1->id = 1;
+    $cartItem1->qty = 1;
     $cartItem2->id = $menu->getKey();
-    $cartItem2->id = $menu3->getKey();
+    $cartItem2->qty = 1;
+    $cartItem3->id = $menu3->getKey();
+    $cartItem3->qty = 1;
     $cartItem2->shouldReceive('subtotalWithoutConditions')->andReturn(20);
     $cartItem3->shouldReceive('subtotalWithoutConditions')->andReturn(30);
 
     $this->couponCondition->withTarget($cartItem2);
     $this->couponCondition->getApplicableItems($this->coupon);
 
-    expect($this->couponCondition->getActions())->toBe([['value' => -10.0]]);
+    expect($this->couponCondition->getActions())->toBe([['value' => -4.0]]);
 });
 
 it('displays warning and removes code when coupon is invalid and not auto applied', function(): void {
@@ -366,7 +369,20 @@ it('is applicable to cart item', function(): void {
     $this->couponCondition->getModel();
     $this->couponCondition->getApplicableItems($this->coupon);
 
-    expect($this->couponCondition->isApplicableTo((object)['id' => $menu->getKey()]))->toBeTrue();
+    expect($this->couponCondition->isApplicableTo((object)['id' => $menu->getKey(), 'qty' => 1]))->toBeTrue();
+});
+
+it('is applicable to cart item when cart item quantity is less then minimum menu quantity', function(): void {
+    $this->coupon->apply_coupon_on = 'menu_items';
+    $this->coupon->min_menu_quantity = 2;
+    $this->coupon->save();
+
+    $this->coupon->menus()->save($menu = Menu::factory()->create());
+
+    $this->couponCondition->getModel();
+    $this->couponCondition->getApplicableItems($this->coupon);
+
+    expect($this->couponCondition->isApplicableTo((object)['id' => $menu->getKey(), 'qty' => 1]))->toBeFalse();
 });
 
 it('is not applicable to cart item when coupon model is null', function(): void {

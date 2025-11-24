@@ -6,6 +6,7 @@ namespace Igniter\Coupons\CartConditions;
 
 use Exception;
 use Igniter\Cart\CartCondition;
+use Igniter\Cart\CartItem;
 use Igniter\Cart\Concerns\ActsAsItemable;
 use Igniter\Cart\Facades\Cart;
 use Igniter\Cart\Models\Menu;
@@ -80,7 +81,12 @@ class Coupon extends CartCondition
                 throw new ApplicationException(lang('igniter.cart::default.alert_coupon_invalid'));
             }
 
-            $this->validateCoupon($couponModel);
+            $user = Auth::getUser();
+            $locationId = Location::getId();
+            $orderType = Location::orderType();
+            $orderDateTime = Location::orderDateTime();
+
+            $couponModel->validateCoupon($orderType, $orderDateTime, Cart::content(), $user, $locationId);
 
             $this->getApplicableItems($couponModel);
         } catch (Exception $exception) {
@@ -139,8 +145,8 @@ class Coupon extends CartCondition
     {
         $applicableItems = self::$applicableItems;
         if ($applicableItems && count($applicableItems)) {
-            $applicableItemsTotal = Cart::content()->sum(function($cartItem) use ($applicableItems) {
-                if (!$applicableItems->contains($cartItem->id)) {
+            $applicableItemsTotal = Cart::content()->sum(function(CartItem $cartItem) use ($applicableItems): float|int {
+                if (!$applicableItems->contains($cartItem->id) || !self::$couponModel->canRedeemOnMenuItemQuantity($cartItem->qty)) {
                     return 0;
                 }
 
@@ -167,53 +173,6 @@ class Coupon extends CartCondition
         return '-'.$value;
     }
 
-    protected function validateCoupon($couponModel)
-    {
-        $user = Auth::getUser();
-        $locationId = Location::getId();
-        $orderType = Location::orderType();
-        $orderDateTime = Location::orderDateTime();
-
-        if ($couponModel->isExpired($orderDateTime)) {
-            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_expired'));
-        }
-
-        if ($couponModel->hasRestriction($orderType)) {
-            throw new ApplicationException(sprintf(
-                lang('igniter.cart::default.alert_coupon_order_restriction'), $orderType,
-            ));
-        }
-
-        if ($couponModel->hasLocationRestriction($locationId)) {
-            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_location_restricted'));
-        }
-
-        if (Cart::content()->subtotalWithoutConditions() < $couponModel->minimumOrderTotal()) {
-            throw new ApplicationException(sprintf(
-                lang('igniter.cart::default.alert_coupon_not_applied'),
-                currency_format($couponModel->minimumOrderTotal()),
-            ));
-        }
-
-        if ($couponModel->hasReachedMaxRedemption()) {
-            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
-        }
-
-        if (($couponModel->customers?->isNotEmpty() || $couponModel->customer_groups?->isNotEmpty()) && !$user) {
-            throw new ApplicationException(lang('igniter.coupons::default.alert_coupon_login_required'));
-        }
-
-        if ($user && $couponModel->customerHasMaxRedemption($user)) {
-            throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
-        }
-
-        throw_unless($couponModel->customerCanRedeem($user),
-            new ApplicationException(lang('igniter.coupons::default.alert_customer_cannot_redeem')));
-
-        throw_unless($couponModel->customerGroupCanRedeem(optional($user)->group),
-            new ApplicationException(lang('igniter.coupons::default.alert_customer_group_cannot_redeem')));
-    }
-
     public static function isApplicableTo($cartItem)
     {
         if (!($couponModel = self::$couponModel) || self::$hasErrors) {
@@ -228,7 +187,7 @@ class Coupon extends CartCondition
             return false;
         }
 
-        return $applicableItems->contains($cartItem->id);
+        return $applicableItems->contains($cartItem->id) && self::$couponModel->canRedeemOnMenuItemQuantity($cartItem->qty);
     }
 
     public static function clearInternalCache(): void
