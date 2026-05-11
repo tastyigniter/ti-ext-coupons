@@ -1,5 +1,7 @@
 <?php
 
+use Igniter\Local\Models\Location;
+
 $config['list']['filter'] = [
     'search' => [
         'prompt' => 'lang:igniter.coupons::default.text_filter_search',
@@ -305,7 +307,7 @@ $config['form']['tabs'] = [
             'type' => 'checkboxtoggle',
             'comment' => 'lang:igniter.coupons::default.help_order_restriction',
             'span' => 'right',
-            'options' => [\Igniter\Local\Models\Location::class, 'getOrderTypeOptions'],
+            'options' => [Location::class, 'getOrderTypeOptions'],
         ],
         'redemptions' => [
             'tab' => 'lang:igniter.coupons::default.text_tab_restrictions',

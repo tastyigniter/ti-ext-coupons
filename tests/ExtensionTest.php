@@ -6,6 +6,7 @@ namespace Igniter\Coupons\Tests;
 
 use Igniter\Cart\Cart;
 use Igniter\Cart\Models\Order;
+use Igniter\Coupons\CartConditions\Coupon;
 use Igniter\Coupons\Extension;
 use Igniter\Coupons\Models\Actions\RedeemsCoupon;
 use Igniter\Coupons\Models\Coupon as CouponModel;
@@ -158,9 +159,9 @@ it('registers cart conditions correctly', function(): void {
     $conditions = $extension->registerCartConditions();
 
     expect($conditions)->toBeArray()
-        ->and($conditions)->toHaveKey(\Igniter\Coupons\CartConditions\Coupon::class)
-        ->and($conditions[\Igniter\Coupons\CartConditions\Coupon::class])->toBeArray()
-        ->and($conditions[\Igniter\Coupons\CartConditions\Coupon::class])->toHaveKeys(['name', 'label', 'description']);
+        ->and($conditions)->toHaveKey(Coupon::class)
+        ->and($conditions[Coupon::class])->toBeArray()
+        ->and($conditions[Coupon::class])->toHaveKeys(['name', 'label', 'description']);
 });
 
 it('registers permissions correctly', function(): void {
