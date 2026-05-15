@@ -42,10 +42,9 @@ class Extension extends BaseExtension
         });
 
         Event::listen('cart.added', function(): void {
-            // @phpstan-ignore method.notFound
             Coupon::query()
                 ->whereIsEnabled()
-                ->isAutoApplicable()
+                ->isAutoApplicable() // @phpstan-ignore method.notFound
                 ->whereHasOrDoesntHaveLocation(Location::getId())
                 ->each(function(Coupon $coupon): void {
                     $user = Auth::getUser();
@@ -112,7 +111,7 @@ class Extension extends BaseExtension
     public function registerCartConditions(): array
     {
         return [
-            \Igniter\Coupons\CartConditions\Coupon::class => [
+            CartConditions\Coupon::class => [
                 'name' => 'coupon',
                 'label' => 'lang:igniter.coupons::default.text_coupon',
                 'description' => 'lang:igniter.coupons::default.help_coupon_condition',
