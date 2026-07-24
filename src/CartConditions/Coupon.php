@@ -104,7 +104,7 @@ class Coupon extends CartCondition
             return false;
         }
 
-        return !($couponModel->appliesOnDelivery() && !Location::orderTypeIsDelivery());
+        return !$couponModel->appliesOnDelivery() || Location::orderTypeIsDelivery();
     }
 
     #[Override]
