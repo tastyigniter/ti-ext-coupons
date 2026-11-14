@@ -10,7 +10,3 @@ parameters:
         - resources/
     ignoreErrors:
         - '#PHPDoc tag @var#'
-        - identifier: generics.notGeneric
-#    excludePaths:
-#        - ./*/*/FileToBeExcluded.php
-#    checkMissingIterableValueType: false
