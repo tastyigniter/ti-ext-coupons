@@ -251,6 +251,10 @@ class Coupon extends Model
 
     public function hasLocationRestriction($locationId): bool
     {
+        if ($this->fireSystemEvent('igniter.coupon.hasLocationRestriction', [$locationId]) === true) {
+            return true;
+        }
+
         if (!$this->locations || $this->locations->isEmpty()) {
             return false;
         }
