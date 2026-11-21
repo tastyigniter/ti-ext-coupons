@@ -104,6 +104,7 @@ class Extension extends BaseExtension
                 'actions' => [
                     'index:all', 'show:all', 'store:admin:admin', 'update:admin:admin', 'destroy:admin:admin',
                 ],
+                'permissions' => ['Admin.Coupons'],
             ],
         ];
     }
