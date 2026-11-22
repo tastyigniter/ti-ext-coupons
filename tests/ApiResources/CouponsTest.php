@@ -9,8 +9,16 @@ use Igniter\Cart\Models\Menu;
 use Igniter\Coupons\Models\Coupon;
 use Igniter\Coupons\Models\CouponHistory;
 use Igniter\User\Models\User;
+use Igniter\User\Models\UserRole;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
+
+function couponsAdmin(): User
+{
+    return User::factory()
+        ->for(UserRole::factory()->create(['permissions' => ['Admin.Coupons' => 1]]), 'role')
+        ->create();
+}
 
 it('returns all coupons', function(): void {
     Sanctum::actingAs(User::factory()->create(), ['coupons:*']);
@@ -63,7 +71,7 @@ it('shows a coupon', function(): void {
 });
 
 it('creates a coupon', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['coupons:*']);
+    Sanctum::actingAs(couponsAdmin(), ['coupons:*']);
 
     $this
         ->post(route('igniter.api.coupons.store'), [
@@ -89,7 +97,7 @@ it('creates a coupon', function(): void {
 });
 
 it('updates a coupon', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['coupons:*']);
+    Sanctum::actingAs(couponsAdmin(), ['coupons:*']);
     $coupon = Coupon::first();
 
     $this
@@ -114,7 +122,7 @@ it('updates a coupon', function(): void {
 });
 
 it('deletes a coupon', function(): void {
-    Sanctum::actingAs(User::factory()->create(), ['coupons:*']);
+    Sanctum::actingAs(couponsAdmin(), ['coupons:*']);
     $coupon = Coupon::first();
 
     $this
@@ -122,4 +130,20 @@ it('deletes a coupon', function(): void {
         ->assertStatus(204);
 
     expect(Coupon::find($coupon->getKey()))->toBeNull();
+});
+
+it('forbids creating a coupon without the coupons permission', function(): void {
+    Sanctum::actingAs(User::factory()->create(), ['coupons:*']);
+
+    $this
+        ->post(route('igniter.api.coupons.store'), [
+            'name' => 'Test coupon',
+            'code' => 'TESTCOUPON',
+            'type' => 'P',
+            'discount' => 10,
+            'validity' => 'forever',
+        ])
+        ->assertForbidden();
+
+    expect(Coupon::where('code', 'TESTCOUPON')->exists())->toBeFalse();
 });
