@@ -97,10 +97,10 @@ class Coupon extends CartCondition
     }
 
     #[Override]
-    public function beforeApply()
+    public function beforeApply(): bool
     {
         $couponModel = $this->getModel();
-        if (!$couponModel || $couponModel->appliesOnMenuItems() || self::$hasErrors) {
+        if (!$couponModel instanceof CouponModel || $couponModel->appliesOnMenuItems() || self::$hasErrors) {
             return false;
         }
 
@@ -173,9 +173,9 @@ class Coupon extends CartCondition
         return '-'.$value;
     }
 
-    public static function isApplicableTo($cartItem)
+    public static function isApplicableTo($cartItem): bool
     {
-        if (!($couponModel = self::$couponModel) || self::$hasErrors) {
+        if (!(($couponModel = self::$couponModel) instanceof CouponModel) || self::$hasErrors) {
             return false;
         }
 

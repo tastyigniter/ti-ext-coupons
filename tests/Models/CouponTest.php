@@ -188,6 +188,17 @@ it('checks if coupon has location restriction', function(): void {
     expect($coupon->hasLocationRestriction($location->getKey()))->toBeFalse();
 });
 
+it('lets extensions restrict a coupon at a location', function(): void {
+    $coupon = Coupon::factory()->create();
+    $location = Location::factory()->create();
+    $blocked = Location::factory()->create();
+
+    Event::listen('igniter.coupon.hasLocationRestriction', fn(Coupon $coupon, $locationId): ?bool => $locationId === $blocked->getKey() ? true : null);
+
+    expect($coupon->hasLocationRestriction($location->getKey()))->toBeFalse()
+        ->and($coupon->hasLocationRestriction($blocked->getKey()))->toBeTrue();
+});
+
 it('checks if coupon has reached max redemption', function(): void {
     $coupon = Coupon::factory()->create(['redemptions' => 1]);
     $coupon->history()->create(['status' => 1]);

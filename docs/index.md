@@ -102,6 +102,7 @@ The Coupons extension triggers the following events:
 - `igniter.cart.beforeApplyCoupon`: Triggered before applying a coupon to the cart. Passes the coupon code as argument.
 - `couponHistory.beforeAddHistory`: Triggered before adding a coupon history record. Passes the coupon history model, coupon cart condition object, customer model, coupon model as arguments.
 - `admin.order.couponRedeemed`: Triggered after a coupon has been redeemed on an order. Passes the coupon history model as argument.
+- `igniter.coupon.hasLocationRestriction`: Triggered when checking if a coupon has location restrictions. Passes the location id as arguments.
 
 Here is an example of hooking an event in the `boot` method of an extension class:
 

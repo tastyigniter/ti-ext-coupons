@@ -130,7 +130,7 @@ class Coupon extends Model
     // Accessors & Mutators
     //
 
-    public function getRecurringEveryAttribute($value)
+    public function getRecurringEveryAttribute($value): array
     {
         return empty($value) ? [0, 1, 2, 3, 4, 5, 6] : explode(', ', (string)$value);
     }
@@ -202,9 +202,7 @@ class Coupon extends Model
      */
     public function isExpired($orderDateTime = null)
     {
-        if (is_null($orderDateTime)) {
-            $orderDateTime = Carbon::now();
-        }
+        $orderDateTime ??= Carbon::now();
 
         switch ($this->validity) {
             case 'forever':
@@ -242,7 +240,7 @@ class Coupon extends Model
         return false;
     }
 
-    public function hasRestriction($orderType)
+    public function hasRestriction($orderType): bool
     {
         if (empty($this->order_restriction)) {
             return false;
@@ -251,8 +249,12 @@ class Coupon extends Model
         return !in_array($orderType, $this->order_restriction);
     }
 
-    public function hasLocationRestriction($locationId)
+    public function hasLocationRestriction($locationId): bool
     {
+        if ($this->fireSystemEvent('igniter.coupon.hasLocationRestriction', [$locationId]) === true) {
+            return true;
+        }
+
         if (!$this->locations || $this->locations->isEmpty()) {
             return false;
         }
@@ -272,22 +274,22 @@ class Coupon extends Model
         return $this->customer_redemptions && $this->customer_redemptions <= $this->countCustomerRedemptions($customer->getKey());
     }
 
-    public function customerCanRedeem(?Customer $customer = null)
+    public function customerCanRedeem(?Customer $customer = null): bool
     {
         if (!$this->customers || $this->customers->isEmpty()) {
             return true;
         }
 
-        return $customer && $this->customers->contains('customer_id', $customer->getKey());
+        return $customer instanceof Customer && $this->customers->contains('customer_id', $customer->getKey());
     }
 
-    public function customerGroupCanRedeem(?CustomerGroup $group = null)
+    public function customerGroupCanRedeem(?CustomerGroup $group = null): bool
     {
         if (!$this->customer_groups || $this->customer_groups->isEmpty()) {
             return true;
         }
 
-        return $group && $this->customer_groups->contains('customer_group_id', $group->getKey());
+        return $group instanceof CustomerGroup && $this->customer_groups->contains('customer_group_id', $group->getKey());
     }
 
     public function countRedemptions()
@@ -391,7 +393,7 @@ class Coupon extends Model
             throw new ApplicationException(lang('igniter.coupons::default.alert_coupon_login_required'));
         }
 
-        if ($user && $this->customerHasMaxRedemption($user)) {
+        if ($user instanceof Customer && $this->customerHasMaxRedemption($user)) {
             throw new ApplicationException(lang('igniter.cart::default.alert_coupon_maximum_reached'));
         }
 

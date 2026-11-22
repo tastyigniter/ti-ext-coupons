@@ -102,8 +102,9 @@ class Extension extends BaseExtension
                 'name' => 'Coupons',
                 'description' => 'An API resource for coupons',
                 'actions' => [
-                    'index:all', 'show:all', 'store:admin', 'update:admin', 'destroy:admin',
+                    'index:all', 'show:all', 'store:admin:admin', 'update:admin:admin', 'destroy:admin:admin',
                 ],
+                'permissions' => ['Admin.Coupons'],
             ],
         ];
     }
